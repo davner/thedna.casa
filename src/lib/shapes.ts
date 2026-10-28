@@ -51,7 +51,7 @@ export const marigoldMask = (seed: number, petals = 18, depth = 0.05): string =>
   return `${parts.join(" ")} Z`;
 };
 
-// perfect-freehand returns outline points only; the midpoint quadratics are its README's recipe for an SVG path.
+// perfect-freehand returns outline points only, so midpoint quadratics join them into a smooth closed path.
 const outlineToPath = (outline: number[][]): string => {
   if (!outline.length) return "";
   const r = (n: number) => +n.toFixed(1);
@@ -96,4 +96,9 @@ export const brushSquiggle = (seed: number, w = 200, h = 24, bumps = 4, size = 6
     return [size + t * (w - 2 * size), h / 2 + Math.sin(t * bumps * Math.PI * 2) * (h / 2 - size) * (0.8 + 0.2 * noise(t * 3, 1))];
   });
   return brusher(seed, 0.6).stroke(pts, size);
+};
+
+export const polar = (cx: number, cy: number, r: number, deg: number): Pt => {
+  const a = ((deg - 90) * Math.PI) / 180;
+  return [+(cx + r * Math.cos(a)).toFixed(2), +(cy + r * Math.sin(a)).toFixed(2)];
 };

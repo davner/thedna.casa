@@ -1,6 +1,6 @@
 import { getPathBBox, isClosedPath, normalizePath, parsePathString } from "svg-path-commander/util";
 import { describe, expect, it } from "vitest";
-import { brushSquiggle, marigoldMask, sparkle, wave } from "./shapes";
+import { brushSquiggle, marigoldMask, polar, sparkle, wave } from "./shapes";
 
 const expectWellFormed = (d: string) => {
   const segments = parsePathString(d);
@@ -52,5 +52,13 @@ describe("marigoldMask", () => {
     expect(box.y).toBeGreaterThanOrEqual(0);
     expect(box.x2).toBeLessThanOrEqual(1);
     expect(box.y2).toBeLessThanOrEqual(1);
+  });
+});
+
+describe("polar", () => {
+  it("measures degrees clockwise from twelve o'clock", () => {
+    expect(polar(240, 160, 10, 0)).toEqual([240, 150]);
+    expect(polar(240, 160, 10, 90)).toEqual([250, 160]);
+    expect(polar(240, 160, 10, 180)).toEqual([240, 170]);
   });
 });
