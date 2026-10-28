@@ -25,7 +25,7 @@ export interface Welcome {
 }
 
 export const welcome: Welcome = {
-  text: "We met in Flagstaff, AZ, on a first date where Alexis showed up thirty minutes late and ate a whole chicken. Dan knew right away. We moved to Tucson so Dan could play with telescopes, and then, somewhere in the middle of the pandemic, we looked at each other and asked what the heck we were still doing there. So we packed up and moved to Los Angeles to be close to Alexis' family. This is our little corner of the internet. Welcome home.",
+  text: "We met in Flagstaff, AZ, on a first date where Alexis showed up thirty minutes late and ate a whole chicken. Dan knew right away. We moved to Tucson so Dan could play with telescopes, and then, somewhere in the middle of the pandemic, we looked at each other and asked what the heck we were still doing there. So we packed up and moved to Los Angeles to be close to Alexis' family. This is our little corner of the internet.",
   // Without a photo a pink petal shape stands in.
   photo: { src: welcomePhoto, alt: "Dan and Alexis standing back to back in front of a red curtain, looking at the camera" },
 };
