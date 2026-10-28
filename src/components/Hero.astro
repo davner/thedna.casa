@@ -24,6 +24,11 @@ import { brushSquiggle } from "../lib/shapes";
   .squiggle { display: block; width: 130px; height: 16px; margin: 18px 0 0; fill: var(--pink); }
   .hero :global(.stamp) { width: min(100%, 380px); justify-self: center; }
 
+  @media (prefers-reduced-motion: no-preference) {
+    .squiggle { animation: paint 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards; }
+  }
+  @keyframes paint { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
   @media (max-width: 760px) {
     .hero { grid-template-columns: 1fr; }
   }

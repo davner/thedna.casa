@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { builtPage, readText } from "./site";
+import type { AtRule, Declaration } from "postcss";
+import { builtPage, pageCss, readText } from "./site";
 
 describe("built root page", () => {
   const $ = builtPage("index.html");
@@ -18,6 +19,20 @@ describe("built root page", () => {
     expect(meta("property", "og:description")).not.toBe("");
     expect(meta("property", "og:url")).toBe("https://thedna.casa/");
     expect(meta("property", "og:type")).toBe("website");
+  });
+
+  it("animates only under prefers-reduced-motion: no-preference", () => {
+    const animations: Declaration[] = [];
+    for (const root of pageCss($)) root.walkDecls(/^animation(-name)?$/, (decl) => void animations.push(decl));
+    // The ring turns and the squiggle paints on.
+    expect(animations.length).toBeGreaterThanOrEqual(2);
+    for (const decl of animations) {
+      const guards: string[] = [];
+      for (let node = decl.parent; node; node = node.parent as typeof node) {
+        if (node.type === "atrule" && (node as AtRule).name === "media") guards.push((node as AtRule).params.replace(/\s+/g, ""));
+      }
+      expect(guards, decl.toString()).toContainEqual(expect.stringContaining("(prefers-reduced-motion:no-preference)"));
+    }
   });
 
   it("hides the hero's logo, ring, squiggle and sparkles from assistive tech", () => {
