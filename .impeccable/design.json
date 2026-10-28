@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-28T14:53:27.205Z",
+  "title": "Design System: The DNA Casa",
+  "extensions": {
+    "colorMeta": {
+      "mole": {
+        "role": "primary",
+        "displayName": "Mole",
+        "canonical": "oklch(30.7% 0.044 11.0)",
+        "tonalRamp": [
+          "oklch(15% 0.044 11.0)",
+          "oklch(25% 0.044 11.0)",
+          "oklch(35% 0.044 11.0)",
+          "oklch(45% 0.044 11.0)",
+          "oklch(55% 0.044 11.0)",
+          "oklch(65% 0.044 11.0)",
+          "oklch(80% 0.044 11.0)",
+          "oklch(95% 0.044 11.0)"
+        ]
+      },
+      "cream": {
+        "role": "neutral",
+        "displayName": "Cream Ink",
+        "canonical": "oklch(93.6% 0.024 63.5)",
+        "tonalRamp": [
+          "oklch(15% 0.024 63.5)",
+          "oklch(25% 0.024 63.5)",
+          "oklch(35% 0.024 63.5)",
+          "oklch(45% 0.024 63.5)",
+          "oklch(55% 0.024 63.5)",
+          "oklch(65% 0.024 63.5)",
+          "oklch(80% 0.024 63.5)",
+          "oklch(95% 0.024 63.5)"
+        ]
+      },
+      "cream-page": {
+        "role": "neutral",
+        "displayName": "Page Cream",
+        "canonical": "oklch(97.0% 0.012 75.4)",
+        "tonalRamp": [
+          "oklch(15% 0.012 75.4)",
+          "oklch(25% 0.012 75.4)",
+          "oklch(35% 0.012 75.4)",
+          "oklch(45% 0.012 75.4)",
+          "oklch(55% 0.012 75.4)",
+          "oklch(65% 0.012 75.4)",
+          "oklch(80% 0.012 75.4)",
+          "oklch(95% 0.012 75.4)"
+        ]
+      },
+      "terra": {
+        "role": "secondary",
+        "displayName": "Terracotta",
+        "canonical": "oklch(61.5% 0.139 41.6)",
+        "tonalRamp": [
+          "oklch(15% 0.139 41.6)",
+          "oklch(25% 0.139 41.6)",
+          "oklch(35% 0.139 41.6)",
+          "oklch(45% 0.139 41.6)",
+          "oklch(55% 0.139 41.6)",
+          "oklch(65% 0.139 41.6)",
+          "oklch(80% 0.139 41.6)",
+          "oklch(95% 0.139 41.6)"
+        ]
+      },
+      "pink": {
+        "role": "secondary",
+        "displayName": "Rosa Mexicano",
+        "canonical": "oklch(59.6% 0.242 358.9)",
+        "tonalRamp": [
+          "oklch(15% 0.200 358.9)",
+          "oklch(25% 0.200 358.9)",
+          "oklch(35% 0.200 358.9)",
+          "oklch(45% 0.200 358.9)",
+          "oklch(55% 0.200 358.9)",
+          "oklch(65% 0.200 358.9)",
+          "oklch(80% 0.200 358.9)",
+          "oklch(95% 0.200 358.9)"
+        ]
+      },
+      "gold": {
+        "role": "primary",
+        "displayName": "Marigold",
+        "canonical": "oklch(80.3% 0.152 79.6)",
+        "tonalRamp": [
+          "oklch(15% 0.152 79.6)",
+          "oklch(25% 0.152 79.6)",
+          "oklch(35% 0.152 79.6)",
+          "oklch(45% 0.152 79.6)",
+          "oklch(55% 0.152 79.6)",
+          "oklch(65% 0.152 79.6)",
+          "oklch(80% 0.152 79.6)",
+          "oklch(95% 0.152 79.6)"
+        ]
+      },
+      "salamander": {
+        "role": "tertiary",
+        "displayName": "Salamander",
+        "canonical": "oklch(35.1% 0.019 196.3)",
+        "tonalRamp": [
+          "oklch(15% 0.019 196.3)",
+          "oklch(25% 0.019 196.3)",
+          "oklch(35% 0.019 196.3)",
+          "oklch(45% 0.019 196.3)",
+          "oklch(55% 0.019 196.3)",
+          "oklch(65% 0.019 196.3)",
+          "oklch(80% 0.019 196.3)",
+          "oklch(95% 0.019 196.3)"
+        ]
+      },
+      "sage": {
+        "role": "tertiary",
+        "displayName": "Sage",
+        "canonical": "oklch(81.8% 0.034 138.2)",
+        "tonalRamp": [
+          "oklch(15% 0.034 138.2)",
+          "oklch(25% 0.034 138.2)",
+          "oklch(35% 0.034 138.2)",
+          "oklch(45% 0.034 138.2)",
+          "oklch(55% 0.034 138.2)",
+          "oklch(65% 0.034 138.2)",
+          "oklch(80% 0.034 138.2)",
+          "oklch(95% 0.034 138.2)"
+        ]
+      },
+      "cheek": {
+        "role": "tertiary",
+        "displayName": "Cheek",
+        "canonical": "oklch(87.5% 0.061 353.2)",
+        "tonalRamp": [
+          "oklch(15% 0.061 353.2)",
+          "oklch(25% 0.061 353.2)",
+          "oklch(35% 0.061 353.2)",
+          "oklch(45% 0.061 353.2)",
+          "oklch(55% 0.061 353.2)",
+          "oklch(65% 0.061 353.2)",
+          "oklch(80% 0.061 353.2)",
+          "oklch(95% 0.061 353.2)"
+        ]
+      },
+      "blush": {
+        "role": "tertiary",
+        "displayName": "Blush",
+        "canonical": "oklch(86.0% 0.054 46.3)",
+        "tonalRamp": [
+          "oklch(15% 0.054 46.3)",
+          "oklch(25% 0.054 46.3)",
+          "oklch(35% 0.054 46.3)",
+          "oklch(45% 0.054 46.3)",
+          "oklch(55% 0.054 46.3)",
+          "oklch(65% 0.054 46.3)",
+          "oklch(80% 0.054 46.3)",
+          "oklch(95% 0.054 46.3)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The THE DNA CASA wordmark only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Member names."
+      },
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "Italic: the Dan & Alexis line and the footer."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Welcome text and member one-liners."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "The Bienvenidos kicker."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ring-turn",
+        "value": "turn 40s linear infinite",
+        "purpose": "The stamp ring; reduced-motion off."
+      },
+      {
+        "name": "squiggle-paint",
+        "value": "paint 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards",
+        "purpose": "The squiggle paints on once on load; reduced-motion off."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "760px"
+      }
+    ],
+    "grain": {
+      "value": "fractalNoise 0.65, 3 octaves, tinted mole, opacity 0.22, mix-blend-mode multiply, fixed",
+      "purpose": "The one page-wide paper texture."
+    }
+  },
+  "components": [
+    {
+      "name": "Wordmark",
+      "kind": "custom",
+      "refersTo": "display",
+      "description": "The hero wordmark on mole with the subtitle and squiggle.",
+      "html": "<div class=\"ds-hero\"><h1 class=\"ds-wordmark\">THE DNA<br>CASA</h1><p class=\"ds-sub\">Dan &amp; Alexis</p><span class=\"ds-squiggle\"></span></div>",
+      "css": ".ds-hero{background:#43262a;color:#f6e7da;padding:40px 32px} .ds-wordmark{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:4.5rem;letter-spacing:-0.03em;line-height:0.9;margin:0} .ds-sub{font-family:\"Averia Serif Libre\", serif;font-style:italic;font-size:1.5rem;color:#f0c7b4;margin:16px 0 0} .ds-squiggle{display:block;width:130px;height:6px;margin-top:16px;background:#e4007c;border-radius:6px}"
+    },
+    {
+      "name": "Member Circle",
+      "kind": "card",
+      "refersTo": "member-circle",
+      "description": "A member: color circle, serif name, one-liner.",
+      "html": "<div class=\"ds-member\"><span class=\"ds-circle\"></span><h3 class=\"ds-name\">Dan</h3><span class=\"ds-line\">One line about Dan.</span></div>",
+      "css": ".ds-member{background:#faf4ec;color:#43262a;display:grid;justify-items:center;gap:6px;padding:24px;font-family:\"Schibsted Grotesk\", sans-serif;letter-spacing:-0.03em} .ds-circle{width:160px;aspect-ratio:1;border-radius:50%;background:#2f3e3e;margin-bottom:12px} .ds-name{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:1.7rem;letter-spacing:-0.02em;margin:0}"
+    },
+    {
+      "name": "Member Row (phone)",
+      "kind": "card",
+      "refersTo": "member-circle-phone",
+      "description": "The phone layout of a member.",
+      "html": "<div class=\"ds-row\"><span class=\"ds-dot\"></span><h3 class=\"ds-rname\">Alexis</h3><span class=\"ds-rline\">One line about Alexis.</span></div>",
+      "css": ".ds-row{background:#faf4ec;color:#43262a;display:grid;grid-template-columns:84px 1fr;column-gap:18px;row-gap:2px;align-items:center;padding:14px 24px;border-block:1px solid color-mix(in srgb,#43262a 14%,transparent);font-family:\"Schibsted Grotesk\", sans-serif;letter-spacing:-0.03em} .ds-dot{grid-row:1/3;width:84px;aspect-ratio:1;border-radius:50%;background:#e4007c} .ds-rname{align-self:end;font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:1.5rem;letter-spacing:-0.02em;margin:0} .ds-rline{align-self:start}"
+    },
+    {
+      "name": "Kicker and Heading",
+      "kind": "custom",
+      "refersTo": "kicker",
+      "description": "Terracotta kicker over a mole serif heading on page cream.",
+      "html": "<div class=\"ds-welcome\"><p class=\"ds-kicker\">Bienvenidos</p><h2 class=\"ds-h2\">Hola, we&#39;re Dan &amp; Alexis.</h2><p class=\"ds-text\">A few warm sentences go here.</p></div>",
+      "css": ".ds-welcome{background:#faf4ec;color:#43262a;padding:32px;font-family:\"Schibsted Grotesk\", sans-serif;letter-spacing:-0.03em} .ds-kicker{font-family:\"Averia Serif Libre\", serif;font-weight:700;color:#c8643c;font-size:1.3rem;letter-spacing:-0.02em;margin:0 0 10px} .ds-h2{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:2.6rem;letter-spacing:-0.04em;line-height:1;margin:0} .ds-text{font-size:1.1rem;line-height:1.6;max-width:38ch;margin:18px 0 0}"
+    },
+    {
+      "name": "Footer",
+      "kind": "custom",
+      "refersTo": "footer",
+      "description": "One italic serif sign-off on mole.",
+      "html": "<footer class=\"ds-footer\">Con cariño · © 2026 The DNA Casa</footer>",
+      "css": ".ds-footer{background:#43262a;color:#f6e7da;text-align:center;padding:48px 20px 90px;font-family:\"Averia Serif Libre\", serif;font-style:italic}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Mole and Marigold",
+    "overview": "The page is two colors holding a household between them: a deep mole brown above and below, a cream middle, and a marigold sun at the top. Everything else is a small accent on those two fields. It should feel warm, restrained and hand-made: a person made it, and they stopped before it got busy.\n\nDensity is low. Each section does one thing: the hero names the house, the welcome says hello, the members introduce the four of them, and the footer signs off. The hand shows in a few seeded, drawn shapes (one wave, one squiggle, two sparkles, a petal mask, the logo strokes), never in ornament spread across the page. One page-wide grain layer gives both fields a paper feel.",
+    "keyCharacteristics": [
+      "Two big color fields, mole and cream, joined by one wave.",
+      "Big, tight, all-caps serif wordmark; italic serif for the soft voice.",
+      "Accents (pink, gold, terra) only in small doses.",
+      "Flat surfaces; depth from grain, not shadows.",
+      "Two slow motions, both off under reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The No Black Rule",
+        "body": "Mole is the darkest color on the page. Nothing is pure black.",
+        "section": "colors"
+      },
+      {
+        "name": "The Large Terracotta Rule",
+        "body": "Terracotta on page cream is about 3.6:1, which passes only as large text. Use it at 1.2rem bold or larger, never for body text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Member Color Rule",
+        "body": "Each member owns one color, in order: Salamander (Dan), Rosa Mexicano (Alexis), Sage (Milly), Marigold (Penny). Don't reuse a member's color to mean something else on the same screen.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Families Rule",
+        "body": "Averia Serif Libre and Schibsted Grotesk only. A new role picks a weight these two already ship before it adds one.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tight Serif Rule",
+        "body": "Serif headings set tight, between -0.02em and -0.04em letter spacing with line height 1 or less. The italic voice resets letter spacing to 0.",
+        "section": "typography"
+      },
+      {
+        "name": "The First Screen Rule",
+        "body": "On a 390px-wide phone, the wave and the start of the cream welcome are visible without scrolling.",
+        "section": "layout"
+      },
+      {
+        "name": "The No Sideways Scroll Rule",
+        "body": "Nothing scrolls sideways at any width. The hero clips its turning ring horizontally to keep this true.",
+        "section": "layout"
+      },
+      {
+        "name": "The One Grain Rule",
+        "body": "One grain layer for the whole page. Sections don't add their own textures.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Seeded Shape Rule",
+        "body": "A new organic shape comes from the shared seeded generators with a fixed seed, never from randomness at runtime or a stock icon.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Restraint Rule",
+        "body": "One squiggle, one wave, two sparkles. A new shape has to replace one of these or earn a place the same way.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do keep mole and page cream as the only large color fields.",
+      "Do take every color from the palette module, which feeds CSS, SVG fills, the theme-color meta and the favicon.",
+      "Do keep accents small: a stroke, a sparkle, a circle, a kicker.",
+      "Do gate every animation behind `prefers-reduced-motion: no-preference`.",
+      "Do check the phone layout at 390px in device emulation."
+    ],
+    "donts": [
+      "Don't use pure black, drop shadows or cards.",
+      "Don't add a third typeface or another weight without retiring one.",
+      "Don't set body text in terracotta or pink on cream.",
+      "Don't add a marquee, a literal house, arches, leaf shadows or extra squiggles.",
+      "Don't add a third motion. The ring and the squiggle are the whole motion vocabulary.",
+      ""
+    ]
+  }
+}
