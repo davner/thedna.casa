@@ -30,7 +30,14 @@ import { brushSquiggle } from "../lib/shapes";
   }
   @keyframes paint { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 
+  /* A short hero so the wave lands inside the first phone screen. */
   @media (max-width: 760px) {
-    .hero { grid-template-columns: 1fr; }
+    .hero { min-height: 0; grid-template-columns: 1fr; justify-items: center; gap: 22px; padding: 28px 20px 92px; text-align: center; }
+    .hero :global(.stamp) { order: -1; width: min(76vw, 300px); }
+    .hero :global(.s1) { width: 22px; right: 9%; top: 34px; }
+    .hero :global(.s2) { width: 14px; left: 10%; right: auto; top: 250px; bottom: auto; }
+    h1 { font-size: clamp(3rem, 15vw, 4.2rem); line-height: 0.88; }
+    .sub { font-size: 1.35rem; margin-top: 12px; }
+    .squiggle { margin: 14px auto 0; width: 112px; height: 14px; }
   }
 </style>

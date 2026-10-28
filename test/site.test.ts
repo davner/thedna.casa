@@ -117,6 +117,18 @@ describe("built root page", () => {
     expect(clips).toContainEqual(expect.stringMatching(/^(clip|hidden)\b/));
   });
 
+  it("opens the phone screen with the turning stamp, above the wordmark", () => {
+    const orders: string[] = [];
+    for (const root of pageCss($)) {
+      root.walkAtRules("media", (media) => {
+        // The minifier rewrites max-width queries into range syntax.
+        if (!/^\((max-width:|width<=)760px\)$/.test(media.params.replace(/\s+/g, ""))) return;
+        media.walkRules(/\.stamp\b/, (rule) => rule.walkDecls("order", (decl) => void orders.push(decl.value)));
+      });
+    }
+    expect(orders).toContainEqual(expect.stringMatching(/^-\d/));
+  });
+
   it("hides the hero's logo, ring, squiggle and sparkles from assistive tech", () => {
     const drawings = $("header svg").filter((_, svg) => $(svg).parents("svg").length === 0);
     expect(drawings.length).toBeGreaterThan(0);
