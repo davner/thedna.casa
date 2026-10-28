@@ -18,8 +18,8 @@ export interface Member {
 }
 
 export const members: Member[] = [
-  { name: "Dan", line: "One line about Dan.", color: "var(--sal)" },
+  { name: "Dan", line: "One line about Dan.", color: "var(--salamander)" },
   { name: "Alexis", line: "One line about Alexis.", color: "var(--pink)" },
   { name: "Milly", line: "The dog. One line about Milly.", color: "var(--sage)" },
-  { name: "Penny", line: "The cat. One line about Penny.", color: "var(--oro)" },
+  { name: "Penny", line: "The cat. One line about Penny.", color: "var(--gold)" },
 ];
