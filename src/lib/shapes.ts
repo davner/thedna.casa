@@ -24,3 +24,10 @@ export const wave = (seed: number, w = 1440, h = 60, bumps = 6): string => {
   const pts: Pt[] = Array.from({ length: n + 1 }, (_, i) => [(i / n) * w, h * (0.5 + 0.45 * noise(i * 0.6, 0.5))]);
   return `${smooth(pts, false)}L${w},${h}L0,${h}Z`;
 };
+
+// Jitter keeps the four-point sparkle looking hand-pressed rather than ruled; it fills a 100x100 box.
+export const sparkle = (seed: number): string => {
+  const rand = mulberry32(seed);
+  const j = (n: number) => +(n * (0.85 + rand() * 0.3)).toFixed(1);
+  return `M50 ${j(2)} Q${j(56)} ${j(44)} ${100 - j(2)} 50 Q${j(56)} ${j(56)} 50 ${100 - j(2)} Q${j(44)} ${j(56)} ${j(2)} 50 Q${j(44)} ${j(44)} 50 ${j(2)} Z`;
+};
