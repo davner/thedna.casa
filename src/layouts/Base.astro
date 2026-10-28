@@ -1,0 +1,21 @@
+---
+import "@fontsource/averia-serif-libre/400.css";
+import "@fontsource/averia-serif-libre/400-italic.css";
+import "@fontsource/averia-serif-libre/700.css";
+import "@fontsource/schibsted-grotesk/400.css";
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  html, body { margin: 0; }
+  body { background: #43262a; -webkit-font-smoothing: antialiased; }
+</style>
