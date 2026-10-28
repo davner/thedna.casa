@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-10-28T14:59:12.460Z",
-  "title": "Design System: The DNA Casa",
+  "title": "Design System: The DnA Casa",
   "extensions": {
     "colorMeta": {
       "mole": {
@@ -158,7 +158,7 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The THE DNA CASA wordmark only."
+        "purpose": "The THE DnA CASA wordmark only."
       },
       "headline": {
         "displayName": "Headline",
@@ -235,7 +235,7 @@
       "kind": "custom",
       "refersTo": "display",
       "description": "The hero wordmark on mole with the subtitle and squiggle.",
-      "html": "<div class=\"ds-hero\"><h1 class=\"ds-wordmark\">THE DNA<br>CASA</h1><p class=\"ds-sub\">Dan &amp; Alexis</p><span class=\"ds-squiggle\"></span></div>",
+      "html": "<div class=\"ds-hero\"><h1 class=\"ds-wordmark\">THE DnA<br>CASA</h1><p class=\"ds-sub\">Dan &amp; Alexis</p><span class=\"ds-squiggle\"></span></div>",
       "css": ".ds-hero{background:#43262a;color:#f6e7da;padding:40px 32px} .ds-wordmark{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:4.5rem;letter-spacing:-0.03em;line-height:0.9;margin:0} .ds-sub{font-family:\"Averia Serif Libre\", serif;font-style:italic;font-size:1.5rem;color:#f0c7b4;margin:16px 0 0} .ds-squiggle{display:block;width:130px;height:6px;margin-top:16px;background:#e4007c;border-radius:6px}"
     },
     {
@@ -267,7 +267,7 @@
       "kind": "custom",
       "refersTo": "footer",
       "description": "One italic serif sign-off on mole.",
-      "html": "<footer class=\"ds-footer\">Con cariño · © 2026 The DNA Casa</footer>",
+      "html": "<footer class=\"ds-footer\">Con cariño · © 2026 The DnA Casa</footer>",
       "css": ".ds-footer{background:#43262a;color:#f6e7da;text-align:center;padding:48px 20px 90px;font-family:\"Averia Serif Libre\", serif;font-style:italic}"
     }
   ],

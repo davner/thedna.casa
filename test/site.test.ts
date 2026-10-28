@@ -18,17 +18,17 @@ describe("built root page", () => {
       $(li).children().map((_, child) => $(child).text().trim()).get().filter(Boolean),
     ]).get() as string[][];
 
-  it("has one h1 reading THE DNA CASA and the subtitle Dan & Alexis", () => {
+  it("has one h1 reading THE DnA CASA and the subtitle Dan & Alexis", () => {
     expect($("h1")).toHaveLength(1);
-    expect(readText($, "h1")).toBe("THE DNA CASA");
+    expect(readText($, "h1")).toBe("THE DnA CASA");
     expect($("p").filter((_, p) => $(p).text().trim() === "Dan & Alexis")).toHaveLength(1);
   });
 
   it("has a title, a description and link-preview meta in the head", () => {
     const meta = (attr: string, key: string) => $(`head meta[${attr}="${key}"]`).attr("content") ?? "";
-    expect($("head title").text()).toContain("The DNA Casa");
+    expect($("head title").text()).toContain("The DnA Casa");
     expect(meta("name", "description")).not.toBe("");
-    expect(meta("property", "og:title")).toContain("The DNA Casa");
+    expect(meta("property", "og:title")).toContain("The DnA Casa");
     expect(meta("property", "og:description")).not.toBe("");
     expect(meta("property", "og:url")).toBe("https://thedna.casa/");
     expect(meta("property", "og:type")).toBe("website");
@@ -100,7 +100,7 @@ describe("built root page", () => {
   });
 
   it("signs off in the footer with Con cariño and the build year", () => {
-    expect(readText($, "footer")).toBe(`Con cariño · © ${new Date().getFullYear()} The DNA Casa`);
+    expect(readText($, "footer")).toBe(`Con cariño · © ${new Date().getFullYear()} The DnA Casa`);
   });
 
   // Without lang a screen reader says these with an English voice.
@@ -136,7 +136,7 @@ describe("built root page", () => {
   it("runs its headings as one h1, then h2s, with an h3 per member under Who lives here", () => {
     const headings = $("h1, h2, h3, h4, h5, h6").map((_, h) => `${h.tagName} ${readText($, h)}`).get();
     expect(headings).toEqual([
-      "h1 THE DNA CASA",
+      "h1 THE DnA CASA",
       "h2 Hola, we're Dan & Alexis.",
       "h2 Who lives here",
       ...members.map((m) => `h3 ${m.name}`),

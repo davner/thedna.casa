@@ -7,16 +7,16 @@ import welcomePhoto from "./assets/photos/welcome.jpg";
 
 // The fixed words around the page; the welcome and members below are what changes most.
 export const copy = {
-  title: "The DNA Casa",
+  title: "The DnA Casa",
   description: "Hola from Dan & Alexis, and Milly and Penny too. Come meet the household.",
-  wordmark: ["THE DNA", "CASA"],
+  wordmark: ["THE DnA", "CASA"],
   subtitle: "Dan & Alexis",
-  ring: "THE DNA CASA · DAN & ALEXIS · CON CARIÑO · ",
+  ring: "THE DnA CASA · DAN & ALEXIS · CON CARIÑO · ",
   kicker: "Bienvenidos",
   hello: "Hola, we're Dan & Alexis.",
   membersHeading: "Who lives here",
   signoff: "Con cariño",
-  shareImageAlt: "The DNA Casa's sun-and-moon mark on mole brown",
+  shareImageAlt: "The DnA Casa's sun-and-moon mark on mole brown",
 };
 
 export interface Welcome {

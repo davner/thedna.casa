@@ -1,5 +1,5 @@
 ---
-name: The DNA Casa
+name: The DnA Casa
 description: A warm, restrained, hand-made home page for one household.
 colors:
   mole: "#43262a"
@@ -97,7 +97,7 @@ components:
     padding: "48px 20px 90px"
 ---
 
-# Design System: The DNA Casa
+# Design System: The DnA Casa
 
 ## Overview
 
@@ -155,7 +155,7 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 **Character:** a soft, slightly irregular serif for every heading and the warm asides, and a plain grotesk for reading. Only three faces ship: serif 700, serif italic 400, grotesk 400. All are self-hosted through Fontsource.
 
 ### Hierarchy
-- **Display:** the THE DNA CASA wordmark, all caps on two lines. On phones it drops to `clamp(3rem, 15vw, 4.2rem)`.
+- **Display:** the THE DnA CASA wordmark, all caps on two lines. On phones it drops to `clamp(3rem, 15vw, 4.2rem)`.
 - **Headline:** section headings ("Hola, we're Dan & Alexis.", "Who lives here").
 - **Title:** member names. 1.5rem on phones.
 - **Subtitle:** the "Dan & Alexis" line, in italic, in blush. 1.35rem on phones.
@@ -211,7 +211,7 @@ The site has no rounded rectangles, boxed borders or buttons. The only lines are
 ## Components
 
 ### Stamp
-The signature piece. The Beso sun-and-moon logo (marigold sun, thin moon) sits at 64% of a circle of words: "THE DNA CASA · DAN & ALEXIS · CON CARIÑO", set in serif 700 caps with wide 0.08em tracking, in cream on mole. It is at most 380px wide on desktop and `min(76vw, 300px)` on phones.
+The signature piece. The Beso sun-and-moon logo (marigold sun, thin moon) sits at 64% of a circle of words: "THE DnA CASA · DAN & ALEXIS · CON CARIÑO", set in serif 700 caps with wide 0.08em tracking, in cream on mole. It is at most 380px wide on desktop and `min(76vw, 300px)` on phones.
 - **Motion:** the ring turns once every 40s, linear and endless. It runs only under `prefers-reduced-motion: no-preference`.
 
 ### Brush squiggle
@@ -229,7 +229,7 @@ The welcome photo is clipped by the seeded petal mask, at most 440px square (280
 A small serif-bold word in terracotta above a section heading ("Bienvenidos"). It's the only place a Spanish word sits above an English heading.
 
 ### Footer
-One centered italic serif line at body size in cream on mole: "Con cariño · © year The DNA Casa".
+One centered italic serif line at body size in cream on mole: "Con cariño · © year The DnA Casa".
 
 ## Do's and Don'ts
 

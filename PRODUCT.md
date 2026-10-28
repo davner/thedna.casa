@@ -41,10 +41,10 @@ The site is the household itself. Nothing on it could belong to another family: 
 
 ## Brand Commitments
 
-- Name: "The DNA Casa", set in all caps as THE DNA CASA; subtitle "Dan & Alexis".
+- Name: "The DnA Casa", set in all caps as THE DnA CASA; subtitle "Dan & Alexis".
 - English, with a few Spanish words ("Bienvenidos", "Hola", "Con cariño"). Spanish phrases carry `lang="es"`, except "Hola", which sits inside an English sentence.
 - Look (variant 23 "Mole"): a mole-brown (#43262A) hero and footer, a cream (#FAF4EC) middle, one wave between them, and one page-wide grain layer. No pure black anywhere.
-- Logo: the Beso sun-and-moon mark (marigold sun, thin moon), set inside a stamp ring that reads "THE DNA CASA · DAN & ALEXIS · CON CARIÑO".
+- Logo: the Beso sun-and-moon mark (marigold sun, thin moon), set inside a stamp ring that reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO".
 - Palette: mole #43262A, cream ink #F6E7DA, page cream #FAF4EC, terracotta #C8643C, rosa mexicano #E4007C, marigold gold #F2B233, Salamander green #2F3E3E (Dan), sage #B9C9B4, cheek pink #F7C6D9, blush #F0C7B4. Member circles, in order: Salamander, rosa mexicano, sage, marigold gold.
 - Two fonts only: Averia Serif Libre (headings 700, subtitle and footer italic 400) and Schibsted Grotesk (body 400), self-hosted through Fontsource.
 - Restraint: one squiggle, one wave, two sparkles in the hero, solid color fields.
