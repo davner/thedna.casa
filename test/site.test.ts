@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { AtRule, Declaration } from "postcss";
-import { builtFileExists, builtPage, pageCss, photoSiteDist, readText } from "./site";
+import sharp from "sharp";
+import { builtFileExists, builtFilePath, builtPage, pageCss, photoSiteDist, readText } from "./site";
 import { members, welcome } from "../src/content";
 
 describe("built root page", () => {
@@ -29,6 +30,19 @@ describe("built root page", () => {
     expect(meta("property", "og:description")).not.toBe("");
     expect(meta("property", "og:url")).toBe("https://thedna.casa/");
     expect(meta("property", "og:type")).toBe("website");
+  });
+
+  // The link travels in messages, where a preview without an image is easy to scroll past.
+  it("gives shared links a large 1200x630 preview image that exists", async () => {
+    const meta = (attr: string, key: string) => $(`head meta[${attr}="${key}"]`).attr("content") ?? "";
+    const image = meta("property", "og:image");
+    expect(image).toMatch(/^https:\/\/thedna\.casa\/.+\.png$/);
+    const path = new URL(image).pathname;
+    expect(builtFileExists(path), path).toBe(true);
+    const { width, height, format } = await sharp(builtFilePath(path)).metadata();
+    expect({ width, height, format }).toEqual({ width: 1200, height: 630, format: "png" });
+    expect(meta("property", "og:image:alt")).not.toBe("");
+    expect(meta("name", "twitter:card")).toBe("summary_large_image");
   });
 
   it("links an SVG favicon, a PNG fallback and an apple-touch icon that all exist", () => {

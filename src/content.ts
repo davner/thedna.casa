@@ -13,6 +13,7 @@ export const copy = {
   hello: "Hola, we're Dan & Alexis.",
   membersHeading: "Who lives here",
   signoff: "Con cariño",
+  shareImageAlt: "The DNA Casa's sun-and-moon mark on mole brown",
 };
 
 export interface Welcome {

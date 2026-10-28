@@ -2,7 +2,16 @@ import { readFile, writeFile } from "node:fs/promises";
 import sharp from "sharp";
 import { palette } from "../src/palette.ts";
 
-const { cream } = palette;
+const { cream, mole } = palette;
+
+// The light-scheme moon is Salamander, which disappears on mole, so the preview always uses the cream moon.
+const creamMoon = (svg) => svg.toString().replace(/<style>[\s\S]*?<\/style>/, `<style>.moon{fill:${cream}}</style>`);
+
+const sharePreview = async (svg) =>
+  sharp({ create: { width: 1200, height: 630, channels: 3, background: mole } })
+    .composite([{ input: await sharp(Buffer.from(creamMoon(svg)), { density: 1200 }).resize(400, 400).png().toBuffer() }])
+    .png()
+    .toBuffer();
 
 const render = async (svg) => ({
   "favicon.svg": { type: "image/svg+xml", body: svg },
@@ -20,6 +29,7 @@ const render = async (svg) => ({
       .png()
       .toBuffer(),
   },
+  "share.png": { type: "image/png", body: await sharePreview(svg) },
 });
 
 export default function favicons(source) {

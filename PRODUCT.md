@@ -11,7 +11,7 @@ web
 Astro static site. The page ships no JavaScript and works with JavaScript off.
 
 - Shapes (the wave, the brush squiggle, the petal mask, the sparkles and the logo strokes) are drawn at build time by seeded generators in `src/lib/shapes.ts`. A seed is a fixed number that makes a shape come out the same way every time, so every deploy looks the same. They use simplex-noise (smooth random wobble), perfect-freehand (brush strokes), d3-shape (curve smoothing) and a hand-written mulberry32 seeded random number generator.
-- sharp renders the PNG favicon sizes from one SVG at build time.
+- sharp renders the PNG favicon sizes and the 1200x630 link preview image (the favicon's sun and cream moon on mole) from one SVG at build time.
 - roughjs and svgo are not used.
 - Deploy (planned, not live yet): a GitHub Actions workflow builds the site and deploys it to GitHub Pages on every push to main. Canonical domain thedna.casa; www redirects to the apex.
 

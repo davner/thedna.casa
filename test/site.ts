@@ -14,6 +14,8 @@ export const builtPage = (path: string, root = dist) => load(read(path, root));
 
 export const builtFileExists = (path: string) => existsSync(inDist(path));
 
+export const builtFilePath = (path: string) => fileURLToPath(inDist(path));
+
 // cheerio's text() drops <br>, which would glue "THE DNA" to "CASA".
 export const readText = ($: CheerioAPI, selector: Parameters<CheerioAPI>[0]) => {
   const el = $(selector).clone();
