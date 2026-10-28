@@ -55,7 +55,7 @@ describe("built root page", () => {
   it("welcomes with Bienvenidos, a hello from Dan & Alexis and the welcome text", () => {
     const hello = $("h2").filter((_, h) => $(h).text().trim() === "Hola, we're Dan & Alexis.");
     expect(hello).toHaveLength(1);
-    const section = hello.closest("section").text().replace(/\s+/g, " ");
+    const section = readText($, hello.closest("section"));
     expect(section).toContain("Bienvenidos");
     expect(section).toContain(welcome.text);
   });
@@ -68,6 +68,16 @@ describe("built root page", () => {
 
   it("signs off in the footer with Con cariño and the build year", () => {
     expect(readText($, "footer")).toBe(`Con cariño · © ${new Date().getFullYear()} The DNA Casa`);
+  });
+
+  it("has no marquee", () => {
+    expect($("marquee")).toHaveLength(0);
+    expect($.html()).not.toMatch(/marquee/i);
+  });
+
+  it("runs its headings as one h1 then h2s, in page order", () => {
+    const headings = $("h1, h2, h3, h4, h5, h6").map((_, h) => `${h.tagName} ${readText($, h)}`).get();
+    expect(headings).toEqual(["h1 THE DNA CASA", "h2 Hola, we're Dan & Alexis.", "h2 Who lives here"]);
   });
 
   it("gives each member the one-liner from the content module", () => {

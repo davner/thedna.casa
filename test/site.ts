@@ -8,7 +8,7 @@ const read = (path: string) => readFileSync(new URL(path.replace(/^\//, ""), dis
 export const builtPage = (path: string) => load(read(path));
 
 // cheerio's text() drops <br>, which would glue "THE DNA" to "CASA".
-export const readText = ($: CheerioAPI, selector: string) => {
+export const readText = ($: CheerioAPI, selector: Parameters<CheerioAPI>[0]) => {
   const el = $(selector).clone();
   el.find("br").replaceWith(" ");
   return el.text().replace(/\s+/g, " ").trim();
