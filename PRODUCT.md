@@ -34,7 +34,7 @@ The site is the household itself. Nothing on it could belong to another family: 
 - Copy and member data live in a TypeScript content module, `src/content.ts`, edited in the repo by Dan and Claude. Changing the words never means touching layout code.
 - Photos go in `src/assets/photos/` and are imported in `src/content.ts`. They must be shown through Astro's `Image` or `Picture` component, which strips EXIF and GPS. Never link a photo's raw source URL: that ships the original file with its GPS.
 - Without photos the welcome shows a pink petal shape and each member shows a solid color circle.
-- Phone layout: TODO(ticket 05) - being designed; replace this line with the chosen layout. Until then the page stacks the desktop columns below 760px.
+- Phone layout (760px and narrower, variant 1 "Stamp first"): one centered column that opens with the turning stamp above the wordmark and "Dan & Alexis", a short hero so the wave and the cream welcome start on the first screen, the welcome words before the petal photo, and the members as rows with a small circle on the left and the name and one-liner on the right.
 - Prototypes live only on the branches `prototype/landing` (all landing variants) and `prototype/mobile`. Nothing from them ships, and there is no `pnpm prototype` command.
 - Privacy: public, first names only, no location clues, photo EXIF/GPS stripped.
 - Deferred: events, Christmas cards, trips, posts (see `.scratch/TODO.md`).
