@@ -1,6 +1,6 @@
 import { getPathBBox, isClosedPath, normalizePath, parsePathString } from "svg-path-commander/util";
 import { describe, expect, it } from "vitest";
-import { brusher, brushSquiggle, join, line, marigoldMask, polar, quad, sparkle, wave } from "./shapes";
+import { brusher, brushSquiggle, join, line, marigoldMark, marigoldMask, polar, quad, sparkle, wave } from "./shapes";
 
 const expectWellFormed = (d: string) => {
   const segments = parsePathString(d);
@@ -114,5 +114,36 @@ describe("brusher", () => {
     const shape = b.shape(lips);
     expectWellFormed(shape);
     expect(isClosedPath(parsePathString(shape))).toBe(true);
+  });
+});
+
+describe("marigoldMark", () => {
+  const paths = (seed: number) => {
+    const mark = marigoldMark(seed);
+    return [...mark.petals.flat(), mark.disc, mark.moon, ...Object.values(mark.face)];
+  };
+
+  it("draws byte-identical path data for the same seed", () => {
+    expect(marigoldMark(3)).toEqual(marigoldMark(3));
+  });
+
+  it("draws a different mark for a different seed", () => {
+    expect(paths(4)).not.toEqual(paths(3));
+  });
+
+  it("gives three rings of fourteen petals", () => {
+    expect(marigoldMark(3).petals.map((ring) => ring.length)).toEqual([14, 14, 14]);
+  });
+
+  it.each([3, 4, 9999])("is well-formed path data with closed shapes (seed %i)", (seed) => {
+    for (const d of paths(seed)) {
+      expectWellFormed(d);
+      expect(isClosedPath(parsePathString(d)), d.slice(0, 40)).toBe(true);
+    }
+  });
+
+  it("gives transforms with finite numbers", () => {
+    const { sunTransform, faceTransform } = marigoldMark(3);
+    for (const t of [sunTransform, faceTransform]) expect(t).toMatch(/^(translate\([-\d. ]+\)|scale\([\d.]+\)| )+$/);
   });
 });

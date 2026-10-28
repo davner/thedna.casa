@@ -120,3 +120,116 @@ export const line = (p0: Pt, p1: Pt, n = 6): Pt[] =>
   Array.from({ length: n + 1 }, (_, i) => [p0[0] + ((p1[0] - p0[0]) * i) / n, p0[1] + ((p1[1] - p0[1]) * i) / n]);
 
 export const join = (...parts: Pt[][]): Pt[] => parts.flatMap((p, i) => (i === 0 ? p : p.slice(1)));
+
+// The Beso settings Dan picked in the prototype; changing any of them redraws the approved logo.
+const roughness = 0.5;
+const petalScale = 0.72;
+const moonThinness = 0.2;
+const sunScale = 0.8;
+
+const sunCenter: Pt = [240, 160];
+const discRadius = 80;
+const petalRings = [
+  { count: 14, offset: 0, reach: 152, width: 11 },
+  { count: 14, offset: 12.9, reach: 130, width: 11 },
+  { count: 14, offset: 6.4, reach: 106, width: 10 },
+];
+const scallops = 3;
+
+// A petal fans out from the disc and ends in a scalloped tip; jitter keeps the fourteen in a ring from matching.
+const ruffle = (jitter: (amount: number) => number, r0: number, r1: number, deg: number, halfWidth: number): string => {
+  const [cx, cy] = sunCenter;
+  const tipR = r1 * (1 + jitter(0.07));
+  const d0 = deg + jitter(3);
+  const w = halfWidth * (1 + jitter(0.2));
+  const spread = w * 1.45;
+  const [sx, sy] = polar(cx, cy, r0, d0 - w * 0.7);
+  const [ex, ey] = polar(cx, cy, r0, d0 + w * 0.7);
+  const mid = r0 + (tipR - r0) * 0.5;
+  const [lx, ly] = polar(cx, cy, mid, d0 - spread * 1.05);
+  const [rx, ry] = polar(cx, cy, mid, d0 + spread * 1.05);
+  const tips = Array.from({ length: scallops + 1 }, (_, k) => {
+    const a = d0 - spread + (2 * spread * k) / scallops;
+    const edge = k === 0 || k === scallops ? 0.9 : 0.96 + jitter(0.03);
+    return polar(cx, cy, tipR * edge, a);
+  });
+  let d = `M${sx} ${sy} Q${lx} ${ly} ${tips[0][0]} ${tips[0][1]}`;
+  for (let k = 0; k < scallops; k++) {
+    const a = d0 - spread + (2 * spread * (k + 0.5)) / scallops;
+    const [qx, qy] = polar(cx, cy, tipR * (1.07 + jitter(0.03)), a);
+    d += ` Q${qx} ${qy} ${tips[k + 1][0]} ${tips[k + 1][1]}`;
+  }
+  return d + ` Q${rx} ${ry} ${ex} ${ey} Z`;
+};
+
+const sunDisc = (noise: (x: number, y: number) => number): string => {
+  const [cx, cy] = sunCenter;
+  const pts: Pt[] = Array.from({ length: 16 }, (_, i) => {
+    const a = (i / 16) * Math.PI * 2;
+    const r = discRadius * (1 + noise(Math.cos(a) * 1.3, Math.sin(a) * 1.3) * 0.045 * roughness);
+    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+  });
+  return smooth(pts, true);
+};
+
+// The moon's outer edge is an arc from its top tip to its bottom tip; thinness flattens the arc's bulge into a crescent.
+const moon = (noise: (x: number, y: number) => number): string => {
+  const top: Pt = [188, 140];
+  const bottom: Pt = [232, 350];
+  const chord = Math.hypot(bottom[0] - top[0], bottom[1] - top[1]);
+  const along: Pt = [(bottom[0] - top[0]) / chord, (bottom[1] - top[1]) / chord];
+  const bulge = 173.7 * (1 - moonThinness);
+  const radius = (chord ** 2 / 4 + bulge ** 2) / (2 * bulge);
+  const centerX = (top[0] + bottom[0]) / 2 - along[1] * (bulge - radius);
+  const centerY = (top[1] + bottom[1]) / 2 + along[0] * (bulge - radius);
+  const from = (Math.atan2(top[1] - centerY, top[0] - centerX) * 180) / Math.PI;
+  let to = (Math.atan2(bottom[1] - centerY, bottom[0] - centerX) * 180) / Math.PI;
+  while (to > from) to -= 360;
+  const steps = 14;
+  const outer: Pt[] = Array.from({ length: steps + 1 }, (_, i) => {
+    const a = ((from + ((to - from) * i) / steps) * Math.PI) / 180;
+    const edge = i === 0 || i === steps ? 0 : noise(i * 0.45, 3.1) * 0.05 * roughness;
+    return [centerX + radius * (1 + edge) * Math.cos(a), centerY + radius * (1 + edge) * Math.sin(a)];
+  });
+  outer[0] = top;
+  outer[steps] = bottom;
+  return (
+    smooth(outer, false) +
+    " C206 346 190 338 192 324 C193 312 182 310 186 302 C190 296 180 294 184 288 C180 282 176 278 186 272 C198 266 206 262 200 254 C192 244 172 240 172 228 C171 205 172 170 188 140 Z"
+  );
+};
+
+// The strokes are drawn in one fixed order, because each brush stroke takes the next noise row.
+const faces = (brush: ReturnType<typeof brusher>) => ({
+  browNose: brush.stroke(join(quad([198, 141], [213, 128], [230, 138]), quad([230, 138], [236, 142], [236, 152], 5), line([236, 152], [236, 176]), quad([236, 176], [236, 182], [230, 182], 4))),
+  brow: brush.stroke(quad([282, 141], [267, 128], [250, 138])),
+  eyeL: brush.stroke(quad([206, 156], [216, 164], [226, 156], 8), 5.5),
+  eyeR: brush.stroke(quad([252, 156], [262, 164], [272, 156], 8), 5.5),
+  lips: brush.shape(join(quad([222, 198], [240, 189], [258, 198], 6), quad([258, 198], [240, 213], [222, 198], 6)).slice(0, -1)),
+  moonEye: brush.stroke(quad([140, 224], [152, 232], [164, 224], 8), 5.5),
+  moonBrow: brush.stroke(quad([136, 210], [150, 200], [166, 208], 8), 5.5),
+});
+
+export const marigoldMark = (seed: number) => {
+  const rand = mulberry32(seed);
+  const jitter = (amount: number) => (rand() * 2 - 1) * amount * roughness;
+  const noise = createNoise2D(mulberry32(seed + 99));
+  const [cx, cy] = sunCenter;
+  const reach = (r1: number) => discRadius + (r1 - discRadius) * petalScale;
+  const petals = petalRings.map((ring) =>
+    Array.from({ length: ring.count }, (_, i) => ruffle(jitter, discRadius - 10, reach(ring.reach), ring.offset + (i * 360) / ring.count, ring.width)),
+  );
+  const disc = sunDisc(noise);
+  const moonPath = moon(noise);
+  const faceScale = discRadius / 82;
+  const sunShift = (1 - sunScale) * 50;
+  const sunLift = 25 + (1 - petalScale) * 50;
+  return {
+    petals,
+    disc,
+    moon: moonPath,
+    face: faces(brusher(seed + 7, 1.1)),
+    sunTransform: `translate(${sunShift} ${sunLift}) translate(${cx} ${cy}) scale(${sunScale}) translate(${-cx} ${-cy})`,
+    faceTransform: `translate(${cx} ${cy}) scale(${faceScale}) translate(${-cx} ${-cy})`,
+  };
+};

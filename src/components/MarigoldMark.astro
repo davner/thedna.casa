@@ -1,110 +1,24 @@
 ---
-// "Beso": the marigold sun with its moon, fixed to the chosen settings (ring bloom, petal scale 0.72, moon thin 0.2).
-import { createNoise2D } from "simplex-noise";
-import { brusher, join, line, mulberry32, polar, quad, smooth, type Pt } from "../lib/shapes";
+import { marigoldMark } from "../lib/shapes";
 
 interface Props { class?: string }
 const { class: className } = Astro.props;
 
-const seed = 3, lump = 0.5, sunScale = 0.8, moonThin = 0.2, petalScale = 0.72;
 const ink = "#2F3E3E", moon = "#2F3E3E", eye = "#F2B233", cheek = "#F7C6D9";
-
-const rand = mulberry32(seed);
-const j = (amount: number) => (rand() * 2 - 1) * amount * lump;
-const noise = createNoise2D(mulberry32(seed + 99));
-const cx = 240, cy = 160;
-
-const disc = 80;
-const rings = [
-  { n: 14, offset: 0, r1: 152, w: 11, color: "#D9661A" },
-  { n: 14, offset: 12.9, r1: 130, w: 11, color: "#EC8A1E" },
-  { n: 14, offset: 6.4, r1: 106, w: 10, color: "#F5A623" },
-];
-const scallops = 3;
-
-const ruffle = (r0: number, r1: number, deg: number, hw: number) => {
-  const tipR = r1 * (1 + j(0.07));
-  const d0 = deg + j(3);
-  const w = hw * (1 + j(0.2));
-  const spread = w * 1.45;
-  const [sx, sy] = polar(cx, cy, r0, d0 - w * 0.7);
-  const [ex, ey] = polar(cx, cy, r0, d0 + w * 0.7);
-  const mid = r0 + (tipR - r0) * 0.5;
-  const [lx, ly] = polar(cx, cy, mid, d0 - spread * 1.05);
-  const [rx, ry] = polar(cx, cy, mid, d0 + spread * 1.05);
-  const tips = Array.from({ length: scallops + 1 }, (_, k) => {
-    const a = d0 - spread + (2 * spread * k) / scallops;
-    const edge = k === 0 || k === scallops ? 0.9 : 0.96 + j(0.03);
-    return polar(cx, cy, tipR * edge, a);
-  });
-  let d = `M${sx} ${sy} Q${lx} ${ly} ${tips[0][0]} ${tips[0][1]}`;
-  for (let k = 0; k < scallops; k++) {
-    const a = d0 - spread + (2 * spread * (k + 0.5)) / scallops;
-    const [qx, qy] = polar(cx, cy, tipR * (1.07 + j(0.03)), a);
-    d += ` Q${qx} ${qy} ${tips[k + 1][0]} ${tips[k + 1][1]}`;
-  }
-  return d + ` Q${rx} ${ry} ${ex} ${ey} Z`;
-};
-const reach = (r1: number) => disc + (r1 - disc) * petalScale;
-const petals = rings.map((r) => ({
-  color: r.color,
-  paths: Array.from({ length: r.n }, (_, i) => ruffle(disc - 10, reach(r.r1), r.offset + (i * 360) / r.n, r.w)),
-}));
-
-const discPts: Pt[] = Array.from({ length: 16 }, (_, i) => {
-  const a = (i / 16) * Math.PI * 2;
-  const r = disc * (1 + noise(Math.cos(a) * 1.3, Math.sin(a) * 1.3) * 0.045 * lump);
-  return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
-});
-
-// The moon's outer edge is an arc through T and B; moonThin flattens its bulge into a crescent.
-const T: Pt = [188, 140], B: Pt = [232, 350];
-const chord = Math.hypot(B[0] - T[0], B[1] - T[1]);
-const u: Pt = [(B[0] - T[0]) / chord, (B[1] - T[1]) / chord];
-const bulge = 173.7 * (1 - moonThin);
-const mr = (chord ** 2 / 4 + bulge ** 2) / (2 * bulge);
-const mcx = (T[0] + B[0]) / 2 - u[1] * (bulge - mr);
-const mcy = (T[1] + B[1]) / 2 + u[0] * (bulge - mr);
-const from = (Math.atan2(T[1] - mcy, T[0] - mcx) * 180) / Math.PI;
-let to = (Math.atan2(B[1] - mcy, B[0] - mcx) * 180) / Math.PI;
-while (to > from) to -= 360;
-const steps = 14;
-const outer: Pt[] = Array.from({ length: steps + 1 }, (_, i) => {
-  const a = ((from + ((to - from) * i) / steps) * Math.PI) / 180;
-  const edge = i === 0 || i === steps ? 0 : noise(i * 0.45, 3.1) * 0.05 * lump;
-  return [mcx + mr * (1 + edge) * Math.cos(a), mcy + mr * (1 + edge) * Math.sin(a)];
-});
-outer[0] = T;
-outer[steps] = B;
-const moonPath =
-  smooth(outer, false) +
-  " C206 346 190 338 192 324 C193 312 182 310 186 302 C190 296 180 294 184 288 C180 282 176 278 186 272 C198 266 206 262 200 254 C192 244 172 240 172 228 C171 205 172 170 188 140 Z";
-
-const s = disc / 82;
-const sunShift = (1 - sunScale) * 50;
-const sunLift = 25 + (1 - petalScale) * 50;
-const b = brusher(seed + 7, 1.1);
-const face = {
-  browNose: b.stroke(join(quad([198, 141], [213, 128], [230, 138]), quad([230, 138], [236, 142], [236, 152], 5), line([236, 152], [236, 176]), quad([236, 176], [236, 182], [230, 182], 4))),
-  brow: b.stroke(quad([282, 141], [267, 128], [250, 138])),
-  eyeL: b.stroke(quad([206, 156], [216, 164], [226, 156], 8), 5.5),
-  eyeR: b.stroke(quad([252, 156], [262, 164], [272, 156], 8), 5.5),
-  lips: b.shape(join(quad([222, 198], [240, 189], [258, 198], 6), quad([258, 198], [240, 213], [222, 198], 6)).slice(0, -1)),
-  moonEye: b.stroke(quad([140, 224], [152, 232], [164, 224], 8), 5.5),
-  moonBrow: b.stroke(quad([136, 210], [150, 200], [166, 208], 8), 5.5),
-};
+const petalColors = ["#D9661A", "#EC8A1E", "#F5A623"];
+const mark = marigoldMark(3);
 ---
 <svg class={className} viewBox="86 76 288 248" aria-hidden="true">
-  <g transform={`translate(${sunShift} ${sunLift}) translate(${cx} ${cy}) scale(${sunScale}) translate(${-cx} ${-cy})`}>
-    {petals.map((l) => <g fill={l.color}>{l.paths.map((d) => <path d={d} />)}</g>)}
-    <path d={smooth(discPts, true)} fill="#F2B233" />
-    <g transform={`translate(${cx} ${cy}) scale(${s}) translate(${-cx} ${-cy})`}>
+  <g transform={mark.sunTransform}>
+    {mark.petals.map((ring, i) => <g fill={petalColors[i]}>{ring.map((d) => <path d={d} />)}</g>)}
+    <path d={mark.disc} fill="#F2B233" />
+    <g transform={mark.faceTransform}>
       <g fill={ink}>
-        <path d={face.browNose} />
-        <path d={face.brow} />
-        <path d={face.eyeL} />
-        <path d={face.eyeR} />
-        <path d={face.lips} fill-opacity="0.85" />
+        <path d={mark.face.browNose} />
+        <path d={mark.face.brow} />
+        <path d={mark.face.eyeL} />
+        <path d={mark.face.eyeR} />
+        <path d={mark.face.lips} fill-opacity="0.85" />
       </g>
       <g fill={cheek}>
         <circle cx="208" cy="182" r="10" />
@@ -113,10 +27,10 @@ const face = {
     </g>
   </g>
   <g transform="translate(40 12) scale(0.82)">
-    <path fill={moon} d={moonPath} />
+    <path fill={moon} d={mark.moon} />
     <g fill={eye}>
-      <path d={face.moonEye} />
-      <path d={face.moonBrow} />
+      <path d={mark.face.moonEye} />
+      <path d={mark.face.moonBrow} />
     </g>
     <circle cx="160" cy="268" r="10" fill={cheek} />
   </g>
