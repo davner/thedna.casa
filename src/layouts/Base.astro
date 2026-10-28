@@ -3,12 +3,29 @@ import "@fontsource/averia-serif-libre/400.css";
 import "@fontsource/averia-serif-libre/400-italic.css";
 import "@fontsource/averia-serif-libre/700.css";
 import "@fontsource/schibsted-grotesk/400.css";
+
+interface Props { title?: string; description?: string }
+const {
+  title = "The DNA Casa",
+  description = "Hola from Dan & Alexis, and Milly and Penny too. Come meet the household.",
+} = Astro.props;
+const url = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="The DNA Casa" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#43262a" />
   </head>
   <body>
     <slot />
