@@ -1,6 +1,6 @@
 import { getPathBBox, isClosedPath, normalizePath, parsePathString } from "svg-path-commander/util";
 import { describe, expect, it } from "vitest";
-import { marigoldMask, sparkle, wave } from "./shapes";
+import { brushSquiggle, marigoldMask, sparkle, wave } from "./shapes";
 
 const expectWellFormed = (d: string) => {
   const segments = parsePathString(d);
@@ -12,6 +12,7 @@ const generators: [string, (seed: number) => string][] = [
   ["wave", (seed) => wave(seed, 1440, 80, 2)],
   ["sparkle", (seed) => sparkle(seed)],
   ["marigoldMask", (seed) => marigoldMask(seed)],
+  ["brushSquiggle", (seed) => brushSquiggle(seed, 200, 24, 3, 6)],
 ];
 
 describe.each(generators)("%s", (_, generate) => {
