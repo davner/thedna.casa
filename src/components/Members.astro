@@ -13,7 +13,7 @@ const { members = householdMembers } = Astro.props;
         {m.portrait
           ? <Image class="circle" src={m.portrait} alt="" width={400} height={400} />
           : <span class="circle" style={`background:${m.color}`}></span>}
-        <strong>{m.name}</strong>
+        <h3>{m.name}</h3>
         <span class="line">{m.line}</span>
       </li>
     ))}
@@ -26,7 +26,7 @@ const { members = householdMembers } = Astro.props;
   ul { list-style: none; padding: 0; margin: 48px auto 0; max-width: 1000px; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(20px, 3vw, 44px); }
   li { display: grid; justify-items: center; gap: 6px; }
   .circle { display: block; width: 100%; max-width: 200px; height: auto; aspect-ratio: 1; border-radius: 50%; object-fit: cover; margin-bottom: 12px; }
-  strong { font-family: var(--font-serif); font-weight: 700; font-size: 1.7rem; letter-spacing: -0.02em; }
+  h3 { font-family: var(--font-serif); font-weight: 700; font-size: 1.7rem; letter-spacing: -0.02em; margin: 0; }
   .line { font-size: 1rem; }
 
   @media (max-width: 760px) {
@@ -35,7 +35,7 @@ const { members = householdMembers } = Astro.props;
     li { grid-template-columns: 84px 1fr; grid-template-rows: auto auto; column-gap: 18px; row-gap: 2px; justify-items: start; align-items: center; padding: 14px 0; border-top: 1px solid color-mix(in srgb, var(--mole) 14%, transparent); }
     li:last-child { border-bottom: 1px solid color-mix(in srgb, var(--mole) 14%, transparent); }
     .circle { grid-row: 1 / 3; width: 84px; margin: 0; }
-    strong { align-self: end; font-size: 1.5rem; }
+    h3 { align-self: end; font-size: 1.5rem; }
     .line { align-self: start; }
   }
 </style>

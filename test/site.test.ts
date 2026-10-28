@@ -95,9 +95,15 @@ describe("built root page", () => {
     expect($.html()).not.toMatch(/marquee/i);
   });
 
-  it("runs its headings as one h1 then h2s, in page order", () => {
+  // Member names are h3s so a screen reader can jump from one member to the next.
+  it("runs its headings as one h1, then h2s, with an h3 per member under Who lives here", () => {
     const headings = $("h1, h2, h3, h4, h5, h6").map((_, h) => `${h.tagName} ${readText($, h)}`).get();
-    expect(headings).toEqual(["h1 THE DNA CASA", "h2 Hola, we're Dan & Alexis.", "h2 Who lives here"]);
+    expect(headings).toEqual([
+      "h1 THE DNA CASA",
+      "h2 Hola, we're Dan & Alexis.",
+      "h2 Who lives here",
+      ...members.map((m) => `h3 ${m.name}`),
+    ]);
   });
 
   it("gives each member the one-liner from the content module", () => {
