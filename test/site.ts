@@ -36,8 +36,4 @@ export const shippedImages = (root: URL = dist) =>
 
 export const shippedPages = () => shippedFiles(dist).filter((file) => file.endsWith(".html"));
 
-// Astro inlines small stylesheets and links larger ones, so a page's CSS lives in both places.
-export const pageCss = ($: CheerioAPI): Root[] => [
-  ...$("style").map((_, el) => $(el).text()).get(),
-  ...$("link[rel='stylesheet']").map((_, el) => read($(el).attr("href") ?? "")).get(),
-].map((css) => postcss.parse(css));
+export const pageCss = ($: CheerioAPI): Root[] => $("style").map((_, el) => postcss.parse($(el).text())).get();
