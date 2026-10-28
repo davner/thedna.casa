@@ -25,14 +25,13 @@ export interface Welcome {
 }
 
 export const welcome: Welcome = {
-  text: "We met in Flagstaff, AZ. On our first date Alexis was thirty minutes late and ate a whole chicken, and Dan knew pretty much right away. We moved to Tucson, AZ so Dan could play with telescopes 🌌🔭🦔. Then, during the pandemic, we asked ourselves what the heck we were still doing there and moved to Los Angeles to be close to Alexis' family. This is our little corner of the internet. Welcome home.",
+  text: "We met in Flagstaff, AZ, on a first date where Alexis showed up thirty minutes late and ate a whole chicken. Dan knew right away. We moved to Tucson so Dan could play with telescopes 🌌🔭🦔, and then, somewhere in the middle of the pandemic, we looked at each other and asked what the heck we were still doing there. So we packed up and moved to Los Angeles to be close to Alexis' family. This is our little corner of the internet. Welcome home.",
   // Without a photo a pink petal shape stands in.
   photo: { src: welcomePhoto, alt: "Dan and Alexis standing back to back in front of a red curtain, looking at the camera" },
 };
 
 export interface Member {
   name: string;
-  // Two rhyming lines split by a newline, which the page keeps.
   line: string;
   color: string;
   // Import a file from src/assets/photos/; without one the member shows a solid color circle.
@@ -40,8 +39,8 @@ export interface Member {
 }
 
 export const members: Member[] = [
-  { name: "Dan", line: "He builds for telescopes, he's got stars on the brain,\nspins vinyl with a latte, then calls where we drop again.", color: "var(--salamander)", portrait: danPhoto },
-  { name: "Alexis", line: "Research tech at Caltech, the sleepiest, cutest wife,\nlately she's into clowns, and she's his duo for life.", color: "var(--pink)", portrait: alexisPhoto },
-  { name: "Milly", line: "Floppy Dumbo ears, the sassiest pup of all,\nshe leaps off giant heights, convinced she'll never fall.", color: "var(--sage)", portrait: millyPhoto },
-  { name: "Penny", line: "A calico cuddle bug who yells when dinner's late,\nhalf of Stinky and the Brainless, with Milly as her mate.", color: "var(--gold)", portrait: pennyPhoto },
+  { name: "Dan", line: "Builds software for telescopes, collects vinyl from his favorite artists and hunts for the next great coffee spot. Concerts took some of his hearing. He says \"huh?\" a lot. Alexis is convinced half of them are on purpose.", color: "var(--salamander)", portrait: danPhoto },
+  { name: "Alexis", line: "Research tech at Caltech, artist at heart and the most thoughtful person you'll ever meet. Also the sleepiest, the cutest, and the one who decides where we're dropping.", color: "var(--pink)", portrait: alexisPhoto },
+  { name: "Milly", line: "Big floppy Dumbo ears, a whole lot of sass and zero fear of heights. She's sure she's invincible, and she's definitely the cutest pup around.", color: "var(--sage)", portrait: millyPhoto },
+  { name: "Penny", line: "A calico cuddle bug who will let you know, loudly, when dinner is late. She and Milly are Stinky and the Brainless.", color: "var(--gold)", portrait: pennyPhoto },
 ];

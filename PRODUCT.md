@@ -55,7 +55,7 @@ The site is the household itself. Nothing on it could belong to another family: 
 ## Evidence on Hand
 
 - Photos are in: the welcome shows Dan and Alexis together, and each member has a portrait. The committed files are square crops made with sharp, which leaves out all metadata; the original phone photos stay out of the repo, since it is public.
-- The welcome text is Dan's; the members' two-line rhyming verses (in the spirit of a game intro rap) were written from Dan's notes. The meta description was written by an agent and waits for Dan's approval.
+- The welcome text and the members' lines are Dan's, written with Claude and approved by him. The meta description was written by an agent and waits for Dan's approval.
 
 ## Product Principles
 
