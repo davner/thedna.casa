@@ -21,6 +21,10 @@ describe("built root page", () => {
     expect(meta("property", "og:type")).toBe("website");
   });
 
+  it("ships no JavaScript, so it renders fully with JavaScript off", () => {
+    expect($("script").map((_, s) => $.html(s)).get()).toEqual([]);
+  });
+
   it("animates only under prefers-reduced-motion: no-preference", () => {
     const animations: Declaration[] = [];
     for (const root of pageCss($)) root.walkDecls(/^animation(-name)?$/, (decl) => void animations.push(decl));
