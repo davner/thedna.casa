@@ -1,8 +1,30 @@
 ---
+import Sparkle from "./Sparkle.astro";
+import Stamp from "./Stamp.astro";
+import { brushSquiggle } from "../lib/shapes";
 ---
 <header class="hero">
+  <Sparkle seed={31} class="spark s1" />
+  <Sparkle seed={32} class="spark s2" />
   <div class="words">
     <h1>THE DNA<br />CASA</h1>
     <p class="sub">Dan &amp; Alexis</p>
+    <svg class="squiggle" viewBox="0 0 200 24" aria-hidden="true"><path d={brushSquiggle(231, 200, 24, 3, 6)} /></svg>
   </div>
+  <Stamp class="stamp" />
 </header>
+
+<style>
+  .hero { position: relative; min-height: min(92dvh, 880px); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: clamp(32px, 6vw, 96px); padding: 64px clamp(20px, 6vw, 96px) 150px; box-sizing: border-box; color: var(--cream); }
+  .hero :global(.spark) { position: absolute; color: var(--oro); }
+  .hero :global(.s1) { width: 26px; right: 8%; top: 8%; }
+  .hero :global(.s2) { width: 16px; right: 8%; bottom: 24%; color: var(--pink); }
+  h1 { font-family: "Averia Serif Libre", serif; font-weight: 700; font-size: clamp(3.4rem, 10vw, 9.5rem); letter-spacing: -0.03em; line-height: 0.9; margin: 0; }
+  .sub { font-family: "Averia Serif Libre", serif; font-style: italic; letter-spacing: 0; font-size: clamp(1.3rem, 2.2vw, 1.8rem); margin: 20px 0 0; color: var(--blush); }
+  .squiggle { display: block; width: 130px; height: 16px; margin: 18px 0 0; fill: var(--pink); }
+  .hero :global(.stamp) { width: min(100%, 380px); justify-self: center; }
+
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; }
+  }
+</style>

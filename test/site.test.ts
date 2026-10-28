@@ -19,4 +19,12 @@ describe("built root page", () => {
     expect(meta("property", "og:url")).toBe("https://thedna.casa/");
     expect(meta("property", "og:type")).toBe("website");
   });
+
+  it("hides the hero's logo, ring, squiggle and sparkles from assistive tech", () => {
+    const drawings = $("header svg").filter((_, svg) => $(svg).parents("svg").length === 0);
+    expect(drawings.length).toBeGreaterThan(0);
+    drawings.each((_, svg) => {
+      expect($(svg).closest("[aria-hidden='true']"), $.html(svg).slice(0, 80)).toHaveLength(1);
+    });
+  });
 });
