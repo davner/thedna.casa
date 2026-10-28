@@ -6,18 +6,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "prototype": "astro dev --open /prototype/landing?variant=21",
     "test": "vitest run"
   },
   "dependencies": {
-    "@fontsource/averia-sans-libre": "^5.3.0",
     "@fontsource/averia-serif-libre": "^5.3.0",
-    "@fontsource/bodoni-moda": "^5.3.0",
-    "@fontsource/federo": "^5.3.0",
-    "@fontsource/gilda-display": "^5.3.0",
-    "@fontsource/gloock": "^5.3.0",
-    "@fontsource/lilita-one": "^5.3.0",
-    "@fontsource/rozha-one": "^5.3.0",
     "@fontsource/schibsted-grotesk": "^5.3.0",
     "astro": "^7.4.2",
     "d3-shape": "^3.2.0",

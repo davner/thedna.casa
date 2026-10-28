@@ -8,28 +8,7 @@ importers:
 
   .:
     dependencies:
-      '@fontsource/averia-sans-libre':
-        specifier: ^5.3.0
-        version: 5.3.0
       '@fontsource/averia-serif-libre':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource/bodoni-moda':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource/federo':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource/gilda-display':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource/gloock':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource/lilita-one':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource/rozha-one':
         specifier: ^5.3.0
         version: 5.3.0
       '@fontsource/schibsted-grotesk':
@@ -250,29 +229,8 @@ packages:
   '@emnapi/wasi-threads@1.2.3':
     resolution: {integrity: sha512-ELEBe8PsLvvJ6QMr0zLt8ffvOHW/dc1m3CEzNMg7aJUv3bMaoDtw2TXyDAwkYBuroxxuHEwhRTLJSe5sya547g==}
 
-  '@fontsource/averia-sans-libre@5.3.0':
-    resolution: {integrity: sha512-wTzyf4A5hLYvNPDqbC+Ws+K0cNSKA3LgwmTtDngpOZVrAkGx4+oGCXRoN3Cvs92MRAOhuKg/q4CsLsmaE3azCg==}
-
   '@fontsource/averia-serif-libre@5.3.0':
     resolution: {integrity: sha512-rjZmEKNuUrh1AmjCiikhMwCBO0Ce5is9Y1BhSuo6PY5S9bymdI84TRMO96pUDgBIPpClLivFDp7pUBDWGckEpA==}
-
-  '@fontsource/bodoni-moda@5.3.0':
-    resolution: {integrity: sha512-Wt2XBCHivYxkTP3ydq/Ax+7VshwsOh/6ayA5om2t+yClCkGwLPj2Mi6OnyMANjyLcqDUWs4rlOHnc8SBLf6/pA==}
-
-  '@fontsource/federo@5.3.0':
-    resolution: {integrity: sha512-w0zBtyzMYyqDP2lGwgFDqj0uaxs/angWugn3UOaR4DmQqiokOmxMDlLO3xJLEv22/gBjR6dlxOLqwxsN1Nn8iA==}
-
-  '@fontsource/gilda-display@5.3.0':
-    resolution: {integrity: sha512-rthsd5gguuUl9qZvbjVDHQmVvdaXr9W+2o4zKbIzBsZ9wn4cG3HeguYL1rKlGJwdDBz/JZQjAJKxpLiv+kVqMg==}
-
-  '@fontsource/gloock@5.3.0':
-    resolution: {integrity: sha512-vGvBRavw/y3aTCsz1uTNydQjCfRLGNOnSpmn/Qs3EZDqPAKBg6Id4OdHGnWLWXQ57IkzuNk/e9+KdMze+azOxA==}
-
-  '@fontsource/lilita-one@5.3.0':
-    resolution: {integrity: sha512-bNW3tD+m5pOsAQpW/NvtRbFthFe+B73hDJK2DLLCFCtF+1p+UMBgo7ibxdcb9Sftr06LKAVbt080wiMdSqGbOg==}
-
-  '@fontsource/rozha-one@5.3.0':
-    resolution: {integrity: sha512-/IUdv9LTshBBIqym7gbgOp/RbyD4HxwYOb+5lZKcv78m1xrD0wWWTWp20PNN9W5RVOQfAYQRkT76inav6uAPqg==}
 
   '@fontsource/schibsted-grotesk@5.3.0':
     resolution: {integrity: sha512-9k+Fd2eg7umKxI2JV2HtDcOkXEM0iJx0u4Iu1b+QHikVU8Sl/MtozJ/mtZfsltR6xnVGSQjpcxXQeJPW0KGpIA==}
@@ -1663,21 +1621,7 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
-  '@fontsource/averia-sans-libre@5.3.0': {}
-
   '@fontsource/averia-serif-libre@5.3.0': {}
-
-  '@fontsource/bodoni-moda@5.3.0': {}
-
-  '@fontsource/federo@5.3.0': {}
-
-  '@fontsource/gilda-display@5.3.0': {}
-
-  '@fontsource/gloock@5.3.0': {}
-
-  '@fontsource/lilita-one@5.3.0': {}
-
-  '@fontsource/rozha-one@5.3.0': {}
 
   '@fontsource/schibsted-grotesk@5.3.0': {}
 
