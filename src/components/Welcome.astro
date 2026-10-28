@@ -38,7 +38,8 @@ const petals = marigoldMask(233);
     /* A shallower wave so the cream welcome starts inside the first phone screen. */
     .edge { height: 48px; top: -47px; }
     .photo { order: 0; width: min(72vw, 280px); }
-    .kicker { font-size: 1.15rem; margin-bottom: 8px; }
+    /* 1.2rem bold is large text, where terracotta on page cream (3.6:1) passes WCAG; 1.15rem was not. */
+    .kicker { font-size: 1.2rem; margin-bottom: 8px; }
     h2 { font-size: 2.2rem; text-wrap: balance; }
     .text { font-size: 1.05rem; margin-top: 16px; }
   }
