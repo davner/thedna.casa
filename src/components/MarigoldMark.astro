@@ -1,37 +1,37 @@
 ---
 import { marigoldMark } from "../lib/shapes";
+import { palette } from "../palette";
 
 interface Props { class?: string }
 const { class: className } = Astro.props;
 
-const ink = "#2F3E3E", moon = "#2F3E3E", eye = "#F2B233", cheek = "#F7C6D9";
 const petalColors = ["#D9661A", "#EC8A1E", "#F5A623"];
 const mark = marigoldMark(3);
 ---
 <svg class={className} viewBox="86 76 288 248" aria-hidden="true">
   <g transform={mark.sunTransform}>
     {mark.petals.map((ring, i) => <g fill={petalColors[i]}>{ring.map((d) => <path d={d} />)}</g>)}
-    <path d={mark.disc} fill="#F2B233" />
+    <path d={mark.disc} fill={palette.gold} />
     <g transform={mark.faceTransform}>
-      <g fill={ink}>
+      <g fill={palette.salamander}>
         <path d={mark.face.browNose} />
         <path d={mark.face.brow} />
         <path d={mark.face.eyeL} />
         <path d={mark.face.eyeR} />
         <path d={mark.face.lips} fill-opacity="0.85" />
       </g>
-      <g fill={cheek}>
+      <g fill={palette.cheek}>
         <circle cx="208" cy="182" r="10" />
         <circle cx="270" cy="182" r="10" />
       </g>
     </g>
   </g>
   <g transform="translate(40 12) scale(0.82)">
-    <path fill={moon} d={mark.moon} />
-    <g fill={eye}>
+    <path fill={palette.salamander} d={mark.moon} />
+    <g fill={palette.gold}>
       <path d={mark.face.moonEye} />
       <path d={mark.face.moonBrow} />
     </g>
-    <circle cx="160" cy="268" r="10" fill={cheek} />
+    <circle cx="160" cy="268" r="10" fill={palette.cheek} />
   </g>
 </svg>

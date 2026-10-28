@@ -1,7 +1,8 @@
 import { readFile, writeFile } from "node:fs/promises";
 import sharp from "sharp";
+import { palette } from "../src/palette.ts";
 
-const cream = "#F6E7DA";
+const { cream } = palette;
 
 const render = async (svg) => ({
   "favicon.svg": { type: "image/svg+xml", body: svg },

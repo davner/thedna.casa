@@ -3,6 +3,7 @@ import "@fontsource/averia-serif-libre/400.css";
 import "@fontsource/averia-serif-libre/400-italic.css";
 import "@fontsource/averia-serif-libre/700.css";
 import "@fontsource/schibsted-grotesk/400.css";
+import { palette } from "../palette";
 
 interface Props { title?: string; description?: string }
 const {
@@ -10,9 +11,10 @@ const {
   description = "Hola from Dan & Alexis, and Milly and Penny too. Come meet the household.",
 } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site).href;
+const colorTokens = Object.entries(palette).map(([name, hex]) => `--${name}:${hex}`).join(";");
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" style={colorTokens}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,7 +27,7 @@ const url = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="The DNA Casa" />
     <meta name="twitter:card" content="summary" />
-    <meta name="theme-color" content="#43262a" />
+    <meta name="theme-color" content={palette.mole} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -38,16 +40,6 @@ const url = new URL(Astro.url.pathname, Astro.site).href;
 
 <style is:global>
   :root {
-    --mole: #43262a;
-    --cream: #f6e7da;
-    --cream-page: #faf4ec;
-    --terra: #c8643c;
-    --pink: #e4007c;
-    --gold: #f2b233;
-    --salamander: #2f3e3e;
-    --sage: #b9c9b4;
-    --cheek: #f7c6d9;
-    --blush: #f0c7b4;
     --font-serif: "Averia Serif Libre", serif;
   }
   html, body { margin: 0; }
