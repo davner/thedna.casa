@@ -13,7 +13,7 @@ Astro static site. The page ships no JavaScript and works with JavaScript off.
 - Shapes (the wave, the brush squiggle, the petal mask, the sparkles and the logo strokes) are drawn at build time by seeded generators in `src/lib/shapes.ts`. A seed is a fixed number that makes a shape come out the same way every time, so every deploy looks the same. They use simplex-noise (smooth random wobble), perfect-freehand (brush strokes), d3-shape (curve smoothing) and a hand-written mulberry32 seeded random number generator.
 - sharp renders the PNG favicon sizes and the 1200x630 link preview image (the favicon's sun and cream moon on mole) from one SVG at build time.
 - roughjs and svgo are not used.
-- Deploy (planned, not live yet): a GitHub Actions workflow builds the site and deploys it to GitHub Pages on every push to main. Canonical domain thedna.casa; www redirects to the apex.
+- Deploy: on every push to main a GitHub Actions workflow runs the tests, which build the site, and deploys that build to GitHub Pages; a failing test stops the deploy. Canonical domain thedna.casa; www redirects to the apex.
 
 ## Users
 
@@ -42,7 +42,7 @@ The site is the household itself. Nothing on it could belong to another family: 
 ## Brand Commitments
 
 - Name: "The DNA Casa", set in all caps as THE DNA CASA; subtitle "Dan & Alexis".
-- English, with one or two Spanish phrases ("Bienvenidos", "Con cariño").
+- English, with a few Spanish words ("Bienvenidos", "Hola", "Con cariño"). Spanish phrases carry `lang="es"`, except "Hola", which sits inside an English sentence.
 - Look (variant 23 "Mole"): a mole-brown (#43262A) hero and footer, a cream (#FAF4EC) middle, one wave between them, and one page-wide grain layer. No pure black anywhere.
 - Logo: the Beso sun-and-moon mark (marigold sun, thin moon), set inside a stamp ring that reads "THE DNA CASA · DAN & ALEXIS · CON CARIÑO".
 - Palette: mole #43262A, cream ink #F6E7DA, page cream #FAF4EC, terracotta #C8643C, rosa mexicano #E4007C, marigold gold #F2B233, Salamander green #2F3E3E (Dan), sage #B9C9B4, cheek pink #F7C6D9, blush #F0C7B4. Member circles, in order: Salamander, rosa mexicano, sage, marigold gold.
