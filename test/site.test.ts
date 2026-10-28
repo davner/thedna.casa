@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { AtRule, Declaration } from "postcss";
+import { readFileSync } from "node:fs";
+import { load } from "cheerio";
 import sharp from "sharp";
 import { builtFileExists, builtFilePath, builtPage, pageCss, photoSiteDist, readText } from "./site";
 import { members, welcome } from "../src/content";
@@ -30,6 +32,14 @@ describe("built root page", () => {
     expect(meta("property", "og:description")).not.toBe("");
     expect(meta("property", "og:url")).toBe("https://thedna.casa/");
     expect(meta("property", "og:type")).toBe("website");
+  });
+
+  it("uses the page's own Beso logo as the favicon", () => {
+    const paths = ($svg: ReturnType<typeof $>) => $svg.find("path").map((_, p) => $(p).attr("d")).get().sort();
+    const logo = paths($("svg.stamp-mark").first());
+    expect(logo.length).toBeGreaterThan(0);
+    const favicon = load(readFileSync(builtFilePath("/favicon.svg"), "utf8"), { xmlMode: true });
+    expect(favicon("path").map((_, p) => favicon(p).attr("d")).get().sort()).toEqual(logo);
   });
 
   // The link travels in messages, where a preview without an image is easy to scroll past.
