@@ -17,7 +17,11 @@ export const mulberry32 = (seed: number) => () => {
 const openCurve = d3line().curve(curveCatmullRom.alpha(0)).digits(1);
 const closedCurve = d3line().curve(curveCatmullRomClosed.alpha(0)).digits(1);
 
-export const smooth = (pts: Pt[], closed: boolean): string => (closed ? closedCurve : openCurve)(pts) ?? "";
+export const smooth = (pts: Pt[], closed: boolean): string => {
+  const d = (closed ? closedCurve : openCurve)(pts) ?? "";
+  // d3's closed curve ends back on its start point but never emits Z, so stroked joins would show a gap.
+  return closed && d ? `${d}Z` : d;
+};
 
 export const wave = (seed: number, w = 1440, h = 60, bumps = 6): string => {
   const noise = createNoise2D(mulberry32(seed));

@@ -1,6 +1,6 @@
 import { getPathBBox, isClosedPath, normalizePath, parsePathString } from "svg-path-commander/util";
 import { describe, expect, it } from "vitest";
-import { brushSquiggle, join, line, marigoldMask, polar, quad, sparkle, wave } from "./shapes";
+import { brusher, brushSquiggle, join, line, marigoldMask, polar, quad, sparkle, wave } from "./shapes";
 
 const expectWellFormed = (d: string) => {
   const segments = parsePathString(d);
@@ -87,5 +87,31 @@ describe("centerlines", () => {
       [2, 0],
       [2, 2],
     ]);
+  });
+});
+
+describe("brusher", () => {
+  const centerline = quad([206, 156], [216, 164], [226, 156], 8);
+  const lips = join(quad([222, 198], [240, 189], [258, 198], 6), quad([258, 198], [240, 213], [222, 198], 6)).slice(0, -1);
+
+  it("draws the same strokes and shapes from the same seed", () => {
+    const draw = () => {
+      const b = brusher(10, 1.1);
+      return [b.stroke(centerline, 5.5), b.stroke(centerline), b.shape(lips)];
+    };
+    expect(draw()).toEqual(draw());
+  });
+
+  it("wobbles each stroke differently, even along the same centerline", () => {
+    const b = brusher(10, 1.1);
+    expect(b.stroke(centerline)).not.toBe(b.stroke(centerline));
+  });
+
+  it("gives well-formed strokes and closed shapes", () => {
+    const b = brusher(10, 1.1);
+    expectWellFormed(b.stroke(centerline));
+    const shape = b.shape(lips);
+    expectWellFormed(shape);
+    expect(isClosedPath(parsePathString(shape))).toBe(true);
   });
 });
