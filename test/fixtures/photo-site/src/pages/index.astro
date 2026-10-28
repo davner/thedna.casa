@@ -1,0 +1,6 @@
+---
+import { Image, Picture } from "astro:assets";
+import photo from "../gps-tagged.jpg";
+---
+<Image src={photo} alt="Tagged fixture" width={48} height={48} />
+<Picture src={photo} alt="Tagged fixture" formats={["avif", "webp"]} fallbackFormat="jpg" width={48} />
