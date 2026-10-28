@@ -98,6 +98,18 @@ describe("built root page", () => {
     expect(memberEntries(heading)).toEqual(members.map((m) => [m.name, m.line]));
   });
 
+  // The stamp ring turns inside a square box, so at 45 degrees its corners reach about 1.41x the stamp's width.
+  it("clips the hero sideways at every width, so the turning ring never makes the page scroll sideways", () => {
+    const clips: string[] = [];
+    for (const root of pageCss($)) {
+      root.walkRules(/(^|[\s,])header\b|\.hero\b/, (rule) => {
+        if (rule.parent?.type !== "root") return;
+        rule.walkDecls(/^overflow(-x)?$/, (decl) => void clips.push(decl.value));
+      });
+    }
+    expect(clips).toContainEqual(expect.stringMatching(/^(clip|hidden)\b/));
+  });
+
   it("hides the hero's logo, ring, squiggle and sparkles from assistive tech", () => {
     const drawings = $("header svg").filter((_, svg) => $(svg).parents("svg").length === 0);
     expect(drawings.length).toBeGreaterThan(0);
