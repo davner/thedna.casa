@@ -90,6 +90,14 @@ describe("built root page", () => {
     expect(readText($, "footer")).toBe(`Con cariño · © ${new Date().getFullYear()} The DNA Casa`);
   });
 
+  // Without lang a screen reader says these with an English voice.
+  it("marks Bienvenidos and Con cariño as Spanish", () => {
+    for (const phrase of ["Bienvenidos", "Con cariño"]) {
+      const holders = $("[lang='es']").filter((_, el) => $(el).text().trim() === phrase);
+      expect(holders, phrase).toHaveLength(1);
+    }
+  });
+
   it("inlines its CSS, so no stylesheet request holds up first paint", () => {
     expect($("link[rel='stylesheet']").map((_, l) => $.html(l)).get()).toEqual([]);
     expect($("head style").length).toBeGreaterThan(0);
