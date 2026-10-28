@@ -36,7 +36,7 @@ The site is the household itself. Nothing on it could belong to another family: 
 - Without photos the welcome shows a pink petal shape and each member shows a solid color circle.
 - Phone layout (760px and narrower, variant 1 "Stamp first"): one centered column that opens with the turning stamp above the wordmark and "Dan & Alexis", a short hero so the wave and the cream welcome start on the first screen, the welcome words before the petal photo, and the members as rows with a small circle on the left and the name and one-liner on the right.
 - Prototypes live only on the branches `prototype/landing` (all landing variants) and `prototype/mobile`. Nothing from them ships, and there is no `pnpm prototype` command.
-- Privacy: public, first names only, no location clues, photo EXIF/GPS stripped.
+- Privacy: public, first names only, photo EXIF/GPS stripped. The welcome names the cities Dan and Alexis have lived in and Alexis' employer, by Dan's choice; nothing narrower than a city (no neighborhood, street or home details).
 - Deferred: events, Christmas cards, trips, posts (see `.scratch/TODO.md`).
 
 ## Brand Commitments
@@ -55,11 +55,11 @@ The site is the household itself. Nothing on it could belong to another family: 
 ## Evidence on Hand
 
 - Photos are in: the welcome shows Dan and Alexis together, and each member has a portrait. The committed files are square crops made with sharp, which leaves out all metadata; the original phone photos stay out of the repo, since it is public.
-- The welcome text and the one-liners for each member are placeholders, marked as such in `src/content.ts`; do not present invented ones as final. The meta description was written by an agent and waits for Dan's approval.
+- The welcome text is Dan's; the members' two-line rhyming verses (in the spirit of a game intro rap) were written from Dan's notes. The meta description was written by an agent and waits for Dan's approval.
 
 ## Product Principles
 
 1. Meeting the four of them is the point; everything else frames it.
 2. Personal over polished: hand-made marks beat stock components.
-3. Privacy first: nothing that locates the household.
+3. Privacy first: nothing that locates the home itself.
 4. Small and finished beats large and partial.
