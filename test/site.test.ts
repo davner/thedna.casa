@@ -90,6 +90,17 @@ describe("built root page", () => {
     expect(readText($, "footer")).toBe(`Con cariño · © ${new Date().getFullYear()} The DNA Casa`);
   });
 
+  it("loads only the font faces the page sets text in", () => {
+    const faces = new Set<string>();
+    for (const root of pageCss($)) {
+      root.walkAtRules("font-face", (face) => {
+        const prop = (name: string) => face.nodes?.find((n): n is Declaration => n.type === "decl" && n.prop === name)?.value ?? "";
+        faces.add(`${prop("font-family").replace(/["']/g, "")} ${prop("font-weight")} ${prop("font-style")}`);
+      });
+    }
+    expect([...faces].sort()).toEqual(["Averia Serif Libre 400 italic", "Averia Serif Libre 700 normal", "Schibsted Grotesk 400 normal"]);
+  });
+
   it("has no marquee", () => {
     expect($("marquee")).toHaveLength(0);
     expect($.html()).not.toMatch(/marquee/i);
