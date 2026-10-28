@@ -66,6 +66,10 @@ describe("built root page", () => {
     expect((photo.attr("alt") ?? photo.attr("aria-label") ?? "").trim()).not.toBe("");
   });
 
+  it("signs off in the footer with Con cariño and the build year", () => {
+    expect(readText($, "footer")).toBe(`Con cariño · © ${new Date().getFullYear()} The DNA Casa`);
+  });
+
   it("gives each member the one-liner from the content module", () => {
     const heading = $("h2").filter((_, h) => $(h).text().trim() === "Who lives here");
     expect(memberEntries(heading)).toEqual(members.map((m) => [m.name, m.line]));
