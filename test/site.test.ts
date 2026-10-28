@@ -60,6 +60,12 @@ describe("built root page", () => {
     expect(section).toContain(welcome.text);
   });
 
+  it("gives the welcome photo, or its placeholder, alt text", () => {
+    const photo = $("h2:contains('Hola')").closest("section").find("img, [role='img']");
+    expect(photo).toHaveLength(1);
+    expect((photo.attr("alt") ?? photo.attr("aria-label") ?? "").trim()).not.toBe("");
+  });
+
   it("gives each member the one-liner from the content module", () => {
     const heading = $("h2").filter((_, h) => $(h).text().trim() === "Who lives here");
     expect(memberEntries(heading)).toEqual(members.map((m) => [m.name, m.line]));
