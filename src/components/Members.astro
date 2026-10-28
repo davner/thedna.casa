@@ -27,6 +27,12 @@ import { members } from "../content";
   .line { font-size: 1rem; }
 
   @media (max-width: 760px) {
-    ul { grid-template-columns: 1fr 1fr; }
+    .members { padding: 8px 24px 72px; text-align: left; }
+    ul { margin-top: 28px; grid-template-columns: 1fr; gap: 0; }
+    li { grid-template-columns: 84px 1fr; grid-template-rows: auto auto; column-gap: 18px; row-gap: 2px; justify-items: start; align-items: center; padding: 14px 0; border-top: 1px solid color-mix(in srgb, var(--mole) 14%, transparent); }
+    li:last-child { border-bottom: 1px solid color-mix(in srgb, var(--mole) 14%, transparent); }
+    .circle { grid-row: 1 / 3; width: 84px; margin: 0; }
+    strong { align-self: end; font-size: 1.5rem; }
+    .line { align-self: start; }
   }
 </style>
