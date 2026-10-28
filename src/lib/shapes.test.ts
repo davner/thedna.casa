@@ -32,11 +32,12 @@ describe.each(generators)("%s", (_, generate) => {
 });
 
 describe("wave", () => {
-  it.each([
-    ["zero bumps", [232, 1440, 80, 0]],
-    ["zero size", [232, 0, 0, 2]],
-  ] as const)("stays finite with %s", (_, args) => {
-    expectWellFormed(wave(...args));
+  it("stays finite with zero bumps", () => {
+    expectWellFormed(wave(232, 1440, 80, 0));
+  });
+
+  it("stays finite with zero size", () => {
+    expectWellFormed(wave(232, 0, 0, 2));
   });
 });
 
