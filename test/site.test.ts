@@ -79,6 +79,13 @@ describe("built root page", () => {
     expect((photo.attr("alt") ?? photo.attr("aria-label") ?? "").trim()).not.toBe("");
   });
 
+  // Phones show the words before the petal shape, so screen readers should meet them in that order too.
+  it("reads the welcome words before the welcome photo", () => {
+    const section = $("#welcome-heading").closest("section");
+    const order = section.find("h2, img, [role='img']").map((_, el) => (el.tagName === "h2" ? "words" : "photo")).get();
+    expect(order).toEqual(["words", "photo"]);
+  });
+
   it("signs off in the footer with Con cariño and the build year", () => {
     expect(readText($, "footer")).toBe(`Con cariño · © ${new Date().getFullYear()} The DNA Casa`);
   });
