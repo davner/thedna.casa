@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { welcome as householdWelcome, type Welcome } from "../content";
+import { copy, welcome as householdWelcome, type Welcome } from "../content";
 import { marigoldMask, wave } from "../lib/shapes";
 
 interface Props { welcome?: Welcome }
@@ -10,8 +10,8 @@ const petals = marigoldMask(233);
 <section class="welcome" aria-labelledby="welcome-heading">
   <svg class="edge" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d={wave(232, 1440, 80, 2)} /></svg>
   <div>
-    <p class="kicker">Bienvenidos</p>
-    <h2 id="welcome-heading">Hola, we're Dan &amp; Alexis.</h2>
+    <p class="kicker">{copy.kicker}</p>
+    <h2 id="welcome-heading">{copy.hello}</h2>
     <p class="text">{welcome.text}</p>
   </div>
   {welcome.photo

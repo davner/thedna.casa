@@ -2,6 +2,19 @@ import type { ImageMetadata } from "astro";
 
 // PLACEHOLDER copy: Dan and Alexis have not written the welcome or the one-liners yet.
 
+// The fixed words around the page; the welcome and members below are what changes most.
+export const copy = {
+  title: "The DNA Casa",
+  description: "Hola from Dan & Alexis, and Milly and Penny too. Come meet the household.",
+  wordmark: ["THE DNA", "CASA"],
+  subtitle: "Dan & Alexis",
+  ring: "THE DNA CASA · DAN & ALEXIS · CON CARIÑO · ",
+  kicker: "Bienvenidos",
+  hello: "Hola, we're Dan & Alexis.",
+  membersHeading: "Who lives here",
+  signoff: "Con cariño",
+};
+
 export interface Welcome {
   text: string;
   photo?: { src: ImageMetadata; alt: string };

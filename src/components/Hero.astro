@@ -2,13 +2,14 @@
 import Sparkle from "./Sparkle.astro";
 import Stamp from "./Stamp.astro";
 import { brushSquiggle } from "../lib/shapes";
+import { copy } from "../content";
 ---
 <header class="hero">
   <Sparkle seed={31} class="spark s1" />
   <Sparkle seed={32} class="spark s2" />
   <div class="words">
-    <h1>THE DNA<br />CASA</h1>
-    <p class="sub">Dan &amp; Alexis</p>
+    <h1>{copy.wordmark.map((line, i) => <>{i > 0 && <br />}{line}</>)}</h1>
+    <p class="sub">{copy.subtitle}</p>
     <svg class="squiggle" viewBox="0 0 200 24" aria-hidden="true"><path d={brushSquiggle(231, 200, 24, 3, 6)} /></svg>
   </div>
   <Stamp class="stamp" />

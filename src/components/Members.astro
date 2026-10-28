@@ -1,12 +1,12 @@
 ---
 import { Image } from "astro:assets";
-import { members as householdMembers, type Member } from "../content";
+import { copy, members as householdMembers, type Member } from "../content";
 
 interface Props { members?: Member[] }
 const { members = householdMembers } = Astro.props;
 ---
 <section class="members" aria-labelledby="members-heading">
-  <h2 id="members-heading">Who lives here</h2>
+  <h2 id="members-heading">{copy.membersHeading}</h2>
   <ul>
     {members.map((m) => (
       <li>

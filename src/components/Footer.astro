@@ -1,4 +1,7 @@
-<footer>Con cariño · © {new Date().getFullYear()} The DNA Casa</footer>
+---
+import { copy } from "../content";
+---
+<footer>{copy.signoff} · © {new Date().getFullYear()} {copy.title}</footer>
 
 <style>
   footer { text-align: center; padding: 48px 20px 90px; color: var(--cream); font-family: var(--font-serif); font-style: italic; letter-spacing: 0; }

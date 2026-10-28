@@ -3,11 +3,12 @@ import "@fontsource/averia-serif-libre/400-italic.css";
 import "@fontsource/averia-serif-libre/700.css";
 import "@fontsource/schibsted-grotesk/400.css";
 import { palette } from "../palette";
+import { copy } from "../content";
 
 interface Props { title?: string; description?: string }
 const {
-  title = "The DNA Casa",
-  description = "Hola from Dan & Alexis, and Milly and Penny too. Come meet the household.",
+  title = copy.title,
+  description = copy.description,
 } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site).href;
 const colorTokens = Object.entries(palette).map(([name, hex]) => `--${name}:${hex}`).join(";");
@@ -24,7 +25,7 @@ const colorTokens = Object.entries(palette).map(([name, hex]) => `--${name}:${he
     <meta property="og:url" content={url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:site_name" content="The DNA Casa" />
+    <meta property="og:site_name" content={copy.title} />
     <meta name="twitter:card" content="summary" />
     <meta name="theme-color" content={palette.mole} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

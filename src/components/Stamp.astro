@@ -1,13 +1,13 @@
 ---
 import MarigoldMark from "./MarigoldMark.astro";
+import { copy } from "../content";
 interface Props { class?: string }
 const { class: className } = Astro.props;
-const text = "THE DNA CASA · DAN & ALEXIS · CON CARIÑO · ";
 ---
 <div class:list={["stamp", className]}>
   <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
     <defs><path id="stamp-ring" d="M100 100 m-82 0 a82 82 0 1 1 164 0 a82 82 0 1 1 -164 0" /></defs>
-    <text><textPath href="#stamp-ring" textLength="510" lengthAdjust="spacing">{text}</textPath></text>
+    <text><textPath href="#stamp-ring" textLength="510" lengthAdjust="spacing">{copy.ring}</textPath></text>
   </svg>
   <MarigoldMark class="stamp-mark" />
 </div>
