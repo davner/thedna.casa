@@ -1,6 +1,6 @@
 import { getPathBBox, isClosedPath, normalizePath, parsePathString } from "svg-path-commander/util";
 import { describe, expect, it } from "vitest";
-import { brushSquiggle, marigoldMask, polar, sparkle, wave } from "./shapes";
+import { brushSquiggle, marigoldMask, polar, quad, sparkle, wave } from "./shapes";
 
 const expectWellFormed = (d: string) => {
   const segments = parsePathString(d);
@@ -60,5 +60,15 @@ describe("polar", () => {
     expect(polar(240, 160, 10, 0)).toEqual([240, 150]);
     expect(polar(240, 160, 10, 90)).toEqual([250, 160]);
     expect(polar(240, 160, 10, 180)).toEqual([240, 170]);
+  });
+});
+
+describe("centerlines", () => {
+  it("samples a quadratic curve from start to end, pulled toward its control", () => {
+    expect(quad([0, 0], [5, 10], [10, 0], 2)).toEqual([
+      [0, 0],
+      [5, 5],
+      [10, 0],
+    ]);
   });
 });

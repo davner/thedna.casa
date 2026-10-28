@@ -102,3 +102,10 @@ export const polar = (cx: number, cy: number, r: number, deg: number): Pt => {
   const a = ((deg - 90) * Math.PI) / 180;
   return [+(cx + r * Math.cos(a)).toFixed(2), +(cy + r * Math.sin(a)).toFixed(2)];
 };
+
+export const quad = (p0: Pt, c: Pt, p1: Pt, n = 10): Pt[] =>
+  Array.from({ length: n + 1 }, (_, i) => {
+    const t = i / n;
+    const u = 1 - t;
+    return [u * u * p0[0] + 2 * u * t * c[0] + t * t * p1[0], u * u * p0[1] + 2 * u * t * c[1] + t * t * p1[1]];
+  });
