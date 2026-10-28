@@ -54,7 +54,7 @@ The site is the household itself. Nothing on it could belong to another family: 
 
 ## Evidence on Hand
 
-- No photos yet; placeholders until Dan adds 1-2 files to `src/assets/photos/`. Pets may appear in them.
+- Photos are in: the welcome shows Dan and Alexis together, and each member has a portrait. The committed files are square crops made with sharp, which leaves out all metadata; the original phone photos stay out of the repo, since it is public.
 - The welcome text and the one-liners for each member are placeholders, marked as such in `src/content.ts`; do not present invented ones as final. The meta description was written by an agent and waits for Dan's approval.
 
 ## Product Principles

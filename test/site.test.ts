@@ -89,17 +89,6 @@ describe("built root page", () => {
     expect(section).toContain(welcome.text);
   });
 
-  // Until a real photo exists the petal is decoration, and announcing a placeholder tells a listener nothing.
-  it("hides the welcome photo placeholder from assistive tech", () => {
-    const section = sectionHeading("Hola, we're Dan & Alexis.").closest("section");
-    expect(section.find("img, [role='img'], [aria-label]")).toHaveLength(0);
-    const drawings = section.find("svg");
-    expect(drawings.length).toBeGreaterThan(0);
-    drawings.each((_, svg) => {
-      expect($(svg).closest("[aria-hidden='true']"), $.html(svg).slice(0, 80)).toHaveLength(1);
-    });
-  });
-
   it("signs off in the footer with Con cariño and the build year", () => {
     expect(readText($, "footer")).toBe(`Con cariño · © ${new Date().getFullYear()} The DNA Casa`);
   });
@@ -142,6 +131,13 @@ describe("built root page", () => {
       "h2 Who lives here",
       ...members.map((m) => `h3 ${m.name}`),
     ]);
+  });
+
+  it("shows a photo for every member and a described welcome photo", () => {
+    expect(membersHeading().closest("section").find("li").map((_, li) => $(li).find("img").length).get()).toEqual(members.map(() => 1));
+    const photo = sectionHeading("Hola, we're Dan & Alexis.").closest("section").find("img");
+    expect(photo).toHaveLength(1);
+    expect(photo.attr("alt")).not.toBe("");
   });
 
   it("gives each member the one-liner from the content module", () => {
@@ -201,6 +197,21 @@ describe("member portraits", () => {
     const portraits = $("li img");
     expect(portraits).toHaveLength(1);
     expect(portraits.attr("alt")).toBe("");
+  });
+});
+
+describe("welcome without a photo", () => {
+  const $ = builtPage("no-photo/index.html", photoSiteDist);
+
+  // Without a real photo the petal is decoration, and announcing a placeholder tells a listener nothing.
+  it("hides the petal placeholder from assistive tech", () => {
+    const section = $("section");
+    expect(section.find("img, [role='img'], [aria-label]")).toHaveLength(0);
+    const drawings = section.find("svg");
+    expect(drawings.length).toBeGreaterThan(0);
+    drawings.each((_, svg) => {
+      expect($(svg).closest("[aria-hidden='true']"), $.html(svg).slice(0, 80)).toHaveLength(1);
+    });
   });
 });
 

@@ -1,4 +1,9 @@
 import type { ImageMetadata } from "astro";
+import alexisPhoto from "./assets/photos/alexis.jpg";
+import danPhoto from "./assets/photos/dan.jpg";
+import millyPhoto from "./assets/photos/milly.jpg";
+import pennyPhoto from "./assets/photos/penny.jpg";
+import welcomePhoto from "./assets/photos/welcome.jpg";
 
 // PLACEHOLDER copy: Dan and Alexis have not written the welcome or the one-liners yet.
 
@@ -23,7 +28,8 @@ export interface Welcome {
 
 export const welcome: Welcome = {
   text: "Placeholder welcome. A few warm sentences go here: who we are, that this is our little corner of the web, and that we're glad you stopped by.",
-  // Import a file from src/assets/photos/ as photo: { src, alt } and describe it in alt; without one a pink petal shape stands in.
+  // Without a photo a pink petal shape stands in.
+  photo: { src: welcomePhoto, alt: "Dan and Alexis standing back to back in front of a red curtain, looking at the camera" },
 };
 
 export interface Member {
@@ -35,8 +41,8 @@ export interface Member {
 }
 
 export const members: Member[] = [
-  { name: "Dan", line: "One line about Dan.", color: "var(--salamander)" },
-  { name: "Alexis", line: "One line about Alexis.", color: "var(--pink)" },
-  { name: "Milly", line: "The dog. One line about Milly.", color: "var(--sage)" },
-  { name: "Penny", line: "The cat. One line about Penny.", color: "var(--gold)" },
+  { name: "Dan", line: "One line about Dan.", color: "var(--salamander)", portrait: danPhoto },
+  { name: "Alexis", line: "One line about Alexis.", color: "var(--pink)", portrait: alexisPhoto },
+  { name: "Milly", line: "The dog. One line about Milly.", color: "var(--sage)", portrait: millyPhoto },
+  { name: "Penny", line: "The cat. One line about Penny.", color: "var(--gold)", portrait: pennyPhoto },
 ];
