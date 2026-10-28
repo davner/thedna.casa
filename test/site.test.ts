@@ -6,9 +6,12 @@ import { members, welcome } from "../src/content";
 describe("built root page", () => {
   const $ = builtPage("index.html");
 
+  const sectionHeading = (text: string) => $("h2").filter((_, h) => $(h).text().trim() === text);
+  const membersHeading = () => sectionHeading("Who lives here");
+
   // Each member's visible texts in reading order, so the test does not care which tags hold them.
-  const memberEntries = (heading: ReturnType<typeof $>) =>
-    heading.closest("section").find("li").map((_, li) => [
+  const memberEntries = () =>
+    membersHeading().closest("section").find("li").map((_, li) => [
       $(li).children().map((_, child) => $(child).text().trim()).get().filter(Boolean),
     ]).get() as string[][];
 
@@ -60,13 +63,12 @@ describe("built root page", () => {
   });
 
   it("lists Dan, Alexis, Milly and Penny under Who lives here", () => {
-    const heading = $("h2").filter((_, h) => $(h).text().trim() === "Who lives here");
-    expect(heading).toHaveLength(1);
-    expect(memberEntries(heading).map((texts) => texts[0])).toEqual(["Dan", "Alexis", "Milly", "Penny"]);
+    expect(membersHeading()).toHaveLength(1);
+    expect(memberEntries().map((texts) => texts[0])).toEqual(["Dan", "Alexis", "Milly", "Penny"]);
   });
 
   it("welcomes with Bienvenidos, a hello from Dan & Alexis and the welcome text", () => {
-    const hello = $("h2").filter((_, h) => $(h).text().trim() === "Hola, we're Dan & Alexis.");
+    const hello = sectionHeading("Hola, we're Dan & Alexis.");
     expect(hello).toHaveLength(1);
     const section = readText($, hello.closest("section"));
     expect(section).toContain("Bienvenidos");
@@ -101,8 +103,7 @@ describe("built root page", () => {
   });
 
   it("gives each member the one-liner from the content module", () => {
-    const heading = $("h2").filter((_, h) => $(h).text().trim() === "Who lives here");
-    expect(memberEntries(heading)).toEqual(members.map((m) => [m.name, m.line]));
+    expect(memberEntries()).toEqual(members.map((m) => [m.name, m.line]));
   });
 
   // The stamp ring turns inside a square box, so at 45 degrees its corners reach about 1.41x the stamp's width.

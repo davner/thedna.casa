@@ -5,11 +5,12 @@ import postcss, { type Root } from "postcss";
 import sharp from "sharp";
 
 const dist = new URL("../dist/", import.meta.url);
-const read = (path: string) => readFileSync(new URL(path.replace(/^\//, ""), dist), "utf8");
+const inDist = (path: string) => new URL(path.replace(/^\//, ""), dist);
+const read = (path: string) => readFileSync(inDist(path), "utf8");
 
 export const builtPage = (path: string) => load(read(path));
 
-export const builtFileExists = (path: string) => existsSync(new URL(path.replace(/^\//, ""), dist));
+export const builtFileExists = (path: string) => existsSync(inDist(path));
 
 // cheerio's text() drops <br>, which would glue "THE DNA" to "CASA".
 export const readText = ($: CheerioAPI, selector: Parameters<CheerioAPI>[0]) => {
