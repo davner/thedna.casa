@@ -40,10 +40,12 @@ export const marigoldMask = (seed: number, petals = 18, depth = 0.05): string =>
     return `${(0.5 + r * Math.cos(a)).toFixed(4)} ${(0.5 + r * Math.sin(a)).toFixed(4)}`;
   };
   const step = 360 / petals;
-  const parts = [`M${at(0, 0.5 - depth)}`];
+  const valleys = Array.from({ length: petals }, (_, i) => 0.5 - depth + depth * 0.3 * noise(i, 2));
+  const parts = [`M${at(0, valleys[0])}`];
   for (let i = 0; i < petals; i++) {
     const r = 0.5 + depth * 0.4 * noise(i, 1);
-    parts.push(`Q${at((i + 0.5) * step, r + depth * 0.6)} ${at((i + 1) * step, 0.5 - depth + depth * 0.3 * noise(i, 2))}`);
+    const next = (i + 1) % petals;
+    parts.push(`Q${at((i + 0.5) * step, r + depth * 0.6)} ${at(next * step, valleys[next])}`);
   }
   return `${parts.join(" ")} Z`;
 };

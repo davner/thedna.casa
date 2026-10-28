@@ -1,4 +1,4 @@
-import { parsePathString } from "svg-path-commander/util";
+import { getPathBBox, isClosedPath, normalizePath, parsePathString } from "svg-path-commander/util";
 import { describe, expect, it } from "vitest";
 import { marigoldMask, sparkle, wave } from "./shapes";
 
@@ -36,5 +36,20 @@ describe("wave", () => {
     ["zero size", [232, 0, 0, 2]],
   ] as const)("stays finite with %s", (_, args) => {
     expectWellFormed(wave(...args));
+  });
+});
+
+describe("marigoldMask", () => {
+  it.each([1, 232, 233, 9999])("is a closed path inside the unit box (seed %i)", (seed) => {
+    const d = marigoldMask(seed);
+    const segments = normalizePath(parsePathString(d));
+    expect(isClosedPath(segments)).toBe(true);
+    const [, startX, startY] = segments[0];
+    expect(segments.at(-2)?.slice(-2)).toEqual([startX, startY]);
+    const box = getPathBBox(d);
+    expect(box.x).toBeGreaterThanOrEqual(0);
+    expect(box.y).toBeGreaterThanOrEqual(0);
+    expect(box.x2).toBeLessThanOrEqual(1);
+    expect(box.y2).toBeLessThanOrEqual(1);
   });
 });
