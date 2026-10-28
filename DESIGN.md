@@ -46,12 +46,40 @@ typography:
     fontSize: "1.3rem"
     fontWeight: 700
     letterSpacing: "-0.02em"
+  display-phone:
+    fontFamily: "Averia Serif Libre, serif"
+    fontSize: "clamp(3rem, 15vw, 4.2rem)"
+    fontWeight: 700
+    lineHeight: 0.88
+  subtitle-phone:
+    fontFamily: "Averia Serif Libre, serif"
+    fontSize: "1.35rem"
+    fontWeight: 400
+  title-phone:
+    fontFamily: "Averia Serif Libre, serif"
+    fontSize: "1.5rem"
+    fontWeight: 700
+  caption:
+    fontFamily: "Schibsted Grotesk, sans-serif"
+    fontSize: "1rem"
+    fontWeight: 400
+  ring:
+    fontFamily: "Averia Serif Libre, serif"
+    fontSize: "15px"
+    fontWeight: 700
+    letterSpacing: "0.08em"
+  signoff:
+    fontFamily: "Averia Serif Libre, serif"
+    fontSize: "1rem"
+    fontWeight: 400
+    letterSpacing: "0"
 rounded:
   circle: "50%"
 spacing:
   gutter: "clamp(20px, 6vw, 96px)"
   column-gap: "clamp(32px, 6vw, 96px)"
   gutter-phone: "24px"
+  gutter-phone-hero: "20px"
 components:
   member-circle:
     backgroundColor: "{colors.salamander}"
@@ -93,12 +121,12 @@ Rejected and settled: a literal house, many arches, leaf or dappled shadows, squ
 A deep, warm brown and two creams carry the page; the saturated colors are accents and member identities.
 
 ### Primary
-- **Mole** (`mole`): the hero and footer field and the ink on cream. The browser theme color. It stands in for black everywhere.
+- **Mole** (`mole`): the hero and footer field, the ink on cream, and the welcome heading. The browser theme color. It stands in for black everywhere.
 - **Marigold** (`gold`): the logo's sun, the larger hero sparkle, Penny's circle.
 
 ### Secondary
 - **Rosa Mexicano** (`pink`): Alexis's color. The squiggle, the small sparkle, Alexis's circle, the text selection highlight.
-- **Terracotta** (`terra`): headings and the "Bienvenidos" kicker on cream. Large or bold text only.
+- **Terracotta** (`terra`): the "Who lives here" heading and the "Bienvenidos" kicker on cream. Large or bold text only. The welcome heading stays mole.
 
 ### Tertiary
 - **Salamander** (`salamander`): Dan's color, his member circle.
@@ -115,6 +143,8 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 **The Large Terracotta Rule.** Terracotta on page cream is about 3.6:1, which passes only as large text. Use it at 1.2rem bold or larger, never for body text.
 
+**The Logo Exception.** The Beso logo's three petal oranges (#D9661A, #EC8A1E, #F5A623) are part of the fixed mark and live in its component, not the palette. They appear nowhere else.
+
 **The Member Color Rule.** Each member owns one color, in order: Salamander (Dan), Rosa Mexicano (Alexis), Sage (Milly), Marigold (Penny). Don't reuse a member's color to mean something else on the same screen.
 
 ## Typography
@@ -127,9 +157,12 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 ### Hierarchy
 - **Display:** the THE DNA CASA wordmark, all caps on two lines. On phones it drops to `clamp(3rem, 15vw, 4.2rem)`.
 - **Headline:** section headings ("Hola, we're Dan & Alexis.", "Who lives here").
-- **Title:** member names.
-- **Subtitle:** the "Dan & Alexis" line and the footer, in italic.
-- **Body:** the welcome text, at most 38ch wide; member one-liners at 1rem.
+- **Title:** member names. 1.5rem on phones.
+- **Subtitle:** the "Dan & Alexis" line, in italic, in blush. 1.35rem on phones.
+- **Sign-off:** the footer, italic at the 16px body size.
+- **Body:** the welcome text, at most 38ch wide.
+- **Caption:** member one-liners at 1rem.
+- **Ring:** the stamp ring text, 15px in the ring's 200-unit SVG, so it scales with the stamp.
 - **Label:** the "Bienvenidos" kicker, in terracotta.
 
 ### Named Rules
@@ -139,14 +172,14 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 ## Layout
 
-Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), with a fluid gap between columns (`spacing.column-gap`). The hero is 1.2fr words to 1fr stamp, at least `min(92dvh, 880px)` tall. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.
+Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), with a fluid gap between columns (`spacing.column-gap`). The hero is 1.2fr words to 1fr stamp, with a content-box minimum of `min(92dvh, 880px)` plus 64px top and 150px bottom padding, so it runs about 1040px tall on a 900px-high desktop screen and the wave sits just below the fold, as in variant 23. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.
 
 One breakpoint, at 760px. Below it the page is one centered column ("Stamp first"):
 - The stamp comes first, then the wordmark and the subtitle.
 - The hero is short, so the wave and the cream welcome start on the first screen.
 - The welcome words come before the petal photo.
 - The members become rows: an 84px circle on the left, the name and one-liner on the right, with hairline dividers in mole at 14%.
-- The gutter is 24px.
+- The gutter is 24px (`spacing.gutter-phone`); the hero uses 20px (`spacing.gutter-phone-hero`).
 
 **The First Screen Rule.** On a 390px-wide phone, the wave and the start of the cream welcome are visible without scrolling.
 
@@ -167,7 +200,7 @@ Shapes are organic and drawn, never boxy. The only hard geometry is the member c
 - the petal mask that clips the welcome photo,
 - the logo strokes.
 
-The site has no rounded rectangles, borders or buttons.
+The site has no rounded rectangles, boxed borders or buttons. The only lines are the hairline dividers between member rows on phones.
 
 **The Seeded Shape Rule.** A new organic shape comes from the shared seeded generators with a fixed seed, never from randomness at runtime or a stock icon.
 
@@ -194,13 +227,13 @@ The welcome photo is clipped by the seeded petal mask, at most 440px square (280
 A small serif-bold word in terracotta above a section heading ("Bienvenidos"). It's the only place a Spanish word sits above an English heading.
 
 ### Footer
-One centered italic serif line in cream on mole: "Con cariño · © year The DNA Casa".
+One centered italic serif line at body size in cream on mole: "Con cariño · © year The DNA Casa".
 
 ## Do's and Don'ts
 
 ### Do:
 - **Do** keep mole and page cream as the only large color fields.
-- **Do** take every color from the palette module, which feeds CSS, SVG fills, the theme-color meta and the favicon.
+- **Do** take every color from the palette module, which feeds CSS, SVG fills, the theme-color meta and the favicon. The logo's petal oranges are the one exception.
 - **Do** keep accents small: a stroke, a sparkle, a circle, a kicker.
 - **Do** gate every animation behind `prefers-reduced-motion: no-preference`.
 - **Do** check the phone layout at 390px in device emulation.

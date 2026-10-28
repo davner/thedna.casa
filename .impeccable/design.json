@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-28T14:53:27.205Z",
+  "generatedAt": "2026-10-28T14:56:42.336Z",
   "title": "Design System: The DNA Casa",
   "extensions": {
     "colorMeta": {
@@ -179,6 +179,30 @@
       "label": {
         "displayName": "Label",
         "purpose": "The Bienvenidos kicker."
+      },
+      "display-phone": {
+        "displayName": "Display (phone)",
+        "purpose": "Wordmark at 760px and narrower."
+      },
+      "subtitle-phone": {
+        "displayName": "Subtitle (phone)",
+        "purpose": "Dan & Alexis on phones."
+      },
+      "title-phone": {
+        "displayName": "Title (phone)",
+        "purpose": "Member names on phones."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Member one-liners."
+      },
+      "ring": {
+        "displayName": "Ring",
+        "purpose": "Stamp ring text, in SVG units."
+      },
+      "signoff": {
+        "displayName": "Sign-off",
+        "purpose": "The footer line."
       }
     },
     "shadows": [],
@@ -269,6 +293,11 @@
         "section": "colors"
       },
       {
+        "name": "The Logo Exception",
+        "body": "The Beso logo's three petal oranges (#D9661A, #EC8A1E, #F5A623) are part of the fixed mark and live in its component, not the palette. They appear nowhere else.",
+        "section": "colors"
+      },
+      {
         "name": "The Member Color Rule",
         "body": "Each member owns one color, in order: Salamander (Dan), Rosa Mexicano (Alexis), Sage (Milly), Marigold (Penny). Don't reuse a member's color to mean something else on the same screen.",
         "section": "colors"
@@ -311,7 +340,7 @@
     ],
     "dos": [
       "Do keep mole and page cream as the only large color fields.",
-      "Do take every color from the palette module, which feeds CSS, SVG fills, the theme-color meta and the favicon.",
+      "Do take every color from the palette module, which feeds CSS, SVG fills, the theme-color meta and the favicon. The logo's petal oranges are the one exception.",
       "Do keep accents small: a stroke, a sparkle, a circle, a kicker.",
       "Do gate every animation behind `prefers-reduced-motion: no-preference`.",
       "Do check the phone layout at 390px in device emulation."
