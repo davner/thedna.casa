@@ -39,7 +39,7 @@ export interface Member {
 }
 
 export const members: Member[] = [
-  { name: "Dan", line: "Builds software for telescopes, collects vinyl from his favorite artists and hunts for the next great coffee spot. Concerts took some of his hearing. He says \"huh?\" a lot. Alexis is convinced half of them are on purpose.", color: "var(--salamander)", portrait: danPhoto },
+  { name: "Dan", line: "Builds software for telescopes, collects vinyl and chases good coffee. Concerts took some of his hearing, and Alexis thinks half his \"huh?\"s are on purpose.", color: "var(--salamander)", portrait: danPhoto },
   { name: "Alexis", line: "Research tech at Caltech, artist at heart and the most thoughtful person you'll ever meet. Also the sleepiest, the cutest, and the one who decides where we're dropping.", color: "var(--pink)", portrait: alexisPhoto },
   { name: "Milly", line: "Big floppy Dumbo ears, a whole lot of sass and zero fear of heights. She's sure she's invincible, and she's definitely the cutest pup around.", color: "var(--sage)", portrait: millyPhoto },
   { name: "Penny", line: "A calico cuddle bug who will let you know, loudly, when dinner is late. She and Milly are Stinky and the Brainless.", color: "var(--gold)", portrait: pennyPhoto },
