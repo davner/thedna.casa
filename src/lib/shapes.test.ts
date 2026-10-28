@@ -1,6 +1,6 @@
 import { parsePathString } from "svg-path-commander/util";
 import { describe, expect, it } from "vitest";
-import { sparkle, wave } from "./shapes";
+import { marigoldMask, sparkle, wave } from "./shapes";
 
 const expectWellFormed = (d: string) => {
   const segments = parsePathString(d);
@@ -11,6 +11,7 @@ const expectWellFormed = (d: string) => {
 const generators: [string, (seed: number) => string][] = [
   ["wave", (seed) => wave(seed, 1440, 80, 2)],
   ["sparkle", (seed) => sparkle(seed)],
+  ["marigoldMask", (seed) => marigoldMask(seed)],
 ];
 
 describe.each(generators)("%s", (_, generate) => {

@@ -31,3 +31,19 @@ export const sparkle = (seed: number): string => {
   const j = (n: number) => +(n * (0.85 + rand() * 0.3)).toFixed(1);
   return `M50 ${j(2)} Q${j(56)} ${j(44)} ${100 - j(2)} 50 Q${j(56)} ${j(56)} 50 ${100 - j(2)} Q${j(44)} ${j(56)} ${j(2)} 50 Q${j(44)} ${j(44)} 50 ${j(2)} Z`;
 };
+
+// Unit-box coordinates let a viewBox of 0 0 1 1 scale the mask to any photo size.
+export const marigoldMask = (seed: number, petals = 18, depth = 0.05): string => {
+  const noise = createNoise2D(mulberry32(seed));
+  const at = (deg: number, r: number) => {
+    const a = (deg * Math.PI) / 180;
+    return `${(0.5 + r * Math.cos(a)).toFixed(4)} ${(0.5 + r * Math.sin(a)).toFixed(4)}`;
+  };
+  const step = 360 / petals;
+  const parts = [`M${at(0, 0.5 - depth)}`];
+  for (let i = 0; i < petals; i++) {
+    const r = 0.5 + depth * 0.4 * noise(i, 1);
+    parts.push(`Q${at((i + 0.5) * step, r + depth * 0.6)} ${at((i + 1) * step, 0.5 - depth + depth * 0.3 * noise(i, 2))}`);
+  }
+  return `${parts.join(" ")} Z`;
+};
