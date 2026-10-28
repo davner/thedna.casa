@@ -138,6 +138,18 @@ describe("built root page", () => {
     expect(clips).toContainEqual(expect.stringMatching(/^(clip|hidden)\b/));
   });
 
+  // Without border-box the hero's 214px of padding stacks on its min(92dvh, 880px) height and pushes the wave below a desktop screen.
+  it("counts the hero's padding inside its height", () => {
+    const sizing: string[] = [];
+    for (const root of pageCss($)) {
+      root.walkRules(/\.hero\b/, (rule) => {
+        if (rule.parent?.type !== "root") return;
+        rule.walkDecls("box-sizing", (decl) => void sizing.push(decl.value));
+      });
+    }
+    expect(sizing).toContain("border-box");
+  });
+
   it("opens the phone screen with the turning stamp, above the wordmark", () => {
     const orders: string[] = [];
     for (const root of pageCss($)) {

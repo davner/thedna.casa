@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-28T14:56:42.336Z",
+  "generatedAt": "2026-10-28T14:59:12.460Z",
   "title": "Design System: The DNA Casa",
   "extensions": {
     "colorMeta": {
@@ -311,6 +311,11 @@
         "name": "The Tight Serif Rule",
         "body": "Serif headings set tight, between -0.02em and -0.04em letter spacing with line height 1 or less. The italic voice resets letter spacing to 0.",
         "section": "typography"
+      },
+      {
+        "name": "The Wave On Screen Rule",
+        "body": "At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.",
+        "section": "layout"
       },
       {
         "name": "The First Screen Rule",

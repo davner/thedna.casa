@@ -15,7 +15,7 @@ import { brushSquiggle } from "../lib/shapes";
 </header>
 
 <style>
-  .hero { position: relative; min-height: min(92dvh, 880px); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: clamp(32px, 6vw, 96px); padding: 64px clamp(20px, 6vw, 96px) 150px; color: var(--cream); }
+  .hero { position: relative; box-sizing: border-box; min-height: min(92dvh, 880px); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: clamp(32px, 6vw, 96px); padding: 64px clamp(20px, 6vw, 96px) 150px; color: var(--cream); }
   /* At 45 degrees the turning ring's box is about 1.41x the stamp, which reaches past the screen edge up to tablet widths. */
   .hero { overflow-x: clip; }
   .hero :global(.spark) { position: absolute; color: var(--gold); }

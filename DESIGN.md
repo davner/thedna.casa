@@ -172,7 +172,9 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 ## Layout
 
-Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), with a fluid gap between columns (`spacing.column-gap`). The hero is 1.2fr words to 1fr stamp, with a content-box minimum of `min(92dvh, 880px)` plus 64px top and 150px bottom padding, so it runs about 1040px tall on a 900px-high desktop screen and the wave sits just below the fold, as in variant 23. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.
+Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), with a fluid gap between columns (`spacing.column-gap`). The hero is 1.2fr words to 1fr stamp, at least `min(92dvh, 880px)` tall with its padding counted inside, so the wave shows at the bottom of the first desktop screen.
+
+**The Wave On Screen Rule.** At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.
 
 One breakpoint, at 760px. Below it the page is one centered column ("Stamp first"):
 - The stamp comes first, then the wordmark and the subtitle.
