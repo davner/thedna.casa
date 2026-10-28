@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { AtRule, Declaration } from "postcss";
-import { builtFileExists, builtPage, pageCss, readText } from "./site";
+import { builtFileExists, builtPage, pageCss, photoSiteDist, readText } from "./site";
 import { members, welcome } from "../src/content";
 
 describe("built root page", () => {
@@ -136,5 +136,16 @@ describe("built root page", () => {
     drawings.each((_, svg) => {
       expect($(svg).closest("[aria-hidden='true']"), $.html(svg).slice(0, 80)).toHaveLength(1);
     });
+  });
+});
+
+describe("member portraits", () => {
+  const $ = builtPage("portraits/index.html", photoSiteDist);
+
+  // The member's name is printed right under the portrait, so alt text would make screen readers say it twice.
+  it("have empty alt text", () => {
+    const portraits = $("li img");
+    expect(portraits).toHaveLength(1);
+    expect(portraits.attr("alt")).toBe("");
   });
 });

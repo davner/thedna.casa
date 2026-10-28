@@ -5,10 +5,12 @@ import postcss, { type Root } from "postcss";
 import sharp from "sharp";
 
 const dist = new URL("../dist/", import.meta.url);
-const inDist = (path: string) => new URL(path.replace(/^\//, ""), dist);
-const read = (path: string) => readFileSync(inDist(path), "utf8");
+// A second built site whose pages render the real components with photos, since the real site has none yet.
+export const photoSiteDist = new URL("fixtures/photo-site/dist/", import.meta.url);
+const inDist = (path: string, root = dist) => new URL(path.replace(/^\//, ""), root);
+const read = (path: string, root = dist) => readFileSync(inDist(path, root), "utf8");
 
-export const builtPage = (path: string) => load(read(path));
+export const builtPage = (path: string, root = dist) => load(read(path, root));
 
 export const builtFileExists = (path: string) => existsSync(inDist(path));
 
