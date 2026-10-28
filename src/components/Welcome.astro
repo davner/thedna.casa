@@ -28,8 +28,7 @@ const petals = marigoldMask(233);
   /* The words come first in the markup for phones; wider screens put the photo back on the left. */
   .photo { order: -1; display: block; width: min(100%, 440px); height: auto; aspect-ratio: 1; justify-self: center; fill: var(--cheek); object-fit: cover; }
   img.photo { clip-path: url(#petals); }
-  .kicker { font-family: "Averia Serif Libre", serif; font-weight: 700; color: var(--terra); font-size: 1.3rem; letter-spacing: -0.02em; margin: 0 0 10px; }
-  h2 { font-family: "Averia Serif Libre", serif; font-weight: 700; letter-spacing: -0.04em; font-size: clamp(2.2rem, 4.4vw, 3.8rem); line-height: 1; margin: 0; }
+  .kicker { font-family: var(--font-serif); font-weight: 700; color: var(--terra); font-size: 1.3rem; letter-spacing: -0.02em; margin: 0 0 10px; }
   .text { font-size: clamp(1.05rem, 1.4vw, 1.2rem); line-height: 1.6; max-width: 38ch; margin: 22px 0 0; }
 
   @media (max-width: 760px) {
