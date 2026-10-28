@@ -75,17 +75,15 @@ describe("built root page", () => {
     expect(section).toContain(welcome.text);
   });
 
-  it("gives the welcome photo, or its placeholder, alt text", () => {
-    const photo = $("h2:contains('Hola')").closest("section").find("img, [role='img']");
-    expect(photo).toHaveLength(1);
-    expect((photo.attr("alt") ?? photo.attr("aria-label") ?? "").trim()).not.toBe("");
-  });
-
-  // Phones show the words before the petal shape, so screen readers should meet them in that order too.
-  it("reads the welcome words before the welcome photo", () => {
-    const section = $("#welcome-heading").closest("section");
-    const order = section.find("h2, img, [role='img']").map((_, el) => (el.tagName === "h2" ? "words" : "photo")).get();
-    expect(order).toEqual(["words", "photo"]);
+  // Until a real photo exists the petal is decoration, and announcing a placeholder tells a listener nothing.
+  it("hides the welcome photo placeholder from assistive tech", () => {
+    const section = sectionHeading("Hola, we're Dan & Alexis.").closest("section");
+    expect(section.find("img, [role='img'], [aria-label]")).toHaveLength(0);
+    const drawings = section.find("svg");
+    expect(drawings.length).toBeGreaterThan(0);
+    drawings.each((_, svg) => {
+      expect($(svg).closest("[aria-hidden='true']"), $.html(svg).slice(0, 80)).toHaveLength(1);
+    });
   });
 
   it("signs off in the footer with Con cariño and the build year", () => {
@@ -147,5 +145,21 @@ describe("member portraits", () => {
     const portraits = $("li img");
     expect(portraits).toHaveLength(1);
     expect(portraits.attr("alt")).toBe("");
+  });
+});
+
+describe("welcome photo", () => {
+  const $ = builtPage("welcome/index.html", photoSiteDist);
+
+  it("has descriptive alt text", () => {
+    const photo = $("img");
+    expect(photo).toHaveLength(1);
+    expect(photo.attr("alt")).toBe("Dan and Alexis on the porch");
+  });
+
+  // Phones show the words before the photo, so screen readers should meet them in that order too.
+  it("comes after the welcome words in reading order", () => {
+    const order = $("h2, img").map((_, el) => (el.tagName === "h2" ? "words" : "photo")).get();
+    expect(order).toEqual(["words", "photo"]);
   });
 });

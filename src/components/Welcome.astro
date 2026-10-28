@@ -17,9 +17,9 @@ const petals = marigoldMask(233);
   {welcome.photo
     ? <>
         <svg class="defs" aria-hidden="true"><clipPath id="petals" clipPathUnits="objectBoundingBox"><path d={petals} /></clipPath></svg>
-        <Image class="photo" src={welcome.photo} alt={welcome.alt} width={880} height={880} />
+        <Image class="photo" src={welcome.photo.src} alt={welcome.photo.alt} width={880} height={880} />
       </>
-    : <svg class="photo" viewBox="0 0 1 1" role="img" aria-label={welcome.alt}><path d={petals} /></svg>}
+    : <svg class="photo" viewBox="0 0 1 1" aria-hidden="true"><path d={petals} /></svg>}
 </section>
 
 <style>
