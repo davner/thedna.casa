@@ -1,8 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import { welcome } from "../content";
+import { welcome as householdWelcome, type Welcome } from "../content";
 import { marigoldMask, wave } from "../lib/shapes";
 
+interface Props { welcome?: Welcome }
+const { welcome = householdWelcome } = Astro.props;
 const petals = marigoldMask(233);
 ---
 <section class="welcome" aria-labelledby="welcome-heading">
