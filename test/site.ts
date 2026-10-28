@@ -22,10 +22,14 @@ export const imageMetadata = async (file: string) => {
   return { exif: !!exif, xmp: !!xmp, iptc: !!iptc };
 };
 
+const shippedFiles = (root: URL) => readdirSync(root, { recursive: true, encoding: "utf8" });
+
 export const shippedImages = (root: URL = dist) =>
-  readdirSync(root, { recursive: true, encoding: "utf8" })
+  shippedFiles(root)
     .filter((file) => /\.(jpe?g|png|webp|avif|gif|tiff?|heic|heif)$/i.test(file))
     .map((file) => fileURLToPath(new URL(file, root)));
+
+export const shippedPages = () => shippedFiles(dist).filter((file) => file.endsWith(".html"));
 
 // Astro inlines small stylesheets and links larger ones, so a page's CSS lives in both places.
 export const pageCss = ($: CheerioAPI): Root[] => [
