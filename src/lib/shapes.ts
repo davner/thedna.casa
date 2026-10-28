@@ -109,3 +109,8 @@ export const quad = (p0: Pt, c: Pt, p1: Pt, n = 10): Pt[] =>
     const u = 1 - t;
     return [u * u * p0[0] + 2 * u * t * c[0] + t * t * p1[0], u * u * p0[1] + 2 * u * t * c[1] + t * t * p1[1]];
   });
+
+export const line = (p0: Pt, p1: Pt, n = 6): Pt[] =>
+  Array.from({ length: n + 1 }, (_, i) => [p0[0] + ((p1[0] - p0[0]) * i) / n, p0[1] + ((p1[1] - p0[1]) * i) / n]);
+
+export const join = (...parts: Pt[][]): Pt[] => parts.flatMap((p, i) => (i === 0 ? p : p.slice(1)));

@@ -1,6 +1,6 @@
 import { getPathBBox, isClosedPath, normalizePath, parsePathString } from "svg-path-commander/util";
 import { describe, expect, it } from "vitest";
-import { brushSquiggle, marigoldMask, polar, quad, sparkle, wave } from "./shapes";
+import { brushSquiggle, join, line, marigoldMask, polar, quad, sparkle, wave } from "./shapes";
 
 const expectWellFormed = (d: string) => {
   const segments = parsePathString(d);
@@ -69,6 +69,23 @@ describe("centerlines", () => {
       [0, 0],
       [5, 5],
       [10, 0],
+    ]);
+  });
+
+  it("samples a straight line in even steps", () => {
+    expect(line([0, 0], [6, 3], 3)).toEqual([
+      [0, 0],
+      [2, 1],
+      [4, 2],
+      [6, 3],
+    ]);
+  });
+
+  it("joins centerlines without repeating the shared point", () => {
+    expect(join(line([0, 0], [2, 0], 1), line([2, 0], [2, 2], 1))).toEqual([
+      [0, 0],
+      [2, 0],
+      [2, 2],
     ]);
   });
 });
