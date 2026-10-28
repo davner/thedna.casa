@@ -5,6 +5,12 @@ import { builtPage, pageCss, readText } from "./site";
 describe("built root page", () => {
   const $ = builtPage("index.html");
 
+  // Each member's visible texts in reading order, so the test does not care which tags hold them.
+  const memberEntries = (heading: ReturnType<typeof $>) =>
+    heading.closest("section").find("li").map((_, li) => [
+      $(li).children().map((_, child) => $(child).text().trim()).get().filter(Boolean),
+    ]).get() as string[][];
+
   it("has one h1 reading THE DNA CASA and the subtitle Dan & Alexis", () => {
     expect($("h1")).toHaveLength(1);
     expect(readText($, "h1")).toBe("THE DNA CASA");
@@ -37,6 +43,12 @@ describe("built root page", () => {
       }
       expect(guards, decl.toString()).toContainEqual(expect.stringContaining("(prefers-reduced-motion:no-preference)"));
     }
+  });
+
+  it("lists Dan, Alexis, Milly and Penny under Who lives here", () => {
+    const heading = $("h2").filter((_, h) => $(h).text().trim() === "Who lives here");
+    expect(heading).toHaveLength(1);
+    expect(memberEntries(heading).map((texts) => texts[0])).toEqual(["Dan", "Alexis", "Milly", "Penny"]);
   });
 
   it("hides the hero's logo, ring, squiggle and sparkles from assistive tech", () => {

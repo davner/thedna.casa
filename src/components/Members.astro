@@ -1,0 +1,32 @@
+---
+import { Image } from "astro:assets";
+import { members } from "../content";
+---
+<section class="members" aria-labelledby="members-heading">
+  <h2 id="members-heading">Who lives here</h2>
+  <ul>
+    {members.map((m) => (
+      <li>
+        {m.portrait
+          ? <Image class="circle" src={m.portrait} alt={m.name} width={400} height={400} />
+          : <span class="circle" style={`background:${m.color}`}></span>}
+        <strong>{m.name}</strong>
+        <span class="line">{m.line}</span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .members { background: var(--cal); color: var(--mole); padding: 0 clamp(20px, 6vw, 96px) clamp(96px, 11vw, 150px); text-align: center; }
+  h2 { font-family: "Averia Serif Libre", serif; font-weight: 700; letter-spacing: -0.04em; font-size: clamp(2.2rem, 4.4vw, 3.8rem); line-height: 1; margin: 0; color: var(--terra); }
+  ul { list-style: none; padding: 0; margin: 48px auto 0; max-width: 1000px; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(20px, 3vw, 44px); }
+  li { display: grid; justify-items: center; gap: 6px; }
+  .circle { display: block; width: 100%; max-width: 200px; height: auto; aspect-ratio: 1; border-radius: 50%; object-fit: cover; margin-bottom: 12px; }
+  strong { font-family: "Averia Serif Libre", serif; font-weight: 700; font-size: 1.7rem; letter-spacing: -0.02em; }
+  .line { font-size: 1rem; }
+
+  @media (max-width: 760px) {
+    ul { grid-template-columns: 1fr 1fr; }
+  }
+</style>
