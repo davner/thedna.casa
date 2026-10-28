@@ -1,7 +1,6 @@
 import type { ImageMetadata } from "astro";
 
 // PLACEHOLDER copy: Dan and Alexis have not written the welcome or the one-liners yet.
-// Edit the words here; the page layout reads everything from this file.
 
 export const welcome: { text: string; photo?: ImageMetadata; alt: string } = {
   text: "Placeholder welcome. A few warm sentences go here: who we are, that this is our little corner of the web, and that we're glad you stopped by.",

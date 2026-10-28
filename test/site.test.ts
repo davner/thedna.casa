@@ -48,7 +48,7 @@ describe("built root page", () => {
   it("animates only under prefers-reduced-motion: no-preference", () => {
     const animations: Declaration[] = [];
     for (const root of pageCss($)) root.walkDecls(/^animation(-name)?$/, (decl) => void animations.push(decl));
-    // The ring turns and the squiggle paints on.
+    // A floor, so the guard check below cannot pass on an empty list if the CSS moves somewhere this test does not read.
     expect(animations.length).toBeGreaterThanOrEqual(2);
     for (const decl of animations) {
       const guards: string[] = [];

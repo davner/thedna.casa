@@ -4,7 +4,7 @@ import { createNoise2D } from "simplex-noise";
 
 export type Pt = [number, number];
 
-// No maintained library ships a small seedable PRNG; mulberry32 is a few lines and well known.
+// Hand-written because the shapes approved in the prototype came from this exact generator; another would redraw them.
 export const mulberry32 = (seed: number) => () => {
   seed |= 0;
   seed = (seed + 0x6d2b79f5) | 0;
