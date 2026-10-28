@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { load, type CheerioAPI } from "cheerio";
 import postcss, { type Root } from "postcss";
@@ -8,6 +8,8 @@ const dist = new URL("../dist/", import.meta.url);
 const read = (path: string) => readFileSync(new URL(path.replace(/^\//, ""), dist), "utf8");
 
 export const builtPage = (path: string) => load(read(path));
+
+export const builtFileExists = (path: string) => existsSync(new URL(path.replace(/^\//, ""), dist));
 
 // cheerio's text() drops <br>, which would glue "THE DNA" to "CASA".
 export const readText = ($: CheerioAPI, selector: Parameters<CheerioAPI>[0]) => {

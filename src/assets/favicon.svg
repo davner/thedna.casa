@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Salamander green vanishes on a dark tab bar, so the moon turns cream there. -->
+  <style>.moon{fill:#2F3E3E}@media (prefers-color-scheme:dark){.moon{fill:#F6E7DA}}</style>
+  <mask id="cut"><rect width="32" height="32" fill="#fff"/><circle cx="18.6" cy="13.4" r="13.6"/></mask>
+  <circle class="moon" cx="15.2" cy="16.8" r="13.6" mask="url(#cut)"/>
+  <g fill="#EC8A1E">
+    <circle cx="28" cy="13.4" r="3"/><circle cx="26.2" cy="18.93" r="3"/><circle cx="21.5" cy="22.34" r="3"/>
+    <circle cx="15.7" cy="22.34" r="3"/><circle cx="11" cy="18.93" r="3"/><circle cx="9.2" cy="13.4" r="3"/>
+    <circle cx="11" cy="7.87" r="3"/><circle cx="15.7" cy="4.46" r="3"/><circle cx="21.5" cy="4.46" r="3"/>
+    <circle cx="26.2" cy="7.87" r="3"/>
+  </g>
+  <circle cx="18.6" cy="13.4" r="9" fill="#F2B233"/>
+  <g fill="none" stroke="#2F3E3E" stroke-width="2" stroke-linecap="round">
+    <path d="M13 12.2q1.8 2.2 3.6 0"/>
+    <path d="M20.6 12.2q1.8 2.2 3.6 0"/>
+  </g>
+  <ellipse cx="18.6" cy="17.2" rx="1.8" ry="1.2" fill="#2F3E3E"/>
+</svg>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { AtRule, Declaration } from "postcss";
-import { builtPage, pageCss, readText } from "./site";
+import { builtFileExists, builtPage, pageCss, readText } from "./site";
 import { members, welcome } from "../src/content";
 
 describe("built root page", () => {
@@ -26,6 +26,19 @@ describe("built root page", () => {
     expect(meta("property", "og:description")).not.toBe("");
     expect(meta("property", "og:url")).toBe("https://thedna.casa/");
     expect(meta("property", "og:type")).toBe("website");
+  });
+
+  it("links an SVG favicon, a PNG fallback and an apple-touch icon that all exist", () => {
+    const href = (selector: string) => $(`head ${selector}`).attr("href") ?? "";
+    const icons = [
+      href("link[rel='icon'][type='image/svg+xml']"),
+      href("link[rel='icon'][type='image/png']"),
+      href("link[rel='apple-touch-icon']"),
+    ];
+    for (const icon of icons) {
+      expect(icon).not.toBe("");
+      expect(builtFileExists(icon), icon).toBe(true);
+    }
   });
 
   it("ships no JavaScript, so it renders fully with JavaScript off", () => {
