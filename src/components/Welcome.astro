@@ -1,0 +1,37 @@
+---
+import { Image } from "astro:assets";
+import { welcome } from "../content";
+import { marigoldMask, wave } from "../lib/shapes";
+
+const petals = marigoldMask(233);
+---
+<section class="welcome" aria-labelledby="welcome-heading">
+  <svg class="edge" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d={wave(232, 1440, 80, 2)} /></svg>
+  {welcome.photo
+    ? <>
+        <svg class="defs" aria-hidden="true"><clipPath id="petals" clipPathUnits="objectBoundingBox"><path d={petals} /></clipPath></svg>
+        <Image class="photo" src={welcome.photo} alt={welcome.alt} width={880} height={880} />
+      </>
+    : <svg class="photo" viewBox="0 0 1 1" role="img" aria-label={welcome.alt}><path d={petals} /></svg>}
+  <div>
+    <p class="kicker">Bienvenidos</p>
+    <h2 id="welcome-heading">Hola, we're Dan &amp; Alexis.</h2>
+    <p class="text">{welcome.text}</p>
+  </div>
+</section>
+
+<style>
+  .welcome { position: relative; background: var(--cal); color: var(--mole); display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(32px, 6vw, 96px); align-items: center; padding: clamp(56px, 7vw, 96px) clamp(20px, 6vw, 96px) clamp(88px, 10vw, 130px); }
+  /* Overlaps the hero by one pixel less than its height so no seam shows between wave and section. */
+  .edge { position: absolute; left: 0; top: -79px; width: 100%; height: 80px; display: block; fill: var(--cal); }
+  .defs { position: absolute; width: 0; height: 0; }
+  .photo { display: block; width: min(100%, 440px); height: auto; aspect-ratio: 1; justify-self: center; fill: var(--cheek); object-fit: cover; }
+  img.photo { clip-path: url(#petals); }
+  .kicker { font-family: "Averia Serif Libre", serif; font-weight: 700; color: var(--terra); font-size: 1.3rem; letter-spacing: -0.02em; margin: 0 0 10px; }
+  h2 { font-family: "Averia Serif Libre", serif; font-weight: 700; letter-spacing: -0.04em; font-size: clamp(2.2rem, 4.4vw, 3.8rem); line-height: 1; margin: 0; }
+  .text { font-size: clamp(1.05rem, 1.4vw, 1.2rem); line-height: 1.6; max-width: 38ch; margin: 22px 0 0; }
+
+  @media (max-width: 760px) {
+    .welcome { grid-template-columns: 1fr; }
+  }
+</style>

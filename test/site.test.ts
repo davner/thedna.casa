@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { AtRule, Declaration } from "postcss";
 import { builtPage, pageCss, readText } from "./site";
-import { members } from "../src/content";
+import { members, welcome } from "../src/content";
 
 describe("built root page", () => {
   const $ = builtPage("index.html");
@@ -50,6 +50,14 @@ describe("built root page", () => {
     const heading = $("h2").filter((_, h) => $(h).text().trim() === "Who lives here");
     expect(heading).toHaveLength(1);
     expect(memberEntries(heading).map((texts) => texts[0])).toEqual(["Dan", "Alexis", "Milly", "Penny"]);
+  });
+
+  it("welcomes with Bienvenidos, a hello from Dan & Alexis and the welcome text", () => {
+    const hello = $("h2").filter((_, h) => $(h).text().trim() === "Hola, we're Dan & Alexis.");
+    expect(hello).toHaveLength(1);
+    const section = hello.closest("section").text().replace(/\s+/g, " ");
+    expect(section).toContain("Bienvenidos");
+    expect(section).toContain(welcome.text);
   });
 
   it("gives each member the one-liner from the content module", () => {
