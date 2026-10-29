@@ -53,6 +53,21 @@ describe("shipped pages", () => {
     }
   });
 
+  // A panel that ends after its links leaves a straight dark edge across the stamp below it.
+  it("stretch the open phone menu panel to the bottom of the screen", () => {
+    for (const page of shippedPages()) {
+      const panel: Record<string, string> = {};
+      for (const root of pageCss(builtPage(page))) {
+        root.walkRules(/^#site-menu(\[[^\]]+\])?$/, (rule) => {
+          if (rule.parent?.type !== "root") return;
+          rule.walkDecls((decl) => void (panel[decl.prop] = decl.value.replace(/\s+/g, " ").trim()));
+        });
+      }
+      // The popover default is height: fit-content, which would win over the bottom inset.
+      expect({ inset: panel.inset, height: panel.height }, page).toEqual({ inset: "76px 0 0", height: "auto" });
+    }
+  });
+
   it("crossfade into the next page with a CSS view transition, only under prefers-reduced-motion: no-preference", () => {
     for (const page of shippedPages()) {
       const transitions: string[] = [];
