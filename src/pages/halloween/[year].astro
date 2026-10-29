@@ -4,7 +4,7 @@ import { getCollection, render } from "astro:content";
 import Halloween from "../../layouts/Halloween.astro";
 import Drips from "../../components/halloween/Drips.astro";
 import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
-import { partyShare } from "../../lib/party-preview";
+import { partyShare, partyWords } from "../../lib/party-preview";
 import { marigoldMask } from "../../lib/shapes";
 
 export async function getStaticPaths() {
@@ -23,7 +23,7 @@ const petalId = (photo: Photo) => `petal-${photo.seed}`;
 const clip = (photo: Photo) => `clip-path:${photo.shape === "circle" ? "circle(50%)" : `url(#${petalId(photo)})`}`;
 ---
 <Halloween title={`${p.name} · The DnA Casa`} share={partyShare(p)} description={`Our ${p.theme} Halloween, ${p.year}: costumes, the contest, the drinks and what was new.`}>
-  <HalloweenHero title={titleLines} subtitle={`Our ${p.theme} Halloween`} ring={`${upper} · HALLOWEEN ${p.year} · THE DnA CASA · `} />
+  <HalloweenHero title={titleLines} subtitle={`Our ${p.theme} Halloween`} ring={`${partyWords(p)} · THE DnA CASA · `} />
   <main class="recap">
     <Drips />
     <svg class="defs" aria-hidden="true">

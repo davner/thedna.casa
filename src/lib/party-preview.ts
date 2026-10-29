@@ -6,12 +6,12 @@ import { ghostFigure } from "./shapes";
 
 interface Party { name: string; year: number }
 
-const words = ({ name, year }: Party) => `${name.toUpperCase()} · HALLOWEEN ${year}`;
+export const partyWords = ({ name, year }: Party) => `${name.toUpperCase()} · HALLOWEEN ${year}`;
 
 // Beside the drawing, so the alt text cannot drift from what the image shows.
 export const partyShare = (party: Party) => ({
   path: `/halloween/${party.year}/share.png`,
-  alt: `A cream ghost over ${words(party)} on Trona black`,
+  alt: `A cream ghost over ${partyWords(party)} on Trona black`,
 });
 
 const width = 1200;
@@ -51,7 +51,7 @@ export const partyPreview = async (party: Party) => {
 <g fill="${palette.mole}">${ghostFigure.eyes.map((d) => `<path d="${d}"/>`).join("")}</g>
 <g fill="${palette.cheek}">${ghostFigure.cheeks.map((d) => `<path d="${d}"/>`).join("")}</g>
 </svg>
-<g fill="${palette.cream}">${line(words(party), 500, 72)}</g>
+<g fill="${palette.cream}">${line(partyWords(party), 500, 72)}</g>
 </svg>`;
   return sharp(Buffer.from(svg)).png().toBuffer();
 };
