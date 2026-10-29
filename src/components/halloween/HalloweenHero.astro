@@ -12,8 +12,14 @@ interface Props {
 const { title, subtitle, fit, date, ring } = Astro.props;
 ---
 
-<header class:list={["hero", { short: !ring }]}>
+<header class:list={["hero", { short: !ring, keepsake: !ring && Astro.slots.has("keepsake") }]}>
   <HeroWords lines={title} subtitle={subtitle} fit={fit} date={date} />
+  {/* A recap has no stamp, so its keepsake (the party's invite) takes the stamp's slot instead. */}
+  {!ring && Astro.slots.has("keepsake") && (
+    <div class="keepsake-slot">
+      <slot name="keepsake" />
+    </div>
+  )}
   {ring && (
     <Stamp ring={ring}>
       <Ghost class="stamp-ghost" />
@@ -44,6 +50,23 @@ const { title, subtitle, fit, date, ring } = Astro.props;
   .hero :global(.stamp) {
     width: 100%;
   }
+  .hero.keepsake {
+    grid-template-columns: minmax(0, 1fr) min(380px, 34%);
+  }
+  /* Above the drips, which hang from the main column into the hero's lower edge. */
+  .keepsake-slot {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    justify-items: center;
+  }
+  .keepsake-slot :global(img) {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: min(62vh, 540px);
+  }
   .hero :global(.stamp-ghost) {
     width: 46%;
     display: block;
@@ -66,6 +89,16 @@ const { title, subtitle, fit, date, ring } = Astro.props;
     .hero :global(.stamp) {
       order: -1;
       width: min(76vw, 300px);
+    }
+    .hero.keepsake {
+      grid-template-columns: 1fr;
+    }
+    /* Small enough that the drips still land on the first phone screen. */
+    .keepsake-slot {
+      order: -1;
+    }
+    .keepsake-slot :global(img) {
+      max-height: 260px;
     }
   }
 </style>

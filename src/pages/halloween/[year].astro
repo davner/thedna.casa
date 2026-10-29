@@ -41,10 +41,29 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
     fit={title.fit}
     date={partyDate(party.date)}
     subtitle={`Our ${party.theme} Halloween`}
-  />
+  >
+    {party.invite && (
+      <Image
+        slot="keepsake"
+        class="invite"
+        style="clip-path:url(#soft-invite)"
+        src={party.invite.src}
+        alt={party.invite.alt}
+        width={760}
+        widths={[380, 760]}
+        sizes="(max-width: 760px) 260px, 380px"
+        loading="eager"
+      />
+    )}
+  </HalloweenHero>
   <main class="recap">
     <Drips />
     <svg class="defs" aria-hidden="true">
+      {party.invite && (
+        <clipPath id="soft-invite" clipPathUnits="objectBoundingBox">
+          <path d={softMask(party.year, party.invite.src.width / party.invite.src.height)} />
+        </clipPath>
+      )}
       {photos.map((photo) => (
         <clipPath id={softId(photo)} clipPathUnits="objectBoundingBox">
           <path d={softMask(photo.seed, 4 / 5)} />
@@ -174,20 +193,6 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
             </li>
           ))}
         </ul>
-      </section>
-    )}
-
-    {party.invite && (
-      <section class="invite reveal" aria-labelledby="invite-h">
-        <h2 id="invite-h">The invite</h2>
-        <Image
-          class="card"
-          src={party.invite.src}
-          alt={party.invite.alt}
-          width={840}
-          widths={[420, 840]}
-          sizes="(max-width: 760px) 280px, 420px"
-        />
       </section>
     )}
   </main>
@@ -429,17 +434,6 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
     margin-top: 12px;
   }
 
-  .invite h2 {
-    margin: 0 auto;
-  }
-  .card {
-    display: block;
-    width: 100%;
-    max-width: 420px;
-    height: auto;
-    margin: 48px auto 0;
-  }
-
   @media (prefers-reduced-motion: no-preference) {
     .photo {
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -509,10 +503,6 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
     }
     .new > ul > li p {
       margin-inline: auto;
-    }
-    .card {
-      max-width: 280px;
-      margin-top: 28px;
     }
     .frames {
       grid-template-columns: repeat(2, minmax(0, 160px));

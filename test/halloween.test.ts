@@ -92,7 +92,6 @@ describe("built Trick-R-Drink recap", () => {
       "h2 New this year",
       "h3 The Wanted Wall",
       "h3 The garage",
-      "h2 The invite",
     ]);
   });
 
@@ -338,35 +337,37 @@ describe("built recap with an invite", () => {
     expect(alts("New this year")).not.toContain(invited.drinks.photo.alt);
   });
 
-  it("closes with The invite, after New this year", () => {
-    const sections = $("main > section h2")
-      .map((_, h) => $(h).text().trim())
-      .get();
-    expect(sections.slice(-2)).toEqual(["New this year", "The invite"]);
-  });
-
-  // An invite is mostly words, so a petal or circle mask would cut them off.
-  it("shows the invite whole, with its alt text from the party file", () => {
-    const img = $("h2")
-      .filter((_, h) => $(h).text().trim() === "The invite")
-      .closest("section")
-      .find("img");
+  // A recap has no stamp, so the invite takes the stamp's slot and the page never shows it twice.
+  it("shows the invite in the hero, beside the title, and nowhere else", () => {
+    const img = $("header img");
     expect(img).toHaveLength(1);
     expect(img.attr("alt")).toBe(invited.invite.alt);
-    expect(img.attr("style") ?? "").not.toMatch(/clip-path/);
+    expect($("main img").filter((_, el) => $(el).attr("alt") === invited.invite.alt)).toHaveLength(0);
+    expect($("h2").filter((_, h) => $(h).text().trim() === "The invite")).toHaveLength(0);
+  });
+
+  // The soft mask only rounds the corners, so the invite's words stay whole.
+  it("clips the invite with the soft mask shaped to the card", async () => {
+    const id =
+      $("header img")
+        .attr("style")
+        ?.match(/url\(#([^)]+)\)/)?.[1] ?? "";
+    const file = new URL(`../src/content/halloween/${invited.invite.src}`, import.meta.url);
+    const { width = 0, height = 1 } = await sharp(file.pathname).metadata();
+    expect($(`svg [id='${id}'] path`).attr("d")).toBe(softMask(2024, width / height));
+  });
+
+  // It is the first thing on the page, so it must not wait for a scroll to load.
+  it("loads the hero invite right away", () => {
+    expect($("header img").attr("loading")).toBe("eager");
   });
 });
 
 describe("built recap with an invite taken on a phone", () => {
   // A desktop capture came out as a banner too wide to read at a card's width; the phone view is a tall card.
-  it("shows the 2022 invite as a tall card at the card's width", () => {
-    const $ = builtPage("halloween/2022/index.html");
-    const img = $("h2")
-      .filter((_, h) => $(h).text().trim() === "The invite")
-      .closest("section")
-      .find("img");
+  it("shows the 2022 invite as a tall card", () => {
+    const img = builtPage("halloween/2022/index.html")("header img");
     expect(Number(img.attr("height"))).toBeGreaterThan(Number(img.attr("width")));
-    expect(img.attr("sizes")).toContain("420px");
   });
 });
 
