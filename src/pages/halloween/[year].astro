@@ -20,7 +20,11 @@ const titleLines = upper.split(/(?<=-)(?=[^-]*$)/);
 type Photo = NonNullable<(typeof p.ourCostumes)[number]["photo"]>;
 const petals = [...p.ourCostumes, ...p.highlights].flatMap((item) => (item.photo?.shape === "petal" ? [item.photo] : []));
 const petalId = (photo: Photo) => `petal-${photo.seed}`;
-const clip = (photo: Photo) => `clip-path:${photo.shape === "circle" ? "circle(50%)" : `url(#${petalId(photo)})`}`;
+const shapes = {
+  petal: { clip: (photo: Photo) => `url(#${petalId(photo)})`, size: 880 },
+  circle: { clip: () => "circle(50%)", size: 640 },
+} satisfies Record<Photo["shape"], { clip: (photo: Photo) => string; size: number }>;
+const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
 ---
 <Halloween title={`${p.name} · The DnA Casa`} share={partyShare(p)} description={`Our ${p.theme} Halloween, ${p.year}: costumes, the contest, the drinks and what was new.`}>
   <HalloweenHero title={titleLines} subtitle={`Our ${p.theme} Halloween`} ring={`${partyWords(p)} · THE DnA CASA · `} />
@@ -39,7 +43,7 @@ const clip = (photo: Photo) => `clip-path:${photo.shape === "circle" ? "circle(5
       <div class="costume-grid">
         {p.ourCostumes.map((c) => (
           <figure class:list={[c.photo?.shape ?? "petal", "reveal"]}>
-            {c.photo && <Image class="photo" style={clip(c.photo)} src={c.photo.src} alt={c.photo.alt} width={c.photo.shape === "circle" ? 640 : 880} height={c.photo.shape === "circle" ? 640 : 880} />}
+            {c.photo && <Image class="photo" style={clip(c.photo)} src={c.photo.src} alt={c.photo.alt} width={shapes[c.photo.shape].size} height={shapes[c.photo.shape].size} />}
             <figcaption>{c.who} as <span lang={c.asLang}>{c.as}</span></figcaption>
           </figure>
         ))}
