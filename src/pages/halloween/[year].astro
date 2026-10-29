@@ -1,0 +1,18 @@
+---
+import { getCollection } from "astro:content";
+import Halloween from "../../layouts/Halloween.astro";
+import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
+
+export async function getStaticPaths() {
+  const parties = await getCollection("halloween");
+  return parties.map((party) => ({ params: { year: String(party.data.year) }, props: { party } }));
+}
+const { party } = Astro.props;
+const p = party.data;
+const upper = p.name.toUpperCase();
+// A hyphenated name breaks after its last hyphen, so TRICK-R- sits over DRINK; any other name stays on one line.
+const titleLines = upper.split(/(?<=-)(?=[^-]*$)/);
+---
+<Halloween title={`${p.name} · The DnA Casa`} description={`Our ${p.theme} Halloween, ${p.year}: costumes, the contest, the drinks and what was new.`}>
+  <HalloweenHero title={titleLines} />
+</Halloween>
