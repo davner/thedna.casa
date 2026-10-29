@@ -53,6 +53,19 @@ describe("shipped pages", () => {
     }
   });
 
+  it("crossfade into the next page with a CSS view transition, only under prefers-reduced-motion: no-preference", () => {
+    for (const page of shippedPages()) {
+      const transitions: string[] = [];
+      for (const root of pageCss(builtPage(page))) {
+        root.walkAtRules("view-transition", (rule) => {
+          const media = rule.parent?.type === "atrule" ? squash((rule.parent as AtRule).params) : "";
+          rule.walkDecls("navigation", (decl) => void transitions.push(`${media} ${decl.value}`));
+        });
+      }
+      expect(transitions, page).toEqual(["(prefers-reduced-motion:no-preference) auto"]);
+    }
+  });
+
   it("pad the top of every hero past the navbar, so the nav never overlaps the words", () => {
     // The minifier rewrites max-width queries into range syntax.
     const phone = (rule: Rule) => {

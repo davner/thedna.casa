@@ -60,6 +60,9 @@ const colorTokens = Object.entries(palette).map(([name, hex]) => `--${name}:${he
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition { navigation: auto; }
+  }
   ::selection { background: var(--pink); color: var(--cream-page); }
   .grain {
     position: fixed;
