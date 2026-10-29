@@ -1,0 +1,28 @@
+---
+import { brushSquiggle } from "../lib/shapes";
+interface Props { lines: string[]; subtitle: string }
+const { lines, subtitle } = Astro.props;
+---
+<div class="words">
+  <h1>{lines.map((line, i) => <>{i > 0 && <br />}{line}</>)}</h1>
+  <p class="sub">{subtitle}</p>
+  <svg class="squiggle" viewBox="0 0 200 24" aria-hidden="true"><path d={brushSquiggle(231, 200, 24, 3, 6)} /></svg>
+</div>
+
+<style>
+  h1 { font-family: var(--font-serif); font-weight: 700; font-size: clamp(3.4rem, 10vw, 9.5rem); letter-spacing: -0.03em; line-height: 0.9; margin: 0; }
+  .sub { font-family: var(--font-serif); font-style: italic; letter-spacing: 0; font-size: clamp(1.3rem, 2.2vw, 1.8rem); margin: 20px 0 0; color: var(--blush); }
+  /* Each hero picks its squiggle's color, so the words stay one component across the home and Halloween pages. */
+  .squiggle { display: block; width: 130px; height: 16px; margin: 18px 0 0; fill: var(--squiggle, var(--pink)); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .squiggle { animation: paint 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards; }
+  }
+  @keyframes paint { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+  @media (max-width: 760px) {
+    h1 { font-size: clamp(3rem, 15vw, 4.2rem); line-height: 0.88; }
+    .sub { margin-top: 12px; }
+    .squiggle { margin: 14px auto 0; width: 112px; height: 14px; }
+  }
+</style>

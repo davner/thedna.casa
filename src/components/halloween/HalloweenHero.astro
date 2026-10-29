@@ -1,39 +1,24 @@
 ---
 import Ghost from "./Ghost.astro";
 import Stamp from "../Stamp.astro";
-import { brushSquiggle } from "../../lib/shapes";
+import HeroWords from "../HeroWords.astro";
 interface Props { title: string[]; subtitle: string; ring?: string }
 const { title, subtitle, ring } = Astro.props;
 ---
 <header class:list={["hero", { short: !ring }]}>
-  <div class="words">
-    <h1>{title.map((line, i) => <>{i > 0 && <br />}{line}</>)}</h1>
-    <p class="sub">{subtitle}</p>
-    <svg class="squiggle" viewBox="0 0 200 24" aria-hidden="true"><path d={brushSquiggle(231, 200, 24, 3, 6)} /></svg>
-  </div>
+  <HeroWords lines={title} subtitle={subtitle} />
   {ring && <Stamp class="stamp" ring={ring}><Ghost class="stamp-ghost" /></Stamp>}
 </header>
 
 <style>
-  .hero { position: relative; box-sizing: border-box; min-height: min(92dvh, 880px); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: clamp(32px, 6vw, 96px); padding: 96px clamp(20px, 6vw, 96px) 72px; color: var(--cream); overflow-x: clip; }
+  .hero { position: relative; box-sizing: border-box; min-height: min(92dvh, 880px); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: clamp(32px, 6vw, 96px); padding: 96px clamp(20px, 6vw, 96px) 72px; color: var(--cream); overflow-x: clip; --squiggle: var(--terra); }
   .hero.short { min-height: 0; grid-template-columns: 1fr; padding-top: clamp(120px, 14vw, 180px); padding-bottom: 56px; }
-  h1 { font-family: var(--font-serif); font-weight: 700; font-size: clamp(3.4rem, 10vw, 9.5rem); letter-spacing: -0.03em; line-height: 0.9; margin: 0; }
-  .sub { font-family: var(--font-serif); font-style: italic; letter-spacing: 0; font-size: clamp(1.3rem, 2.2vw, 1.8rem); margin: 20px 0 0; color: var(--blush); }
-  .squiggle { display: block; width: 130px; height: 16px; margin: 18px 0 0; fill: var(--terra); }
   .hero :global(.stamp) { width: min(100%, 380px); justify-self: center; }
   .hero :global(.stamp-ghost) { width: 46%; display: block; position: relative; }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .squiggle { animation: paint 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards; }
-  }
-  @keyframes paint { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 
   @media (max-width: 760px) {
     .hero { min-height: 0; grid-template-columns: 1fr; justify-items: center; gap: 22px; padding: 72px 20px 48px; text-align: center; }
     .hero.short { padding-top: 104px; padding-bottom: 40px; }
     .hero :global(.stamp) { order: -1; width: min(76vw, 300px); }
-    h1 { font-size: clamp(3rem, 15vw, 4.2rem); line-height: 0.88; }
-    .sub { margin-top: 12px; }
-    .squiggle { margin: 14px auto 0; width: 112px; height: 14px; }
   }
 </style>
