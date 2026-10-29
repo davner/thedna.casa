@@ -24,6 +24,11 @@ describe("built root page", () => {
     expect($("p").filter((_, p) => $(p).text().trim() === "Dan & Alexis")).toHaveLength(1);
   });
 
+  it("rings the stamp with the household's words around the Beso", () => {
+    expect($("header svg text").text()).toBe("THE DnA CASA · DAN & ALEXIS · CON CARIÑO · ");
+    expect($("header .stamp svg.stamp-mark")).toHaveLength(1);
+  });
+
   it("has a title, a description and link-preview meta in the head", () => {
     const meta = (attr: string, key: string) => $(`head meta[${attr}="${key}"]`).attr("content") ?? "";
     expect($("head title").text()).toContain("The DnA Casa");

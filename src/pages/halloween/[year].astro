@@ -23,7 +23,7 @@ const petalId = (photo: Photo) => `petal-${seed(photo)}`;
 const clip = (photo: Photo) => `clip-path:${photo.shape === "circle" ? "circle(50%)" : `url(#${petalId(photo)})`}`;
 ---
 <Halloween title={`${p.name} · The DnA Casa`} description={`Our ${p.theme} Halloween, ${p.year}: costumes, the contest, the drinks and what was new.`}>
-  <HalloweenHero title={titleLines} subtitle={`Our ${p.theme} Halloween`} />
+  <HalloweenHero title={titleLines} subtitle={`Our ${p.theme} Halloween`} ring={`${upper} · HALLOWEEN ${p.year} · THE DnA CASA · `} />
   <main class="recap">
     <svg class="defs" aria-hidden="true">
       {petals.map((photo) => <clipPath id={petalId(photo)} clipPathUnits="objectBoundingBox"><path d={marigoldMask(seed(photo))} /></clipPath>)}

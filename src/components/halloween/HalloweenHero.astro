@@ -1,7 +1,8 @@
 ---
+import Stamp from "../Stamp.astro";
 import { brushSquiggle } from "../../lib/shapes";
-interface Props { title: string[]; subtitle: string }
-const { title, subtitle } = Astro.props;
+interface Props { title: string[]; subtitle: string; ring: string }
+const { title, subtitle, ring } = Astro.props;
 ---
 <header class="hero">
   <div class="words">
@@ -9,6 +10,7 @@ const { title, subtitle } = Astro.props;
     <p class="sub">{subtitle}</p>
     <svg class="squiggle" viewBox="0 0 200 24" aria-hidden="true"><path d={brushSquiggle(231, 200, 24, 3, 6)} /></svg>
   </div>
+  <Stamp class="stamp" ring={ring} />
 </header>
 
 <style>
@@ -16,6 +18,7 @@ const { title, subtitle } = Astro.props;
   h1 { font-family: var(--font-serif); font-weight: 700; font-size: clamp(3.4rem, 10vw, 9.5rem); letter-spacing: -0.03em; line-height: 0.9; margin: 0; }
   .sub { font-family: var(--font-serif); font-style: italic; letter-spacing: 0; font-size: clamp(1.3rem, 2.2vw, 1.8rem); margin: 20px 0 0; color: var(--blush); }
   .squiggle { display: block; width: 130px; height: 16px; margin: 18px 0 0; fill: var(--terra); }
+  .hero :global(.stamp) { width: min(100%, 380px); justify-self: center; }
 
   @media (prefers-reduced-motion: no-preference) {
     .squiggle { animation: paint 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards; }
@@ -24,6 +27,7 @@ const { title, subtitle } = Astro.props;
 
   @media (max-width: 760px) {
     .hero { min-height: 0; grid-template-columns: 1fr; justify-items: center; gap: 22px; padding: 72px 20px 48px; text-align: center; }
+    .hero :global(.stamp) { order: -1; width: min(76vw, 300px); }
     h1 { font-size: clamp(3rem, 15vw, 4.2rem); line-height: 0.88; }
     .sub { margin-top: 12px; }
     .squiggle { margin: 14px auto 0; width: 112px; height: 14px; }

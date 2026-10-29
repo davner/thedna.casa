@@ -10,4 +10,5 @@ export const palette = {
   sage: "#b9c9b4",
   cheek: "#f7c6d9",
   blush: "#f0c7b4",
+  trona: "#201d1e",
 };

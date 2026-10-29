@@ -79,4 +79,21 @@ describe("built Trick-R-Drink recap", () => {
     expect(alts("New this year")).toEqual(fromFile(party.highlights));
     expect($("img").map((_, img) => $(img).attr("alt")).get().filter((alt) => !alt?.trim())).toEqual([]);
   });
+
+  it("names the party in the title and the link preview title", () => {
+    expect($("head title").text()).toBe("Trick-R-Drink · The DnA Casa");
+    expect($("head meta[property='og:title']").attr("content")).toBe("Trick-R-Drink · The DnA Casa");
+  });
+
+  it("rings the stamp with the party's name and year", () => {
+    expect($("header svg text").text()).toBe("TRICK-R-DRINK · HALLOWEEN 2026 · THE DnA CASA · ");
+  });
+
+  it("tints the phone's browser chrome Trona black", () => {
+    expect($("head meta[name='theme-color']").attr("content")).toBe("#201d1e");
+  });
+
+  it("signs off in the footer with Con cariño and the build year", () => {
+    expect(readText($, "footer")).toBe(`Con cariño · © ${new Date().getFullYear()} The DnA Casa`);
+  });
 });

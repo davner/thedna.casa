@@ -1,8 +1,15 @@
 ---
 import Base from "./Base.astro";
+import Footer from "../components/Footer.astro";
+import { palette } from "../palette";
 interface Props { title: string; description: string }
 const { title, description } = Astro.props;
 ---
-<Base title={title} description={description}>
+<Base title={title} description={description} themeColor={palette.trona}>
   <slot />
+  <Footer />
 </Base>
+
+<style is:global>
+  body { background: var(--trona); }
+</style>
