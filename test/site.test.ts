@@ -190,7 +190,16 @@ describe("built root page", () => {
     expect(orders).toContainEqual(expect.stringMatching(/^-\d/));
   });
 
-  it("hides the hero's logo, ring, squiggle and sparkles from assistive tech", () => {
+  // A sparkle is a four-point star: one closed path of exactly four quadratic curves.
+  it("draws no sparkle in the hero", () => {
+    const stars = $("header path").filter((_, path) => {
+      const d = $(path).attr("d") ?? "";
+      return /^M[^A-Za-z]*(Q[^A-Za-z]*){4}Z$/.test(d.trim());
+    });
+    expect(stars.map((_, path) => $.html(path)).get()).toEqual([]);
+  });
+
+  it("hides the hero's logo, ring and squiggle from assistive tech", () => {
     const drawings = $("header svg").filter((_, svg) => $(svg).parents("svg").length === 0);
     expect(drawings.length).toBeGreaterThan(0);
     drawings.each((_, svg) => {

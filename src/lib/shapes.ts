@@ -30,13 +30,6 @@ export const wave = (seed: number, w: number, h: number, bumps: number): string 
   return `${smooth(pts, false)}L${w},${h}L0,${h}Z`;
 };
 
-// Jitter keeps the four-point sparkle looking hand-pressed rather than ruled; it fills a 100x100 box.
-export const sparkle = (seed: number): string => {
-  const rand = mulberry32(seed);
-  const j = (n: number) => +(n * (0.85 + rand() * 0.3)).toFixed(1);
-  return `M50 ${j(2)} Q${j(56)} ${j(44)} ${100 - j(2)} 50 Q${j(56)} ${j(56)} 50 ${100 - j(2)} Q${j(44)} ${j(56)} ${j(2)} 50 Q${j(44)} ${j(44)} 50 ${j(2)} Z`;
-};
-
 // Unit-box coordinates let a viewBox of 0 0 1 1 scale the mask to any photo size.
 export const marigoldMask = (seed: number): string => {
   const petals = 18;

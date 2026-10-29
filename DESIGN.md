@@ -105,9 +105,9 @@ components:
 
 The page is two colors holding a household between them: a deep mole brown above and below, a cream middle, and a marigold sun at the top. Everything else is a small accent on those two fields. It should feel warm, restrained and hand-made: a person made it, and they stopped before it got busy.
 
-Density is low. Each section does one thing: the hero names the house, the welcome says hello, the members introduce the four of them, and the footer signs off. The hand shows in a few seeded, drawn shapes (one wave, one squiggle, two sparkles, a petal mask, the logo strokes), never in ornament spread across the page. One page-wide grain layer gives both fields a paper feel.
+Density is low. Each section does one thing: the hero names the house, the welcome says hello, the members introduce the four of them, and the footer signs off. The hand shows in a few seeded, drawn shapes (one wave, one squiggle, a petal mask, the logo strokes), never in ornament spread across the page. One page-wide grain layer gives both fields a paper feel.
 
-Rejected and settled: a literal house, many arches, leaf or dappled shadows, squiggles everywhere, heavy hand-drawn ornament, a scrolling word strip.
+Rejected and settled: a literal house, many arches, leaf or dappled shadows, squiggles everywhere, heavy hand-drawn ornament, a scrolling word strip, sparkles.
 
 **Key Characteristics:**
 - Two big color fields, mole and cream, joined by one wave.
@@ -122,10 +122,10 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 ### Primary
 - **Mole** (`mole`): the hero and footer field, the ink on cream, and the welcome heading. The browser theme color. It stands in for black everywhere.
-- **Marigold** (`gold`): the logo's sun, the larger hero sparkle, Penny's circle.
+- **Marigold** (`gold`): the logo's sun, Penny's circle.
 
 ### Secondary
-- **Rosa Mexicano** (`pink`): Alexis's color. The squiggle, the small sparkle, Alexis's circle, the text selection highlight.
+- **Rosa Mexicano** (`pink`): Alexis's color. The squiggle, Alexis's circle, the text selection highlight.
 - **Terracotta** (`terra`): the "Who lives here" heading and the "Bienvenidos" kicker on cream. Large or bold text only. The welcome heading stays mole.
 
 ### Tertiary
@@ -198,7 +198,6 @@ The page is flat: no shadows, no cards, no raised surfaces. Depth comes from the
 Shapes are organic and drawn, never boxy. The only hard geometry is the member circle. Every other shape comes from a seeded generator, so it's the same on every build:
 - the wave between hero and welcome,
 - the brush squiggle under the subtitle,
-- the four-point sparkles,
 - the petal mask that clips the welcome photo,
 - the logo strokes.
 
@@ -206,7 +205,7 @@ The site has no rounded rectangles, boxed borders or buttons. The only lines are
 
 **The Seeded Shape Rule.** A new organic shape comes from the shared seeded generators with a fixed seed, never from randomness at runtime or a stock icon.
 
-**The Restraint Rule.** One squiggle, one wave, two sparkles. A new shape has to replace one of these or earn a place the same way.
+**The Restraint Rule.** One squiggle, one wave. No sparkles. A new shape has to replace one of these or earn a place the same way.
 
 ## Components
 
@@ -236,7 +235,7 @@ One centered italic serif line at body size in cream on mole: "Con cariño · ©
 ### Do:
 - **Do** keep mole and page cream as the only large color fields.
 - **Do** take every color from the palette module, which feeds CSS, SVG fills, the theme-color meta and the favicon. The logo's petal oranges are the one exception.
-- **Do** keep accents small: a stroke, a sparkle, a circle, a kicker.
+- **Do** keep accents small: a stroke, a circle, a kicker.
 - **Do** gate every animation behind `prefers-reduced-motion: no-preference`.
 - **Do** check the phone layout at 390px in device emulation.
 
@@ -244,5 +243,5 @@ One centered italic serif line at body size in cream on mole: "Con cariño · ©
 - **Don't** use pure black, drop shadows or cards.
 - **Don't** add a third typeface or another weight without retiring one.
 - **Don't** set body text in terracotta or pink on cream.
-- **Don't** add a marquee, a literal house, arches, leaf shadows or extra squiggles.
+- **Don't** add a marquee, a literal house, arches, leaf shadows, sparkles or extra squiggles.
 - **Don't** add a third motion. The ring and the squiggle are the whole motion vocabulary.

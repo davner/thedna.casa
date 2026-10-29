@@ -10,7 +10,7 @@ web
 
 Astro static site. The page ships no JavaScript and works with JavaScript off.
 
-- Shapes (the wave, the brush squiggle, the petal mask, the sparkles and the logo strokes) are drawn at build time by seeded generators in `src/lib/shapes.ts`. A seed is a fixed number that makes a shape come out the same way every time, so every deploy looks the same. They use simplex-noise (smooth random wobble), perfect-freehand (brush strokes), d3-shape (curve smoothing) and a hand-written mulberry32 seeded random number generator.
+- Shapes (the wave, the brush squiggle, the petal mask and the logo strokes) are drawn at build time by seeded generators in `src/lib/shapes.ts`. A seed is a fixed number that makes a shape come out the same way every time, so every deploy looks the same. They use simplex-noise (smooth random wobble), perfect-freehand (brush strokes), d3-shape (curve smoothing) and a hand-written mulberry32 seeded random number generator.
 - The favicon is the full Beso logo, saved as an SVG copied from the page's logo markup (a test fails if the two drift apart); its moon turns cream on dark tab bars. sharp renders the PNG favicon sizes and the 1200x630 link preview image (the Beso, dark green moon and all, on mole) from that SVG at build time.
 - roughjs and svgo are not used.
 - Deploy: on every push to main a GitHub Actions workflow runs the tests, which build the site, and deploys that build to GitHub Pages; a failing test stops the deploy. Canonical domain thedna.casa; www redirects to the apex.
@@ -47,7 +47,7 @@ The site is the household itself. Nothing on it could belong to another family: 
 - Logo: the Beso sun-and-moon mark (marigold sun, thin moon), set inside a stamp ring that reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO".
 - Palette: mole #43262A, cream ink #F6E7DA, page cream #FAF4EC, terracotta #C8643C, rosa mexicano #E4007C, marigold gold #F2B233, Salamander green #2F3E3E (Dan), sage #B9C9B4, cheek pink #F7C6D9, blush #F0C7B4. Member circles, in order: Salamander, rosa mexicano, sage, marigold gold.
 - Two fonts only: Averia Serif Libre (headings 700, subtitle and footer italic 400) and Schibsted Grotesk (body 400), self-hosted through Fontsource.
-- Restraint: one squiggle, one wave, two sparkles in the hero, solid color fields.
+- Restraint: one squiggle, one wave, solid color fields, no sparkles.
 - Motion: two effects. The stamp ring turns slowly (about 40s per turn), and the squiggle paints on once on load. Both run only under `prefers-reduced-motion: no-preference`. Nothing else moves.
 - Excluded: sugar skulls, sombreros, papel picado, serape stripes, saguaro, rainbow palettes, kitschy sun faces, a scrolling word strip (marquee).
 - Rejected directions, settled; do not propose them again: a literal house, many arches (including the terracotta arch from the first brief), leaf or dappled shadows, squiggles everywhere, heavy hand-drawn ornament, house-sign or door metaphors.
