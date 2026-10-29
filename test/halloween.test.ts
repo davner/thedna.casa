@@ -93,6 +93,7 @@ describe("built Trick-R-Drink recap", () => {
       "h3 The Wanted Wall",
       "h3 The garage",
       "h3 Garrett and Ainsley",
+      "h2 The invite",
     ]);
   });
 
