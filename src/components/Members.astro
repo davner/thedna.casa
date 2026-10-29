@@ -11,7 +11,7 @@ const { members = householdMembers } = Astro.props;
     {members.map((m) => (
       <li>
         {m.portrait
-          ? <Image class="circle" src={m.portrait} alt="" width={400} height={400} />
+          ? <Image class="circle" src={m.portrait.src} alt={m.portrait.alt} width={400} height={400} />
           : <span class="circle" style={`background:${m.color}`}></span>}
         <h3>{m.name}</h3>
         <span class="line">{m.line}</span>

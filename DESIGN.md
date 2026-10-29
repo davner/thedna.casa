@@ -248,7 +248,7 @@ The Trona field hanging into the cream under a Halloween hero: 18 seeded drips (
 
 ### Member circle
 - **Shape:** a full circle (`rounded.circle`), at most 200px on desktop, 84px on phones.
-- **Fill:** the member's color, or their portrait cropped to the circle. Portraits have empty alt text, because the name heading beside them says who it is.
+- **Fill:** the member's color, or their portrait cropped to the circle. Each portrait has one plain line of alt text, kept on the member's data: who it is and what they are doing or wearing.
 
 ### Photos
 Large photos (the welcome photo, a couple's costume photo, new-this-year photos) are clipped by the seeded petal mask, each with its own seed, 420 to 500px square at most (280 to 300px on phones). Smaller photos are circles: the pets' costume photo (340px, 220px on phones) and the Halloween list thumbnails (72 to 112px), which show a party's first costume photo. In a party file a photo is a petal unless it says `shape: circle`. With no welcome photo, the petal shape itself shows, filled in cheek pink.

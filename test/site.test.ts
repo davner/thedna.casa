@@ -189,13 +189,13 @@ describe("built root page", () => {
 });
 
 describe("member portraits", () => {
-  const $ = builtPage("portraits/index.html", photoSiteDist);
+  const $ = builtPage("index.html");
 
-  // The member's name is printed right under the portrait, so alt text would make screen readers say it twice.
-  it("have empty alt text", () => {
-    const portraits = $("li img");
-    expect(portraits).toHaveLength(1);
-    expect(portraits.attr("alt")).toBe("");
+  // Meeting the household is the page's point, so a listener hears what each member looks like, not only the name.
+  it("each describe the member", () => {
+    const alts = $("h2:contains('Who lives here')").closest("section").find("li img").map((_, img) => $(img).attr("alt") ?? "").get();
+    expect(alts).toHaveLength(members.length);
+    alts.forEach((alt, i) => expect(alt, members[i].name).toMatch(new RegExp(`^${members[i].name}\\b.+`)));
   });
 });
 
