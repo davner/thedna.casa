@@ -123,7 +123,7 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 ### Secondary
 - **Rosa Mexicano** (`pink`): Alexis's color. The squiggle, Alexis's circle, the text selection highlight.
-- **Terracotta** (`terra`): the one orange. Section headings and large text on cream ("Who lives here", "Bienvenidos", every Halloween heading, the contest result). On the dark field: the Halloween squiggle. Large or bold text only. The welcome heading stays mole.
+- **Terracotta** (`terra`): the one orange. Section headings and large text on cream ("Who lives here", "Bienvenidos", every Halloween heading, the contest result, the year on the Halloween list). On the dark field: the Halloween squiggle. Large or bold text only. The welcome heading stays mole.
 
 ### Tertiary
 - **Salamander** (`salamander`): Dan's color, his member circle.
@@ -153,13 +153,13 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 **Character:** a soft, slightly irregular serif for every heading and the warm asides, and a plain grotesk for reading. Only three faces ship: serif 700, serif italic 400, grotesk 400. All are self-hosted through Fontsource.
 
 ### Hierarchy
-- **Display:** the hero title, all caps on two lines: THE DnA CASA, a party's name (TRICK-R-DRINK). On phones it drops to `clamp(3rem, 15vw, 4.2rem)`.
+- **Display:** the hero title, all caps on two lines: THE DnA CASA, a party's name (TRICK-R-DRINK), HALLOWEEN. On phones it drops to `clamp(3rem, 15vw, 4.2rem)`.
 - **Headline:** section headings ("Hola, we're Dan & Alexis.", "Who lives here").
-- **Title:** names and short items: member names, contest winners, the drinks, the new-this-year titles. 1.5rem on phones.
-- **Subtitle:** the hero subtitle ("Dan & Alexis", "Our tiki Halloween") and a party recap's intro, in italic. One fluid size at every width.
+- **Title:** names and short items: member names, contest winners, the drinks, the new-this-year titles, the year and name on the Halloween list. 1.5rem on phones.
+- **Subtitle:** the hero subtitle ("Dan & Alexis", "Our tiki Halloween", "October at the casa") and a party recap's intro, in italic. One fluid size at every width.
 - **Sign-off:** the footer, italic at the 16px body size.
 - **Body:** the welcome text, at most 38ch wide.
-- **Caption:** member one-liners, photo captions, costume lines, "Made by" lines, at 1rem.
+- **Caption:** member one-liners, photo captions, costume lines, the party theme on the list, "Made by" lines, at 1rem.
 - **Ring:** the stamp ring text, 15px in the ring's 200-unit SVG, so it scales with the stamp.
 - **Label:** the "Bienvenidos" kicker and a recap's contest result, in terracotta.
 
@@ -175,6 +175,8 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), with a fluid gap between columns (`spacing.column-gap`). The hero is 1.2fr words to 1fr stamp, at least `min(92dvh, 880px)` tall with its padding counted inside, so the wave shows at the bottom of the first desktop screen.
 
 **The Wave On Screen Rule.** At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.
+
+The Halloween list has a short hero with no stamp, then one row per party, newest first: the year, the name over the theme, and a small circle photo. Rows are links, divided by hairlines.
 
 One breakpoint, at 760px. Below it the page is one centered column ("Stamp first"):
 - The stamp comes first, then the wordmark and the subtitle.
@@ -223,7 +225,7 @@ One brush stroke under the hero subtitle, 130px wide (112px on phones): rosa mex
 - **Fill:** the member's color, or their portrait cropped to the circle. Portraits have empty alt text, because the name heading beside them says who it is.
 
 ### Photos
-Large photos (the welcome photo, a couple's costume photo, new-this-year photos) are clipped by the seeded petal mask, each with its own seed, 420 to 500px square at most (280 to 300px on phones). The pets' costume photo is a circle (340px, 220px on phones). With no welcome photo, the petal shape itself shows, filled in cheek pink.
+Large photos (the welcome photo, a couple's costume photo, new-this-year photos) are clipped by the seeded petal mask, each with its own seed, 420 to 500px square at most (280 to 300px on phones). Smaller photos are circles: the pets' costume photo (340px, 220px on phones) and the Halloween list thumbnails (72 to 112px). With no welcome photo, the petal shape itself shows, filled in cheek pink.
 
 ### Kicker
 A small serif-bold word in terracotta above a section heading ("Bienvenidos"). It's the only place a Spanish word sits above an English heading.

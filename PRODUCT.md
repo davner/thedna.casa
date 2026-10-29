@@ -31,6 +31,7 @@ The site is the household itself. Nothing on it could belong to another family: 
 
 - Pages:
   - Home: hero, a welcome with one photo, the four members ("Who lives here"), footer with the year.
+  - `/halloween/`: every party, one row per year, newest first: year, party name, theme and a small photo.
   - `/halloween/<year>/`: one party's recap: hero with the party name and theme, intro, our costumes, the costume contest, the drinks, new this year.
 - Nothing to sell, no sign-up, no contact link, no CMS, no analytics, no search, no RSS, no dark mode.
 - Copy and member data live in a TypeScript content module, `src/content.ts`, edited in the repo by Dan and Claude. Changing the words never means touching layout code.
