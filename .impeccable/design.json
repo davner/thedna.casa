@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-28T14:59:12.460Z",
+  "generatedAt": "2026-10-29T02:23:04.000Z",
   "title": "Design System: The DnA Casa",
   "extensions": {
     "colorMeta": {
@@ -153,48 +153,59 @@
           "oklch(80% 0.054 46.3)",
           "oklch(95% 0.054 46.3)"
         ]
+      },
+      "trona": {
+        "role": "neutral",
+        "displayName": "Trona Black",
+        "canonical": "oklch(23.5% 0.005 355.2)",
+        "tonalRamp": [
+          "oklch(15% 0.005 355.2)",
+          "oklch(25% 0.005 355.2)",
+          "oklch(35% 0.005 355.2)",
+          "oklch(45% 0.005 355.2)",
+          "oklch(55% 0.005 355.2)",
+          "oklch(65% 0.005 355.2)",
+          "oklch(80% 0.005 355.2)",
+          "oklch(95% 0.005 355.2)"
+        ]
       }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The THE DnA CASA wordmark only."
+        "purpose": "The hero title: THE DnA CASA, a party's name, HALLOWEEN."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Section headings."
+        "purpose": "Section headings on every page; the phone menu links at its 2.2rem floor."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Member names."
+        "purpose": "Member names, contest winners, the drinks, new-this-year titles, the year and name on the Halloween list."
       },
       "subtitle": {
         "displayName": "Subtitle",
-        "purpose": "Italic: the Dan & Alexis line and the footer."
+        "purpose": "Italic: the hero subtitle and a party recap's intro."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Welcome text and member one-liners."
+        "purpose": "Running text."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "The Bienvenidos kicker."
+        "purpose": "The Bienvenidos kicker, a recap's contest result and the desktop nav links."
       },
       "display-phone": {
         "displayName": "Display (phone)",
-        "purpose": "Wordmark at 760px and narrower."
-      },
-      "subtitle-phone": {
-        "displayName": "Subtitle (phone)",
-        "purpose": "Dan & Alexis on phones."
+        "purpose": "The hero title at 760px and narrower."
       },
       "title-phone": {
         "displayName": "Title (phone)",
-        "purpose": "Member names on phones."
+        "purpose": "Title-role text at 760px and narrower."
       },
       "caption": {
         "displayName": "Caption",
-        "purpose": "Member one-liners."
+        "purpose": "Member one-liners, photo captions, costume lines, the party theme, Made by lines."
       },
       "ring": {
         "displayName": "Ring",
@@ -208,20 +219,46 @@
     "shadows": [],
     "motion": [
       {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The one easing curve for the squiggle, the drips and photo hovers."
+      },
+      {
         "name": "ring-turn",
         "value": "turn 40s linear infinite",
-        "purpose": "The stamp ring; reduced-motion off."
+        "purpose": "The stamp ring; all under prefers-reduced-motion: no-preference."
       },
       {
         "name": "squiggle-paint",
         "value": "paint 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards",
-        "purpose": "The squiggle paints on once on load; reduced-motion off."
+        "purpose": "The squiggle paints on once on load; all under prefers-reduced-motion: no-preference."
+      },
+      {
+        "name": "drip-run",
+        "value": "drip-run 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.25s backwards (longhands)",
+        "purpose": "The drips run down once on load; all under prefers-reduced-motion: no-preference."
+      },
+      {
+        "name": "menu-panel",
+        "value": "opacity and translateY(-8px), 0.2s ease-out, @starting-style",
+        "purpose": "The phone menu panel fades and slides in; the strokes turn into an X."
+      },
+      {
+        "name": "scroll-rise",
+        "value": "rise linear both, animation-timeline: view(), animation-range: entry 0% entry 55% (longhands, behind @supports)",
+        "purpose": "Halloween sections, photos and rows fade up as they scroll into view."
+      },
+      {
+        "name": "view-transition",
+        "value": "@view-transition { navigation: auto; }",
+        "purpose": "Pages crossfade, with no client-side router."
       }
     ],
     "breakpoints": [
       {
         "name": "phone",
-        "value": "760px"
+        "value": "760px",
+        "purpose": "The one breakpoint; at and below it every page is one centered column."
       }
     ],
     "grain": {
@@ -237,6 +274,14 @@
       "description": "The hero wordmark on mole with the subtitle and squiggle.",
       "html": "<div class=\"ds-hero\"><h1 class=\"ds-wordmark\">THE DnA<br>CASA</h1><p class=\"ds-sub\">Dan &amp; Alexis</p><span class=\"ds-squiggle\"></span></div>",
       "css": ".ds-hero{background:#43262a;color:#f6e7da;padding:40px 32px} .ds-wordmark{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:4.5rem;letter-spacing:-0.03em;line-height:0.9;margin:0} .ds-sub{font-family:\"Averia Serif Libre\", serif;font-style:italic;font-size:1.5rem;color:#f0c7b4;margin:16px 0 0} .ds-squiggle{display:block;width:130px;height:6px;margin-top:16px;background:#e4007c;border-radius:6px}"
+    },
+    {
+      "name": "Navbar",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Cream links over the hero; the current page underlined in terracotta. Folds into a brushed menu button at 760px.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" lang=\"es\" aria-current=\"page\">Casa</a><a href=\"#\">Halloween</a></nav>",
+      "css": ".ds-nav{display:flex;justify-content:flex-end;gap:32px;padding:24px 32px;background:#43262a;font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:1.3rem;letter-spacing:-0.02em} .ds-nav a{color:#f6e7da;text-decoration:underline 2px transparent;text-underline-offset:8px;transition:text-decoration-color .2s,text-underline-offset .2s} .ds-nav a:hover{text-decoration-color:currentColor;text-underline-offset:5px} .ds-nav a[aria-current=page]{text-decoration-color:#c8643c} .ds-nav a:focus-visible{outline:2px solid #c8643c;outline-offset:4px;border-radius:2px}"
     },
     {
       "name": "Member Circle",
@@ -263,38 +308,54 @@
       "css": ".ds-welcome{background:#faf4ec;color:#43262a;padding:32px;font-family:\"Schibsted Grotesk\", sans-serif;letter-spacing:-0.03em} .ds-kicker{font-family:\"Averia Serif Libre\", serif;font-weight:700;color:#c8643c;font-size:1.3rem;letter-spacing:-0.02em;margin:0 0 10px} .ds-h2{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:2.6rem;letter-spacing:-0.04em;line-height:1;margin:0} .ds-text{font-size:1.1rem;line-height:1.6;max-width:38ch;margin:18px 0 0}"
     },
     {
+      "name": "Halloween Hero",
+      "kind": "custom",
+      "refersTo": "display",
+      "description": "The Halloween hero on Trona with the terracotta squiggle.",
+      "html": "<div class=\"ds-hhero\"><h1 class=\"ds-htitle\">TRICK-R-<br>DRINK</h1><p class=\"ds-hsub\">Our tiki Halloween</p><span class=\"ds-hsquiggle\"></span></div>",
+      "css": ".ds-hhero{background:#201d1e;color:#f6e7da;padding:40px 32px} .ds-htitle{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:4.5rem;letter-spacing:-0.03em;line-height:0.9;margin:0} .ds-hsub{font-family:\"Averia Serif Libre\", serif;font-style:italic;font-size:1.5rem;color:#f0c7b4;margin:16px 0 0} .ds-hsquiggle{display:block;width:130px;height:6px;margin-top:16px;background:#c8643c;border-radius:6px}"
+    },
+    {
+      "name": "Party Row",
+      "kind": "custom",
+      "refersTo": "title",
+      "description": "One row on the Halloween list: terracotta year, name over theme, small circle photo, hairline dividers.",
+      "html": "<a class=\"ds-party\" href=\"#\"><span class=\"ds-year\">2026</span><span class=\"ds-what\"><span class=\"ds-name\">Trick-R-Drink</span><span class=\"ds-theme\">A tiki Halloween</span></span><span class=\"ds-thumb\"></span></a>",
+      "css": ".ds-party{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:32px;padding:22px 0;border-top:1px solid color-mix(in srgb,#43262a 18%,transparent);border-bottom:1px solid color-mix(in srgb,#43262a 18%,transparent);background:#faf4ec;color:#43262a;text-decoration:none} .ds-year,.ds-name{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:1.7rem;letter-spacing:-0.02em;line-height:1} .ds-year{color:#c8643c} .ds-what{display:grid;gap:4px} .ds-name{text-decoration:underline 2px transparent;text-underline-offset:8px;transition:text-decoration-color .2s} .ds-party:hover .ds-name{text-decoration-color:currentColor} .ds-party:focus-visible{outline:2px solid #c8643c;outline-offset:4px} .ds-theme{font-family:\"Schibsted Grotesk\", sans-serif;font-size:1rem} .ds-thumb{width:96px;aspect-ratio:1;border-radius:50%;background:#f7c6d9}"
+    },
+    {
       "name": "Footer",
       "kind": "custom",
       "refersTo": "footer",
-      "description": "One italic serif sign-off on mole.",
-      "html": "<footer class=\"ds-footer\">Con cariño · © 2026 The DnA Casa</footer>",
-      "css": ".ds-footer{background:#43262a;color:#f6e7da;text-align:center;padding:48px 20px 90px;font-family:\"Averia Serif Libre\", serif;font-style:italic}"
+      "description": "One italic serif sign-off on the page's dark field (mole, or Trona on Halloween pages).",
+      "html": "<footer class=\"ds-footer\"><span lang=\"es\">Con cariño</span> · © 2026 The DnA Casa</footer>",
+      "css": ".ds-footer{background:#43262a;color:#f6e7da;text-align:center;padding:48px 20px 90px;font-family:\"Averia Serif Libre\", serif;font-style:italic;font-size:1rem}"
     }
   ],
   "narrative": {
     "northStar": "Mole and Marigold",
-    "overview": "The page is two colors holding a household between them: a deep mole brown above and below, a cream middle, and a marigold sun at the top. Everything else is a small accent on those two fields. It should feel warm, restrained and hand-made: a person made it, and they stopped before it got busy.\n\nDensity is low. Each section does one thing: the hero names the house, the welcome says hello, the members introduce the four of them, and the footer signs off. The hand shows in a few seeded, drawn shapes (one wave, one squiggle, two sparkles, a petal mask, the logo strokes), never in ornament spread across the page. One page-wide grain layer gives both fields a paper feel.",
+    "overview": "The page is two colors holding a household between them: a deep mole brown above and below, a cream middle, and a marigold sun at the top. Everything else is a small accent on those two fields. It should feel warm, restrained and hand-made: a person made it, and they stopped before it got busy.\n\nDensity is low. Each section does one thing: the hero names the page, the middle tells the story, and the footer signs off. The hand shows in a few seeded, drawn shapes (one squiggle, one edge between hero and middle, a petal mask, hand-pressed dots, the logo strokes), never in ornament spread across the page. One page-wide grain layer gives both fields a paper feel.\n\nHalloween pages keep the same system and swap one thing: Trona black stands in for mole as the dark field, and drips stand in for the wave. Same fonts, same sizes, same accents.\n\nRejected and settled: a literal house, many arches, leaf or dappled shadows, squiggles everywhere, heavy hand-drawn ornament, a scrolling word strip, sparkles.",
     "keyCharacteristics": [
-      "Two big color fields, mole and cream, joined by one wave.",
+      "Two big color fields, a dark one and cream, joined by one drawn edge.",
       "Big, tight, all-caps serif wordmark; italic serif for the soft voice.",
       "Accents (pink, gold, terra) only in small doses.",
       "Flat surfaces; depth from grain, not shadows.",
-      "Two slow motions, both off under reduced motion."
+      "Quiet motion, all of it off under reduced motion."
     ],
     "rules": [
       {
         "name": "The No Black Rule",
-        "body": "Mole is the darkest color on the page. Nothing is pure black.",
+        "body": "Mole is the darkest color on household pages and Trona black on Halloween pages. Nothing is pure black.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Orange Rule",
+        "body": "Terracotta is the only orange outside the logo. A page or a party never adds its own accent color (pumpkin, lime and plum were tried for Halloween and rejected).",
         "section": "colors"
       },
       {
         "name": "The Large Terracotta Rule",
-        "body": "Terracotta on page cream is about 3.6:1, which passes only as large text. Use it at 1.2rem bold or larger, never for body text.",
-        "section": "colors"
-      },
-      {
-        "name": "The Logo Exception",
-        "body": "The Beso logo's three petal oranges (#D9661A, #EC8A1E, #F5A623) are part of the fixed mark and live in its component, not the palette. They appear nowhere else.",
+        "body": "Terracotta is about 3.6:1 on page cream, 3.45:1 on mole and 4.26:1 on Trona. Use it for strokes and for text at label size (1.3rem bold) or larger, never for body or caption text.",
         "section": "colors"
       },
       {
@@ -303,13 +364,18 @@
         "section": "colors"
       },
       {
+        "name": "The One Scale Rule",
+        "body": "Every text size on every page is one of the roles above, and a test fails the build on any `font-size` that is not in this file's front matter. A page never invents its own size; an element that feels too quiet moves up to an existing role instead. Only display and title have separate phone sizes.",
+        "section": "typography"
+      },
+      {
         "name": "The Two Families Rule",
         "body": "Averia Serif Libre and Schibsted Grotesk only. A new role picks a weight these two already ship before it adds one.",
         "section": "typography"
       },
       {
         "name": "The Tight Serif Rule",
-        "body": "Serif headings set tight, between -0.02em and -0.04em letter spacing with line height 1 or less. The italic voice resets letter spacing to 0.",
+        "body": "Serif headings set tight, between -0.02em and -0.04em letter spacing with line height 1.1 or less. The italic voice resets letter spacing to 0.",
         "section": "typography"
       },
       {
@@ -319,7 +385,7 @@
       },
       {
         "name": "The First Screen Rule",
-        "body": "On a 390px-wide phone, the wave and the start of the cream welcome are visible without scrolling.",
+        "body": "On a 390px-wide phone, the edge (wave or drips) and the start of the cream middle are visible without scrolling.",
         "section": "layout"
       },
       {
@@ -338,25 +404,31 @@
         "section": "shapes"
       },
       {
+        "name": "The Hand-Pressed Dot Rule",
+        "body": "Cheeks (the Beso's three and the ghost's two) and the ghost's eyes are seeded dots whose edge wobbles about 7%: never perfect circles, never obviously lumpy. The Beso's closed eyes stay brushed strokes.",
+        "section": "shapes"
+      },
+      {
         "name": "The Restraint Rule",
-        "body": "One squiggle, one wave, two sparkles. A new shape has to replace one of these or earn a place the same way.",
+        "body": "One squiggle per hero and one edge where the hero meets the middle (the wave, or the drips on Halloween pages). No sparkles. A new shape has to replace one of these or earn a place the same way.",
         "section": "shapes"
       }
     ],
     "dos": [
-      "Do keep mole and page cream as the only large color fields.",
-      "Do take every color from the palette module, which feeds CSS, SVG fills, the theme-color meta and the favicon. The logo's petal oranges are the one exception.",
-      "Do keep accents small: a stroke, a sparkle, a circle, a kicker.",
+      "Do keep the dark field (mole, or Trona on Halloween pages) and page cream as the only large color fields.",
+      "Do take every color from the palette module, which feeds CSS, SVG fills, the theme-color meta, the favicon and the link previews. The logo's petal oranges are the one exception.",
+      "Do keep accents small: a stroke, a circle, a kicker, an underline.",
+      "Do pick every text size from the type scale.",
       "Do gate every animation behind `prefers-reduced-motion: no-preference`.",
       "Do check the phone layout at 390px in device emulation."
     ],
     "donts": [
       "Don't use pure black, drop shadows or cards.",
       "Don't add a third typeface or another weight without retiring one.",
-      "Don't set body text in terracotta or pink on cream.",
-      "Don't add a marquee, a literal house, arches, leaf shadows or extra squiggles.",
-      "Don't add a third motion. The ring and the squiggle are the whole motion vocabulary.",
-      ""
+      "Don't add an accent color for a page, a section or a party.",
+      "Don't set body or caption text in terracotta or pink.",
+      "Don't add a marquee, a literal house, arches, leaf shadows, sparkles or extra squiggles.",
+      "Don't add motion that bounces, loops (other than the ring) or runs longer than half a second (other than the ring and the squiggle)."
     ]
   }
 }
