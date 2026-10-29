@@ -231,7 +231,7 @@ The signature piece. A circle of words set in serif 700 caps with wide 0.08em tr
 - **Motion:** the ring turns once every 40s, linear and endless. It runs only under `prefers-reduced-motion: no-preference`.
 
 ### Ghost
-The Halloween mark: a cream body drawn from a seeded outline with no outline stroke, like the Beso. Hand-pressed mole eyes and cheek-pink cheeks. It holds still.
+The Halloween mark: a cream body drawn from a seeded outline with no outline stroke, like the Beso. Hand-pressed mole eyes and cheek-pink cheeks. It holds still. Each recap's link preview shows it too, 300px tall over the party's name and year in cream serif 700 caps on Trona.
 
 ### Brush squiggle
 One brush stroke under the hero subtitle, 130px wide (112px on phones): rosa mexicano on household pages, terracotta on Halloween pages.
