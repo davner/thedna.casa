@@ -357,19 +357,16 @@ describe("built recap with an invite", () => {
   });
 });
 
-describe("built recap with a banner invite", () => {
-  // A banner shrunk to a card's 420px would leave its words too small to read.
-  it("spreads a banner invite across the column", () => {
+describe("built recap with an invite taken on a phone", () => {
+  // A desktop capture came out as a banner too wide to read at a card's width; the phone view is a tall card.
+  it("shows the 2022 invite as a tall card at the card's width", () => {
     const $ = builtPage("halloween/2022/index.html");
     const img = $("h2")
       .filter((_, h) => $(h).text().trim() === "The invite")
       .closest("section")
       .find("img");
-    const widest = Math.max(
-      ...(img.attr("srcset") ?? "").split(",").map((entry) => parseInt(entry.trim().split(/\s+/)[1] ?? "0")),
-    );
-    expect(widest).toBeGreaterThanOrEqual(2400);
-    expect(img.attr("sizes")).toContain("1200px");
+    expect(Number(img.attr("height"))).toBeGreaterThan(Number(img.attr("width")));
+    expect(img.attr("sizes")).toContain("420px");
   });
 });
 

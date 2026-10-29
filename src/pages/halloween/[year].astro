@@ -28,8 +28,6 @@ const sizes = { large: { shown: 500, phone: 300 }, small: { shown: 340, phone: 2
   { shown: number; phone: number }
 >;
 // The contest, drinks and highlight photos all share one size beside their words.
-// A banner invite would be unreadable at a card's width, so it spans the column instead.
-const wide = party.invite && party.invite.src.width > 2 * party.invite.src.height;
 const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-width: 760px) 280px, 420px" };
 ---
 
@@ -182,25 +180,14 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
     {party.invite && (
       <section class="invite reveal" aria-labelledby="invite-h">
         <h2 id="invite-h">The invite</h2>
-        {wide ? (
-          <Image
-            class="card wide"
-            src={party.invite.src}
-            alt={party.invite.alt}
-            width={2400}
-            widths={[1200, 2400]}
-            sizes="(max-width: 760px) calc(100vw - 48px), 1200px"
-          />
-        ) : (
-          <Image
-            class="card"
-            src={party.invite.src}
-            alt={party.invite.alt}
-            width={840}
-            widths={[420, 840]}
-            sizes="(max-width: 760px) 280px, 420px"
-          />
-        )}
+        <Image
+          class="card"
+          src={party.invite.src}
+          alt={party.invite.alt}
+          width={840}
+          widths={[420, 840]}
+          sizes="(max-width: 760px) 280px, 420px"
+        />
       </section>
     )}
   </main>
@@ -452,9 +439,6 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
     height: auto;
     margin: 48px auto 0;
   }
-  .card.wide {
-    max-width: 100%;
-  }
 
   @media (prefers-reduced-motion: no-preference) {
     .photo {
@@ -529,9 +513,6 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
     .card {
       max-width: 280px;
       margin-top: 28px;
-    }
-    .card.wide {
-      max-width: 100%;
     }
     .frames {
       grid-template-columns: repeat(2, minmax(0, 160px));
