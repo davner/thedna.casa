@@ -62,6 +62,28 @@ for (const path of shippedPages) {
       });
     }
 
+    // The build picks each breakpoint's size from a model of the hero grid, so this catches the model drifting from the CSS.
+    for (const width of [768, 1024, 1280, 1536]) {
+      test(`fits every hero title line inside its column at ${width}px`, async ({ page }) => {
+        await page.setViewportSize({ width, height: 900 });
+        await gotoWithSerif(page, path);
+        const { column, lines } = await page.locator("header h1").evaluate((h1) => {
+          const range = document.createRange();
+          return {
+            column: h1.parentElement!.getBoundingClientRect().right,
+            lines: [...h1.childNodes]
+              .filter((node) => node.nodeType === Node.TEXT_NODE && node.textContent!.trim())
+              .map((node) => {
+                range.selectNodeContents(node);
+                return { text: node.textContent!.trim(), right: range.getBoundingClientRect().right };
+              }),
+          };
+        });
+        expect(lines.length).toBeGreaterThan(0);
+        for (const line of lines) expect(line.right, `"${line.text}" right edge`).toBeLessThanOrEqual(column + 0.5);
+      });
+    }
+
     test.describe("on a phone", () => {
       test.use(phone);
 
