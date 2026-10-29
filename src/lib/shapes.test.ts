@@ -1,6 +1,6 @@
 import { getPathBBox, isClosedPath, normalizePath, parsePathString } from "svg-path-commander/util";
 import { describe, expect, it } from "vitest";
-import { brusher, brushSquiggle, dot, join, line, marigoldMark, marigoldMask, polar, quad, wave } from "./shapes";
+import { brusher, brushSquiggle, dot, ghost, join, line, marigoldMark, marigoldMask, polar, quad, wave } from "./shapes";
 
 const expectWellFormed = (d: string) => {
   const segments = parsePathString(d);
@@ -13,6 +13,7 @@ const generators: [string, (seed: number) => string][] = [
   ["marigoldMask", (seed) => marigoldMask(seed)],
   ["brushSquiggle", (seed) => brushSquiggle(seed, 200, 24, 3, 6)],
   ["dot", (seed) => dot(seed, 208, 182, 10)],
+  ["ghost", (seed) => ghost(seed)],
 ];
 
 describe.each(generators)("%s", (_, generate) => {
@@ -59,6 +60,12 @@ describe("marigoldMask", () => {
 describe("dot", () => {
   it.each([[10, undefined], [6, 4]])("is a closed path (rx %i, ry %s)", (rx, ry) => {
     expect(isClosedPath(parsePathString(dot(81, 208, 182, rx, ry)))).toBe(true);
+  });
+});
+
+describe("ghost", () => {
+  it.each([1, 41, 9999])("is a closed path (seed %i)", (seed) => {
+    expect(isClosedPath(parsePathString(ghost(seed)))).toBe(true);
   });
 });
 

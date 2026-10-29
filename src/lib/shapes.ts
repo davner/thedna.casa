@@ -108,6 +108,34 @@ export const dot = (seed: number, cx: number, cy: number, rx: number, ry = rx): 
   return smooth(pts, true);
 };
 
+// Sampled to points rather than d3's curve path, because the approved ghost was a polygon through these samples.
+const catmullRom = (pts: Pt[], perSegment: number): Pt[] => {
+  const n = pts.length;
+  return pts.flatMap((_, i) => {
+    const [p0, p1, p2, p3] = [pts[(i - 1 + n) % n], pts[i], pts[(i + 1) % n], pts[(i + 2) % n]];
+    return Array.from({ length: perSegment }, (_, k): Pt => {
+      const t = k / perSegment;
+      const at = (j: 0 | 1) =>
+        0.5 * (2 * p1[j] + (-p0[j] + p2[j]) * t + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * t ** 2 + (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * t ** 3);
+      return [at(0), at(1)];
+    });
+  });
+};
+
+const polygon = (pts: Pt[]) => `M${pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join("L")}Z`;
+
+// A dome over a scalloped hem in a 100-unit box; the settings Dan picked in the prototype, so changing any redraws the approved ghost.
+export const ghost = (seed: number): string => {
+  const noise = createNoise2D(mulberry32(seed));
+  const dome: Pt[] = Array.from({ length: 9 }, (_, i) => {
+    const a = Math.PI + (i / 8) * Math.PI;
+    return [50 + 34 * Math.cos(a), 50 + 40 * Math.sin(a)];
+  });
+  const hem: Pt[] = [[85, 76], [87, 100], [86, 112], [75, 101], [63, 113], [51, 102], [39, 113], [27, 101], [15, 111], [13, 98], [15, 74]];
+  const pts: Pt[] = [...dome, ...hem].map(([x, y], i) => [x + noise(i * 0.5, 1) * 2.2, y + noise(1, i * 0.5) * 2.2]);
+  return polygon(catmullRom(pts, 6));
+};
+
 export const polar = (cx: number, cy: number, r: number, deg: number): Pt => {
   const a = ((deg - 90) * Math.PI) / 180;
   return [+(cx + r * Math.cos(a)).toFixed(2), +(cy + r * Math.sin(a)).toFixed(2)];
