@@ -62,6 +62,7 @@ describe("built root page", () => {
     expect(builtFileExists(path), path).toBe(true);
     const { width, height, format } = await sharp(builtFilePath(path)).metadata();
     expect({ width, height, format }).toEqual({ width: 1200, height: 630, format: "png" });
+    expect(image).toBe("https://thedna.casa/share.png");
     expect(meta("property", "og:image:alt")).not.toBe("");
     expect(meta("name", "twitter:card")).toBe("summary_large_image");
   });

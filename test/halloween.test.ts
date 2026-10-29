@@ -242,6 +242,11 @@ describe("built Halloween list", () => {
     expect($("head meta[property='og:title']").attr("content")).toBe("Halloween · The DnA Casa");
   });
 
+  it("keeps the site's link preview image", () => {
+    expect($("head meta[property='og:image']").attr("content")).toBe("https://thedna.casa/share.png");
+    expect($("head meta[property='og:image:alt']").attr("content")).toBe("The DnA Casa's sun-and-moon mark on mole brown");
+  });
+
   it("has one row per party, newest first, each one link to its recap", () => {
     const years = parties.map((p: { year: number }) => p.year).sort((a: number, b: number) => b - a);
     expect(rows().map((_, li) => [[$(li).find("a").length, $(li).find("a").attr("href")]]).get()).toEqual(years.map((y: number) => [1, `/halloween/${y}/`]));
