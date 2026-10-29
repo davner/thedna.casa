@@ -2,3 +2,6 @@
 dist/
 pnpm-lock.yaml
 .impeccable/design.json
+test-results/
+playwright-report/
+blob-report/
