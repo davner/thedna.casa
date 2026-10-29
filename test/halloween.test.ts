@@ -1,6 +1,13 @@
 import { beforeAll, describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
 import type { CheerioAPI } from "cheerio";
-import { builtPage } from "./site";
+import { parse } from "yaml";
+import { builtPage, readText } from "./site";
+
+// The party file itself is the source of truth for the recap's words.
+const partyFile = readFileSync(new URL("../src/content/halloween/2026.md", import.meta.url), "utf8");
+const [, frontMatter, intro] = partyFile.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/) ?? [];
+const party = parse(frontMatter);
 
 describe("built Trick-R-Drink recap", () => {
   let $: CheerioAPI;
@@ -27,5 +34,41 @@ describe("built Trick-R-Drink recap", () => {
       "h3 The garage",
       "h3 Garrett and Ainsley",
     ]);
+  });
+
+  const section = (heading: string) => $("h2").filter((_, h) => $(h).text().trim() === heading).closest("section");
+
+  it("subtitles the hero with the party's theme and opens with the intro", () => {
+    expect($("header p").filter((_, p) => $(p).text().trim() === "Our tiki Halloween")).toHaveLength(1);
+    expect(readText($, "main")).toContain(intro.trim());
+  });
+
+  it("captions each of our costumes with who and what, from the party file", () => {
+    const captions = section("Our costumes").find("figcaption").map((_, c) => readText($, c)).get();
+    expect(captions).toEqual(party.ourCostumes.map((c: { who: string; as: string }) => `${c.who} as ${c.as}`));
+  });
+
+  // Without lang a screen reader says it with an English voice.
+  it("marks payasas as Spanish", () => {
+    expect($("[lang='es']").filter((_, el) => $(el).text().trim() === "payasas")).toHaveLength(1);
+  });
+
+  it("states the contest rule and result and lists each winner with their costume", () => {
+    const contest = readText($, section("The costume contest"));
+    expect(contest).toContain(party.contest.rule);
+    expect(contest).toContain(party.contest.result);
+    const winners = section("The costume contest").find("li").map((_, li) => readText($, li)).get();
+    expect(winners).toEqual(party.contest.winners.map((w: { names: string; costume: string }) => `${w.names} as ${w.costume}`));
+  });
+
+  it("names the drinks and who made them", () => {
+    const drinks = readText($, section("The drinks"));
+    for (const drink of party.drinks) expect(drinks).toContain(drink);
+    expect(drinks).toContain(`Made by ${party.drinksBy}.`);
+  });
+
+  it("tells each highlight under its title", () => {
+    const highlights = section("New this year").find("li").map((_, li) => [[$(li).find("h3").text().trim(), readText($, $(li).find("p"))]]).get();
+    expect(highlights).toEqual(party.highlights.map((h: { title: string; text: string }) => [h.title, h.text]));
   });
 });

@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import Halloween from "../../layouts/Halloween.astro";
 import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
 
@@ -9,26 +9,50 @@ export async function getStaticPaths() {
 }
 const { party } = Astro.props;
 const p = party.data;
+const { Content } = await render(party);
 const upper = p.name.toUpperCase();
 // A hyphenated name breaks after its last hyphen, so TRICK-R- sits over DRINK; any other name stays on one line.
 const titleLines = upper.split(/(?<=-)(?=[^-]*$)/);
 ---
 <Halloween title={`${p.name} · The DnA Casa`} description={`Our ${p.theme} Halloween, ${p.year}: costumes, the contest, the drinks and what was new.`}>
-  <HalloweenHero title={titleLines} />
+  <HalloweenHero title={titleLines} subtitle={`Our ${p.theme} Halloween`} />
   <main class="recap">
+    <section class="intro">
+      <div class="intro-text"><Content /></div>
+    </section>
+
     <section class="costumes" aria-labelledby="costumes-h">
       <h2 id="costumes-h">Our costumes</h2>
+      <div class="costume-grid">
+        {p.ourCostumes.map((c) => (
+          <figure>
+            <figcaption>{c.who} as <span lang={c.asLang}>{c.as}</span></figcaption>
+          </figure>
+        ))}
+      </div>
     </section>
+
     <section class="contest" aria-labelledby="contest-h">
-      <h2 id="contest-h">The costume contest</h2>
+      <div>
+        <h2 id="contest-h">The costume contest</h2>
+        <p>{p.contest.rule}</p>
+        <p class="result">{p.contest.result}</p>
+      </div>
+      <ul class="winners">
+        {p.contest.winners.map((w) => <li><span class="names">{w.names}</span>{" "}<span class="as">as {w.costume}</span></li>)}
+      </ul>
     </section>
+
     <section class="drinks" aria-labelledby="drinks-h">
       <h2 id="drinks-h">The drinks</h2>
+      <p class="drink-list">{p.drinks.map((d, i) => <>{i > 0 && <span class="amp"> & </span>}<span class="drink">{d}</span></>)}</p>
+      {p.drinksBy && <p class="by">Made by {p.drinksBy}.</p>}
     </section>
+
     <section class="new" aria-labelledby="new-h">
       <h2 id="new-h">New this year</h2>
       <ul>
-        {p.highlights.map((h) => <li><h3>{h.title}</h3></li>)}
+        {p.highlights.map((h) => <li><div><h3>{h.title}</h3><p>{h.text}</p></div></li>)}
       </ul>
     </section>
   </main>
