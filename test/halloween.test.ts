@@ -119,6 +119,32 @@ describe("built Trick-R-Drink recap", () => {
     expect(fill.attr("fill")).toBe(palette.trona);
   });
 
+  it("runs the drips down once on load, in half a second at most, only without a reduced-motion preference", () => {
+    const edge = $("header + main > svg").first();
+    const runs: { decls: Record<string, string>; guards: string[] }[] = [];
+    for (const root of pageCss($)) {
+      root.walkRules((rule) => {
+        const plain = rule.selector.replace(/\[data-astro-cid-[^\]]+\]/g, "").replace(/:where\(\.astro-[^)]+\)/g, "");
+        const decls: Record<string, string> = {};
+        rule.walkDecls(/^animation/, (decl) => void (decls[decl.prop] = decl.value));
+        if (!Object.keys(decls).length || !edge.is(plain)) return;
+        const guards: string[] = [];
+        for (let node = rule.parent; node; node = node.parent as typeof node) {
+          if (node.type === "atrule" && (node as { name: string }).name === "media") guards.push((node as { params: string }).params.replace(/\s+/g, ""));
+        }
+        runs.push({ decls, guards });
+      });
+    }
+    expect(runs).toHaveLength(1);
+    const [{ decls, guards }] = runs;
+    // The minifier folds a shorthand into a form Chrome can reject, so the drips keep to longhands like the scroll fades.
+    expect(decls.animation).toBeUndefined();
+    expect(decls["animation-name"]).toBeTruthy();
+    expect(parseFloat(decls["animation-duration"]) * (decls["animation-duration"].endsWith("ms") ? 0.001 : 1)).toBeLessThanOrEqual(0.5);
+    expect(decls["animation-iteration-count"] ?? "1").toBe("1");
+    expect(guards).toContainEqual(expect.stringContaining("(prefers-reduced-motion:no-preference)"));
+  });
+
   it("tints the phone's browser chrome Trona black", () => {
     expect($("head meta[name='theme-color']").attr("content")).toBe("#201d1e");
   });
