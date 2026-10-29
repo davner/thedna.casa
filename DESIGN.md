@@ -287,7 +287,7 @@ Photos take their shape from their role, the way the reference sites do (griefgr
 - **Scenes are soft:** the welcome photo and every photo on a recap (costumes, contest, drinks, new this year) are 4:5 portraits clipped by the seeded soft mask: a rounded rectangle whose four corners each round by their own 7 to 13% and whose edges sag inward up to 1.5%, so it reads as trimmed by hand rather than drawn by a tool. Each photo gets its own seed from its file name. A large photo is at most 500px wide (300px on phones), a photo beside words 420px (280px), and a small one, like the pets' costume photo, 340px (220px). In a party file a photo is large unless it says `size: small`.
 - **Thumbnails are circles:** the Halloween list thumbnails (72 to 112px), which show a party's first costume photo, or its invite when it has no photos yet.
 
-The petal (scalloped) mask was replaced; circles, plain rectangles, tilted rectangles and blobs were tried for scene photos and lost to the soft mask. With no welcome photo, the soft shape itself shows, filled in cheek pink. Every photo ships at its largest shown width and at twice that, so 2x screens get a sharp file and 1x screens a small one.
+The petal (scalloped) mask was replaced; circles, plain rectangles, tilted rectangles and blobs were tried for scene photos and lost to the soft mask. With no welcome photo, the soft shape itself shows, filled in cheek pink. Every photo ships at its desktop and phone widths and at twice each, so 2x screens get a sharp file, 1x screens a small one, and a phone never downloads the 2x desktop file.
 
 ### Kicker
 

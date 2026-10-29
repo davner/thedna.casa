@@ -28,7 +28,8 @@ const sizes = { large: { shown: 500, phone: 300 }, small: { shown: 340, phone: 2
   { shown: number; phone: number }
 >;
 // The contest, drinks and highlight photos all share one size beside their words.
-const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-width: 760px) 280px, 420px" };
+// Every photo also ships at its phone width and twice that, so a phone never downloads the 2x desktop file.
+const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: "(max-width: 760px) 280px, 420px" };
 ---
 
 <Halloween
@@ -50,7 +51,7 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
         src={party.invite.src}
         alt={party.invite.alt}
         width={760}
-        widths={[380, 760]}
+        widths={[260, 380, 520, 760]}
         sizes="(max-width: 760px) 260px, 380px"
         loading="eager"
       />
@@ -93,7 +94,12 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
                   alt={c.photo.alt}
                   width={2 * sizes[c.photo.size].shown}
                   height={2.5 * sizes[c.photo.size].shown}
-                  widths={[sizes[c.photo.size].shown, 2 * sizes[c.photo.size].shown]}
+                  widths={[
+                    sizes[c.photo.size].phone,
+                    sizes[c.photo.size].shown,
+                    2 * sizes[c.photo.size].phone,
+                    2 * sizes[c.photo.size].shown,
+                  ]}
                   sizes={`(max-width: 760px) ${sizes[c.photo.size].phone}px, ${sizes[c.photo.size].shown}px`}
                 />
               )}
@@ -181,7 +187,7 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
                           src={f.src}
                           alt={f.alt}
                           width={480}
-                          widths={[240, 480]}
+                          widths={[160, 240, 320, 480]}
                           sizes="(max-width: 760px) 160px, 240px"
                         />
                         <figcaption>{f.caption}</figcaption>
