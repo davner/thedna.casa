@@ -324,6 +324,19 @@ describe("shipped pages", () => {
     expect(tilts).toEqual([]);
   });
 
+  // The title's lines are broken at build time for the real font; wrapping in the fallback shifted the layout as it loaded.
+  it("never wrap a hero title line", () => {
+    for (const page of shippedPages()) {
+      const values: string[] = [];
+      for (const root of pageCss(builtPage(page)))
+        root.walkDecls("white-space", (decl) => {
+          if ((decl.parent as Rule).selector.replace(/\[data-astro-cid-[^\]]+\]/g, "") === "h1")
+            values.push(decl.value);
+        });
+      expect(values, page).toContain("nowrap");
+    }
+  });
+
   it("set every text size from DESIGN.md's type scale", () => {
     const scale = designFontSizes();
     expect(scale.size).toBeGreaterThan(0);
