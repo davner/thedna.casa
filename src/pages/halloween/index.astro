@@ -4,7 +4,7 @@ import { getCollection } from "astro:content";
 import Halloween from "../../layouts/Halloween.astro";
 import Drips from "../../components/halloween/Drips.astro";
 import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
-import { newestFirst } from "../../lib/parties";
+import { newestFirst, partyDate } from "../../lib/parties";
 
 const parties = newestFirst(await getCollection("halloween"));
 ---
@@ -18,12 +18,16 @@ const parties = newestFirst(await getCollection("halloween"));
       <ul>
         {parties.map(({ data: party }) => {
           const photo = party.ourCostumes.find((c) => c.photo)?.photo;
+          const day = partyDate(party.date);
           return (
             <li class="reveal">
               <a href={`/halloween/${party.year}/`}>
                 <span class="year">{party.year}</span>{" "}
                 <span class="what">
-                  <span class="name">{party.name}</span> <span class="theme">A {party.theme} Halloween</span>
+                  <span class="name">{party.name}</span> <span class="theme">A {party.theme} Halloween</span>{" "}
+                  <time class="theme" datetime={day.datetime}>
+                    {day.short}
+                  </time>
                 </span>
                 {photo && (
                   <Image

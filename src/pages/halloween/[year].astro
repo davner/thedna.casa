@@ -5,6 +5,7 @@ import Halloween from "../../layouts/Halloween.astro";
 import Drips from "../../components/halloween/Drips.astro";
 import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
 import { heroTitle } from "../../lib/hero-title";
+import { partyDate } from "../../lib/parties";
 import { partyShare } from "../../lib/party-preview";
 import { marigoldMask } from "../../lib/shapes";
 
@@ -33,7 +34,12 @@ const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
   share={partyShare(party)}
   description={`Our ${party.theme} Halloween, ${party.year}: costumes, the contest, the drinks and what was new.`}
 >
-  <HalloweenHero title={title.lines} fit={title.fit} subtitle={`Our ${party.theme} Halloween`} />
+  <HalloweenHero
+    title={title.lines}
+    fit={title.fit}
+    date={partyDate(party.date)}
+    subtitle={`Our ${party.theme} Halloween`}
+  />
   <main class="recap">
     <Drips />
     <svg class="defs" aria-hidden="true">

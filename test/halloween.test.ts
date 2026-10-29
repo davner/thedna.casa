@@ -106,6 +106,13 @@ describe("built Trick-R-Drink recap", () => {
     expect(readText($, "main")).toContain(intro.trim());
   });
 
+  it("dates the party under the subtitle, readable by machines too", () => {
+    const day = $("header time");
+    expect(day).toHaveLength(1);
+    expect(day.attr("datetime")).toBe("2026-10-17");
+    expect(day.text().trim()).toBe("Saturday, October 17, 2026");
+  });
+
   it("captions each of our costumes with who and what, from the party file", () => {
     const captions = section("Our costumes")
       .find("figcaption")
@@ -395,14 +402,17 @@ describe("built Halloween list", () => {
   });
 
   // The row's words already name the party, so the thumbnail is decoration and must stay silent.
-  it("shows each party's year, name and theme, with a circle thumbnail", () => {
+  it("shows each party's year, name, theme and date, with a circle thumbnail", () => {
     const newest = [...parties].sort((a: { year: number }, b: { year: number }) => b.year - a.year);
     expect(
       rows()
         .map((_, li) => readText($, li))
         .get(),
     ).toEqual(
-      newest.map((p: { year: number; name: string; theme: string }) => `${p.year} ${p.name} A ${p.theme} Halloween`),
+      newest.map(
+        (p: { year: number; name: string; theme: string; date: string }) =>
+          `${p.year} ${p.name} A ${p.theme} Halloween ${new Date(p.date).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" })}`,
+      ),
     );
     rows().each((_, li) => {
       expect($(li).find("a img")).toHaveLength(1);

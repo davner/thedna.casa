@@ -6,13 +6,14 @@ interface Props {
   title: string[];
   subtitle: string;
   fit?: number;
+  date?: { datetime: string; long: string };
   ring?: string;
 }
-const { title, subtitle, fit, ring } = Astro.props;
+const { title, subtitle, fit, date, ring } = Astro.props;
 ---
 
 <header class:list={["hero", { short: !ring }]}>
-  <HeroWords lines={title} subtitle={subtitle} fit={fit} />
+  <HeroWords lines={title} subtitle={subtitle} fit={fit} date={date} />
   {ring && (
     <Stamp ring={ring}>
       <Ghost class="stamp-ghost" />

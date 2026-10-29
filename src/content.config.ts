@@ -22,6 +22,7 @@ const halloween = defineCollection({
     );
     return z.object({
       year: z.number().int(),
+      date: z.coerce.date(),
       name: z.string(),
       theme: z.string(),
       drinks: z.array(z.string()),

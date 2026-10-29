@@ -173,7 +173,7 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 - **Display:** the hero title, all caps: THE DnA CASA and a party's name, broken between words or after a hyphen wherever it would overflow a 360px phone (TRICK-R- / DRINK, LET'S GET / TIKI FREAKY), the same breaks on every screen; HALLOWEEN on one line. On phones it drops to `clamp(3rem, 14vw, 4.2rem)`, small enough that HALLOWEEN fits inside the 20px hero gutters from 360px up. A party name with a word too wide to break (HOMECOMING) sets `--fit` below 1, shrinking only that page's phone title just enough to fit; every other title keeps the full size.
 - **Headline:** section headings on every page. On phones the clamp bottoms out at 2.2rem, which is also the size of the phone menu links.
 - **Title:** names and short items: member names, contest winners, the drinks, the new-this-year titles, the year and name on the Halloween list. 1.5rem on phones.
-- **Subtitle:** the hero subtitle ("Dan & Alexis", "Our tiki Halloween", "October at the casa") and a party recap's intro, in italic. One fluid size at every width.
+- **Subtitle:** the hero subtitle ("Dan & Alexis", "Our tiki Halloween", "October at the casa"), a recap's date as the subtitle's second line ("Saturday, October 17, 2026"), and a party recap's intro, in italic. One fluid size at every width.
 - **Label:** the "Bienvenidos" kicker, a recap's contest result and the desktop nav links. One size at every width.
 - **Body:** running text, at most 38ch wide in the welcome. One fluid size at every width.
 - **Caption:** member one-liners, photo captions, costume lines, the party theme on the list, "Made by" lines.
@@ -194,9 +194,9 @@ Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), w
 
 **The Wave On Screen Rule.** At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.
 
-A party recap has a short hero with no stamp: the party name, the theme and the squiggle (its top padding grows to 120 to 180px, 104px on phones). Then the drips, then its sections in one column at most 1100px wide: the intro (centered), our costumes (a large petal photo beside a smaller circle photo set lower), the costume contest (heading, rule and result beside the winners as rows), the drinks, new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own), and, when the party file has one, the invite (the card shown whole, never masked, 420px wide, 280px on phones, tipped -2deg like a scrapbook cutting). Section headings sit on the left.
+A party recap has a short hero with no stamp: the party name, the theme with the party's date under it, and the squiggle (its top padding grows to 120 to 180px, 104px on phones). Then the drips, then its sections in one column at most 1100px wide: the intro (centered), our costumes (a large petal photo beside a smaller circle photo set lower), the costume contest (heading, rule and result beside the winners as rows), the drinks, new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own), and, when the party file has one, the invite (the card shown whole, never masked, 420px wide, 280px on phones, tipped -2deg like a scrapbook cutting). Section headings sit on the left.
 
-The Halloween list uses the full hero, with the stamp, then the drips, then one row per party, newest first: the year, the name over the theme, and a small circle photo. Rows are links, divided by hairlines.
+The Halloween list uses the full hero, with the stamp, then the drips, then one row per party, newest first: the year, the name over the theme and the short date ("Sat, Oct 17"), and a small circle photo. Rows are links, divided by hairlines.
 
 One breakpoint, at 760px. Below it every page is one centered column ("Stamp first"):
 

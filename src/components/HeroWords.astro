@@ -4,8 +4,9 @@ interface Props {
   lines: string[];
   subtitle: string;
   fit?: number;
+  date?: { datetime: string; long: string };
 }
-const { lines, subtitle, fit = 1 } = Astro.props;
+const { lines, subtitle, fit = 1, date } = Astro.props;
 ---
 
 <div class="words">
@@ -18,6 +19,11 @@ const { lines, subtitle, fit = 1 } = Astro.props;
     ))}
   </h1>
   <p class="sub">{subtitle}</p>
+  {date && (
+    <p class="sub when">
+      <time datetime={date.datetime}>{date.long}</time>
+    </p>
+  )}
   <svg class="squiggle" viewBox="0 0 200 24" aria-hidden="true">
     <path d={brushSquiggle(231, 200, 24, 3, 6)} />
   </svg>
@@ -39,6 +45,10 @@ const { lines, subtitle, fit = 1 } = Astro.props;
     font-size: clamp(1.3rem, 2.2vw, 1.8rem);
     margin: 20px 0 0;
     color: var(--blush);
+  }
+  /* The date reads as the subtitle's second line, not a new block. */
+  .sub.when {
+    margin-top: 4px;
   }
   /* Each hero picks its squiggle's color, so the words stay one component across the home and Halloween pages. */
   .squiggle {
@@ -70,6 +80,9 @@ const { lines, subtitle, fit = 1 } = Astro.props;
     }
     .sub {
       margin-top: 12px;
+    }
+    .sub.when {
+      margin-top: 2px;
     }
     .squiggle {
       margin: 14px auto 0;
