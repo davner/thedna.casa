@@ -35,8 +35,8 @@ The site is the household itself. Nothing on it could belong to another family: 
 
 - Pages:
   - Home: hero, a welcome with one photo, the four members ("Who lives here"), footer with the year.
-  - `/halloween/`: every party, one row per year, newest first: year, party name, theme and a small photo.
-  - `/halloween/<year>/`: one party's recap: hero with the party name and theme, intro, our costumes, the costume contest, the drinks, new this year.
+  - `/halloween/`: a hero with the ghost stamp, then every party, one row per year, newest first: year, party name, theme and a small photo.
+  - `/halloween/<year>/`: one party's recap: hero with the party name and theme (no stamp), intro, our costumes, the costume contest, the drinks, new this year.
 - A navbar on every page links "Casa" and "Halloween". A section joins the navbar only when it ships.
 - Nothing to sell, no sign-up, no contact link, no CMS, no analytics, no search, no RSS, no dark mode.
 - Copy and member data live in a TypeScript content module, `src/content.ts`, edited in the repo by Dan and Claude. Changing the words never means touching layout code.
@@ -54,7 +54,7 @@ The site is the household itself. Nothing on it could belong to another family: 
 - English, with a few Spanish words ("Bienvenidos", "Hola", "Con cariño", the "Casa" nav link). Spanish phrases carry `lang="es"`, except "Hola", which sits inside an English sentence.
 - Look (variant 23 "Mole"): a mole-brown (#43262A) hero and footer, a cream (#FAF4EC) middle, one wave between them, and one page-wide grain layer. No pure black anywhere.
 - Halloween look: the same system with a Trona black (#201D1E) hero and footer in place of mole, and a drip edge in place of the wave.
-- Logo: the Beso sun-and-moon mark (marigold sun, thin moon), set inside a stamp ring that reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO". On a party recap a still cream ghost takes its place, inside a ring with the party name, "HALLOWEEN", the year and "THE DnA CASA".
+- Logo: the Beso sun-and-moon mark (marigold sun, thin moon), set inside a stamp ring that reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO". On the Halloween list a still cream ghost takes its place, inside a ring that reads "HALLOWEEN · THE DnA CASA · CON CARIÑO". A party recap has no stamp; a party never gets its own mark or ring words.
 - Palette: mole #43262A, cream ink #F6E7DA, page cream #FAF4EC, terracotta #C8643C, rosa mexicano #E4007C, marigold gold #F2B233, Salamander green #2F3E3E (Dan), sage #B9C9B4, cheek pink #F7C6D9, blush #F0C7B4, Trona black #201D1E (Halloween pages only). Terracotta is the only orange outside the logo; no page adds its own accent. Member circles, in order: Salamander, rosa mexicano, sage, marigold gold.
 - Two fonts only: Averia Serif Libre (headings 700, subtitle and footer italic 400) and Schibsted Grotesk (body 400), self-hosted through Fontsource.
 - Type: one shared scale for every page (see DESIGN.md); no page invents its own size.

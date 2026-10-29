@@ -115,6 +115,7 @@ Halloween pages keep the same system and swap one thing: Trona black stands in f
 Rejected and settled: a literal house, many arches, leaf or dappled shadows, squiggles everywhere, heavy hand-drawn ornament, a scrolling word strip, sparkles.
 
 **Key Characteristics:**
+
 - Two big color fields, a dark one and cream, joined by one drawn edge.
 - Big, tight, all-caps serif wordmark; italic serif for the soft voice.
 - Accents (pink, gold, terra) only in small doses.
@@ -126,25 +127,30 @@ Rejected and settled: a literal house, many arches, leaf or dappled shadows, squ
 A deep, warm brown and two creams carry the page; the saturated colors are accents and member identities.
 
 ### Primary
+
 - **Mole** (`mole`): the hero and footer field, the ink on cream, the welcome heading and the ghost's eyes. The browser theme color. It stands in for black everywhere except Halloween pages.
 - **Marigold** (`gold`): the logo's sun, Penny's circle.
 
 ### Secondary
+
 - **Rosa Mexicano** (`pink`): Alexis's color. The home squiggle, Alexis's circle, the text selection highlight.
 - **Terracotta** (`terra`): the one orange. Section headings and large text on cream ("Who lives here", "Bienvenidos", every Halloween section heading, the contest result, the year on the Halloween list). On the dark fields: the Halloween squiggle, the nav's current-page underline and the focus ring.
 
 ### Tertiary
+
 - **Salamander** (`salamander`): Dan's color, his member circle.
 - **Sage** (`sage`): Milly's circle.
 - **Cheek** (`cheek`): the cheeks on the Beso and the ghost, and the petal shape that stands in for the welcome photo.
 - **Blush** (`blush`): the italic hero subtitle on the dark field.
 
 ### Neutral
+
 - **Cream Ink** (`cream`): text and the stamp ring on the dark field, and the ghost's body.
 - **Page Cream** (`cream-page`): the middle field on every page.
 - **Trona Black** (`trona`): the hero, footer, drips and phone menu field on Halloween pages, and their theme color. A warm near-black, darker than mole.
 
 ### Named Rules
+
 **The No Black Rule.** Mole is the darkest color on household pages and Trona black on Halloween pages. Nothing is pure black.
 
 **The One Orange Rule.** Terracotta is the only orange outside the logo. A page or a party never adds its own accent color (pumpkin, lime and plum were tried for Halloween and rejected).
@@ -163,6 +169,7 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 **Character:** a soft, slightly irregular serif for every heading and the warm asides, and a plain grotesk for reading. Only three faces ship: serif 700, serif italic 400, grotesk 400. All are self-hosted through Fontsource.
 
 ### Hierarchy
+
 - **Display:** the hero title, all caps: THE DnA CASA and a party's name (TRICK-R-DRINK, broken after its last hyphen) on two lines, HALLOWEEN on one. On phones it drops to `clamp(3rem, 15vw, 4.2rem)`.
 - **Headline:** section headings on every page. On phones the clamp bottoms out at 2.2rem, which is also the size of the phone menu links.
 - **Title:** names and short items: member names, contest winners, the drinks, the new-this-year titles, the year and name on the Halloween list. 1.5rem on phones.
@@ -174,6 +181,7 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 - **Sign-off:** the footer, italic at 16px.
 
 ### Named Rules
+
 **The One Scale Rule.** Every text size on every page is one of the roles above, and a test fails the build on any `font-size` that is not in this file's front matter. A page never invents its own size; an element that feels too quiet moves up to an existing role instead. Only display and title have separate phone sizes.
 
 **The Two Families Rule.** Averia Serif Libre and Schibsted Grotesk only. A new role picks a weight these two already ship before it adds one.
@@ -186,13 +194,14 @@ Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), w
 
 **The Wave On Screen Rule.** At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.
 
-A party recap uses the same hero, then the drips, then its sections in one column at most 1100px wide: the intro (centered), our costumes (a large petal photo beside a smaller circle photo set lower), the costume contest (heading, rule and result beside the winners as rows), the drinks, and new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own). Section headings sit on the left.
+A party recap has a short hero with no stamp: the party name, the theme and the squiggle (its top padding grows to 120 to 180px, 104px on phones). Then the drips, then its sections in one column at most 1100px wide: the intro (centered), our costumes (a large petal photo beside a smaller circle photo set lower), the costume contest (heading, rule and result beside the winners as rows), the drinks, and new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own). Section headings sit on the left.
 
-The Halloween list has a short hero with no stamp (its top padding grows to 120 to 180px, 104px on phones), then the drips, then one row per party, newest first: the year, the name over the theme, and a small circle photo. Rows are links, divided by hairlines.
+The Halloween list uses the full hero, with the stamp, then the drips, then one row per party, newest first: the year, the name over the theme, and a small circle photo. Rows are links, divided by hairlines.
 
 One breakpoint, at 760px. Below it every page is one centered column ("Stamp first"):
+
 - The nav links fold into the menu button.
-- The stamp comes first, then the title and the subtitle.
+- The stamp, where a hero has one, comes first, then the title and the subtitle.
 - The hero is short, so the edge and the cream middle start on the first screen.
 - Side-by-side sections stack. The welcome words come before its photo; a highlight's photo comes before its words.
 - The members become rows: an 84px circle on the left, the name and one-liner on the right.
@@ -212,6 +221,7 @@ The page is flat: no shadows, no cards, no raised surfaces. Depth comes from the
 ## Shapes
 
 Shapes are organic and drawn, never boxy. The only hard geometry is the circle: member circles and circle photos. Every other shape comes from a seeded generator, so it's the same on every build:
+
 - the wave between hero and welcome on household pages,
 - the drip edge under the hero on Halloween pages,
 - the brush squiggle under the subtitle,
@@ -232,35 +242,46 @@ The site has no rounded rectangles, boxed borders or boxed buttons. The one cont
 ## Components
 
 ### Navbar
+
 On every page, over the top of the hero, in cream; it scrolls away with the page. Links: "Casa" (`lang="es"`) and "Halloween"; a section joins only when it ships. "Halloween" is the current page on the list and on every recap. No logo: "Casa" is the way home. On wide screens the links sit inline at label size, the current page underlined in terracotta. At 760px and below a menu button (three brushed strokes that turn into an X) opens a panel in the page's dark field that fills the screen under the bar, so no edge crosses the stamp, with the links at headline size, and the page stops scrolling while it is open. It is an HTML `popover` that follows its button, with CSS only, so it works with JavaScript off. The links are written twice, once inline and once in the panel, and CSS shows one list at each width.
 
 ### Stamp
-The signature piece. A circle of words set in serif 700 caps with wide 0.08em tracking, in cream on the dark field, around a center mark. On household pages the mark is the Beso sun-and-moon logo at 64%, and the ring reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO". On a party recap the mark is the ghost at 46%, and the ring reads the party's name, "HALLOWEEN" and the year, then "THE DnA CASA". It is at most 380px wide on desktop and `min(76vw, 300px)` on phones.
+
+The signature piece. A circle of words set in serif 700 caps with wide 0.08em tracking, in cream on the dark field, around a center mark. On household pages the mark is the Beso sun-and-moon logo at 64%, and the ring reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO". On the Halloween list the mark is the ghost at 46%, and the ring reads "HALLOWEEN · THE DnA CASA · CON CARIÑO". The stamp belongs to Halloween as a whole: a party recap has no stamp, and a party never gets its own mark or ring words. It is at most 380px wide on desktop and `min(76vw, 300px)` on phones.
 
 ### Ghost
+
 The Halloween mark: a cream body drawn from a seeded outline with no outline stroke, like the Beso. Hand-pressed mole eyes and cheek-pink cheeks. It holds still. Each recap's 1200x630 link preview shows it too, 300px tall over "<NAME> · HALLOWEEN <year>" in cream serif 700 caps on Trona; a long name shrinks to fit the margins.
 
 ### Brush squiggle
+
 One brush stroke under the hero subtitle, 130px wide (112px on phones): rosa mexicano on household pages, terracotta on Halloween pages.
 
 ### Drip edge
+
 The Trona field hanging into the cream under a Halloween hero: 18 seeded drips (seed 66), each a neck with a round bulb, with no line along them. 160px tall on desktop and 104px on phones, sliced at 1:1 so the bulbs never squash; narrow screens see the middle of the edge. The content below starts under the longest drip.
 
 ### Member circle
+
 - **Shape:** a full circle (`rounded.circle`), at most 200px on desktop, 84px on phones.
 - **Fill:** the member's color, or their portrait cropped to the circle. Each portrait has one plain line of alt text, kept on the member's data: who it is and what they are doing or wearing.
 
 ### Photos
+
 Large photos (the welcome photo, a couple's costume photo, new-this-year photos) are clipped by the seeded petal mask, each with its own seed, 420 to 500px square at most (280 to 300px on phones). Smaller photos are circles: the pets' costume photo (340px, 220px on phones) and the Halloween list thumbnails (72 to 112px), which show a party's first costume photo. In a party file a photo is a petal unless it says `shape: circle`. With no welcome photo, the petal shape itself shows, filled in cheek pink. Every photo ships at its largest shown width and at twice that, so 2x screens get a sharp file and 1x screens a small one.
 
 ### Kicker
+
 A small serif-bold word in terracotta above a section heading ("Bienvenidos"). It's the only place a Spanish word sits above an English heading.
 
 ### Footer
+
 One centered italic serif line at sign-off size in cream on the page's dark field: "Con cariño · © year The DnA Casa", with "Con cariño" marked as Spanish.
 
 ### Motion
+
 Quiet and short: under about 0.5s (other than the ring and the squiggle), no bounce, all of it only under `prefers-reduced-motion: no-preference`, and every page is complete with JavaScript off.
+
 - The stamp ring turns once every 40s, linear and endless.
 - The squiggle paints on left to right once on load, over 1.6s after a 0.4s delay, with `cubic-bezier(0.16, 1, 0.3, 1)`.
 - The drips run down once on load, over 0.5s after a 0.25s delay, with the same curve.
@@ -274,6 +295,7 @@ The drips and the scroll fade-ups set each `animation-*` property in longhand, b
 ## Do's and Don'ts
 
 ### Do:
+
 - **Do** keep the dark field (mole, or Trona on Halloween pages) and page cream as the only large color fields.
 - **Do** take every color from the palette module, which feeds CSS, SVG fills, the theme-color meta, the favicon and the link previews. The logo's petal oranges are the one exception.
 - **Do** keep accents small: a stroke, a circle, a kicker, an underline.
@@ -282,6 +304,7 @@ The drips and the scroll fade-ups set each `animation-*` property in longhand, b
 - **Do** check the phone layout at 390px in device emulation.
 
 ### Don't:
+
 - **Don't** use pure black, drop shadows or cards.
 - **Don't** add a third typeface or another weight without retiring one.
 - **Don't** add an accent color for a page, a section or a party.

@@ -22,6 +22,31 @@ const expectDripEdge = ($: CheerioAPI) => {
   expect(fill.attr("fill")).toBe(palette.trona);
 };
 
+const expectStampGhost = ($: CheerioAPI) => {
+  const paths = $("header path")
+    .map((_, path) => $(path).attr("d"))
+    .get();
+  expect(paths).not.toContain(marigoldMark(3).disc);
+  const body = $("header .stamp path").filter((_, path) => $(path).attr("d") === ghost(41));
+  expect(body).toHaveLength(1);
+  expect(body.attr("fill")).toBe(palette.cream);
+  expect(body.attr("stroke")).toBeUndefined();
+  const face = body
+    .siblings()
+    .find("path")
+    .map((_, path) => $(path).closest("[fill]").attr("fill"))
+    .get();
+  expect(face.sort()).toEqual([palette.mole, palette.mole, palette.cheek, palette.cheek].sort());
+};
+
+const expectHiddenDrawings = ($: CheerioAPI, atLeast: number) => {
+  const drawings = $("header svg").filter((_, svg) => $(svg).parents("svg").length === 0);
+  expect(drawings.length).toBeGreaterThanOrEqual(atLeast);
+  drawings.each((_, svg) => {
+    expect($(svg).closest("[aria-hidden='true']"), $.html(svg).slice(0, 80)).toHaveLength(1);
+  });
+};
+
 // The drips overlap the top of the cream block, so the first content must start below the longest one.
 const clearanceBelowDrips = ($: CheerioAPI, selector: string, phone: boolean) => {
   const value = (target: string, prop: string) => {
@@ -30,7 +55,11 @@ const clearanceBelowDrips = ($: CheerioAPI, selector: string, phone: boolean) =>
       root.walkDecls(new RegExp(`^${prop}(-top)?$`), (decl) => {
         const rule = decl.parent as { selector?: string; parent?: { type: string; params?: string } };
         const at = rule.parent?.type === "atrule" ? (rule.parent.params ?? "").replace(/\s+/g, "") : "";
-        if ((phone ? /760px/.test(at) : at === "") && rule.selector?.replace(/\[data-astro-cid-[^\]]+\]/g, "") === target) found = decl.value.split(/\s+/)[0];
+        if (
+          (phone ? /760px/.test(at) : at === "") &&
+          rule.selector?.replace(/\[data-astro-cid-[^\]]+\]/g, "") === target
+        )
+          found = decl.value.split(/\s+/)[0];
       });
     }
     return parseFloat(found ?? "NaN");
@@ -52,7 +81,9 @@ describe("built Trick-R-Drink recap", () => {
 
   // Highlights are h3s so a screen reader can jump from one to the next.
   it("runs its headings as the h1, then an h2 per section, with an h3 per highlight", () => {
-    const headings = $("h1, h2, h3, h4, h5, h6").map((_, h) => `${h.tagName} ${$(h).text().trim()}`).get();
+    const headings = $("h1, h2, h3, h4, h5, h6")
+      .map((_, h) => `${h.tagName} ${$(h).text().trim()}`)
+      .get();
     expect(headings).toEqual([
       "h1 TRICK-R-DRINK",
       "h2 Our costumes",
@@ -65,7 +96,10 @@ describe("built Trick-R-Drink recap", () => {
     ]);
   });
 
-  const section = (heading: string) => $("h2").filter((_, h) => $(h).text().trim() === heading).closest("section");
+  const section = (heading: string) =>
+    $("h2")
+      .filter((_, h) => $(h).text().trim() === heading)
+      .closest("section");
 
   it("subtitles the hero with the party's theme and opens with the intro", () => {
     expect($("header p").filter((_, p) => $(p).text().trim() === "Our tiki Halloween")).toHaveLength(1);
@@ -73,7 +107,10 @@ describe("built Trick-R-Drink recap", () => {
   });
 
   it("captions each of our costumes with who and what, from the party file", () => {
-    const captions = section("Our costumes").find("figcaption").map((_, c) => readText($, c)).get();
+    const captions = section("Our costumes")
+      .find("figcaption")
+      .map((_, c) => readText($, c))
+      .get();
     expect(captions).toEqual(party.ourCostumes.map((c: { who: string; as: string }) => `${c.who} as ${c.as}`));
   });
 
@@ -86,8 +123,13 @@ describe("built Trick-R-Drink recap", () => {
     const contest = readText($, section("The costume contest"));
     expect(contest).toContain(party.contest.rule);
     expect(contest).toContain(party.contest.result);
-    const winners = section("The costume contest").find("li").map((_, li) => readText($, li)).get();
-    expect(winners).toEqual(party.contest.winners.map((w: { names: string; costume: string }) => `${w.names} as ${w.costume}`));
+    const winners = section("The costume contest")
+      .find("li")
+      .map((_, li) => readText($, li))
+      .get();
+    expect(winners).toEqual(
+      party.contest.winners.map((w: { names: string; costume: string }) => `${w.names} as ${w.costume}`),
+    );
   });
 
   it("names the drinks and who made them", () => {
@@ -97,22 +139,37 @@ describe("built Trick-R-Drink recap", () => {
   });
 
   it("tells each highlight under its title", () => {
-    const highlights = section("New this year").find("li").map((_, li) => [[$(li).find("h3").text().trim(), readText($, $(li).find("p"))]]).get();
+    const highlights = section("New this year")
+      .find("li")
+      .map((_, li) => [[$(li).find("h3").text().trim(), readText($, $(li).find("p"))]])
+      .get();
     expect(highlights).toEqual(party.highlights.map((h: { title: string; text: string }) => [h.title, h.text]));
   });
 
   it("shows each photo from the party file on the item it shows, with its alt text", () => {
-    const alts = (heading: string) => section(heading).find("img").map((_, img) => $(img).attr("alt") ?? "").get();
-    const fromFile = (items: { photo?: { alt: string } }[]) => items.flatMap((item) => (item.photo ? [item.photo.alt] : []));
+    const alts = (heading: string) =>
+      section(heading)
+        .find("img")
+        .map((_, img) => $(img).attr("alt") ?? "")
+        .get();
+    const fromFile = (items: { photo?: { alt: string } }[]) =>
+      items.flatMap((item) => (item.photo ? [item.photo.alt] : []));
     expect(alts("Our costumes")).toEqual(fromFile(party.ourCostumes));
     expect(alts("New this year")).toEqual(fromFile(party.highlights));
-    expect($("img").map((_, img) => $(img).attr("alt")).get().filter((alt) => !alt?.trim())).toEqual([]);
+    expect(
+      $("img")
+        .map((_, img) => $(img).attr("alt"))
+        .get()
+        .filter((alt) => !alt?.trim()),
+    ).toEqual([]);
   });
 
   // Keyed to the photo itself, so adding or dropping another photo never reshapes this one.
   it("clips each petal photo with the mask seeded by its own file name", () => {
     type Photo = { src: string; alt: string; shape?: string };
-    const petals: Photo[] = [...party.ourCostumes, ...party.highlights].flatMap((item: { photo?: Photo }) => (item.photo && item.photo.shape !== "circle" ? [item.photo] : []));
+    const petals: Photo[] = [...party.ourCostumes, ...party.highlights].flatMap((item: { photo?: Photo }) =>
+      item.photo && item.photo.shape !== "circle" ? [item.photo] : [],
+    );
     expect(petals.length).toBeGreaterThan(0);
     for (const photo of petals) {
       const img = $("img").filter((_, el) => $(el).attr("alt") === photo.alt);
@@ -146,7 +203,8 @@ describe("built Trick-R-Drink recap", () => {
     };
     const creamColumns = (top: number, bottom: number) => {
       const xs = new Set<number>();
-      for (let y = top; y < bottom; y++) for (let x = 0; x < info.width; x++) if (hex(x, y) === palette.cream) xs.add(x);
+      for (let y = top; y < bottom; y++)
+        for (let x = 0; x < info.width; x++) if (hex(x, y) === palette.cream) xs.add(x);
       return xs.size ? Math.max(...xs) - Math.min(...xs) : 0;
     };
     expect([hex(0, 0), hex(1199, 629)]).toEqual([palette.trona, palette.trona]);
@@ -156,30 +214,19 @@ describe("built Trick-R-Drink recap", () => {
   });
 
   it("describes its link preview image by the party's name and year", () => {
-    expect($("head meta[property='og:image:alt']").attr("content")).toBe("A cream ghost over TRICK-R-DRINK · HALLOWEEN 2026 on Trona black");
+    expect($("head meta[property='og:image:alt']").attr("content")).toBe(
+      "A cream ghost over TRICK-R-DRINK · HALLOWEEN 2026 on Trona black",
+    );
   });
 
-  it("rings the stamp with the party's name and year", () => {
-    expect($("header svg text").text()).toBe("TRICK-R-DRINK · HALLOWEEN 2026 · THE DnA CASA · ");
-  });
-
-  it("holds a still cream ghost in the stamp ring instead of the Beso", () => {
-    const paths = $("header path").map((_, path) => $(path).attr("d")).get();
-    expect(paths).not.toContain(marigoldMark(3).disc);
-    const body = $("header path").filter((_, path) => $(path).attr("d") === ghost(41));
-    expect(body).toHaveLength(1);
-    expect(body.attr("fill")).toBe(palette.cream);
-    expect(body.attr("stroke")).toBeUndefined();
-    const face = body.siblings().find("path").map((_, path) => $(path).closest("[fill]").attr("fill")).get();
-    expect(face.sort()).toEqual([palette.mole, palette.mole, palette.cheek, palette.cheek].sort());
+  // The stamp belongs to Halloween as a whole, so a party never gets its own mark or ring words.
+  it("opens with only the title, theme and squiggle: no stamp, ring or ghost", () => {
+    expect($("header .stamp, header svg text")).toHaveLength(0);
+    expect($("header path").filter((_, path) => $(path).attr("d") === ghost(41))).toHaveLength(0);
   });
 
   it("hides the hero's drawings from assistive tech", () => {
-    const drawings = $("header svg").filter((_, svg) => $(svg).parents("svg").length === 0);
-    expect(drawings.length).toBeGreaterThanOrEqual(3);
-    drawings.each((_, svg) => {
-      expect($(svg).closest("[aria-hidden='true']"), $.html(svg).slice(0, 80)).toHaveLength(1);
-    });
+    expectHiddenDrawings($, 1);
   });
 
   it("hangs the Trona drip edge into the cream under the hero, hidden from assistive tech", () => {
@@ -197,7 +244,8 @@ describe("built Trick-R-Drink recap", () => {
         if (!Object.keys(decls).length || !edge.is(plain)) return;
         const guards: string[] = [];
         for (let node = rule.parent; node; node = node.parent as typeof node) {
-          if (node.type === "atrule" && (node as { name: string }).name === "media") guards.push((node as { params: string }).params.replace(/\s+/g, ""));
+          if (node.type === "atrule" && (node as { name: string }).name === "media")
+            guards.push((node as { params: string }).params.replace(/\s+/g, ""));
         }
         runs.push({ decls, guards });
       });
@@ -207,12 +255,17 @@ describe("built Trick-R-Drink recap", () => {
     // The minifier folds a shorthand into a form Chrome can reject, so the drips keep to longhands like the scroll fades.
     expect(decls.animation).toBeUndefined();
     expect(decls["animation-name"]).toBeTruthy();
-    expect(parseFloat(decls["animation-duration"]) * (decls["animation-duration"].endsWith("ms") ? 0.001 : 1)).toBeLessThanOrEqual(0.5);
+    expect(
+      parseFloat(decls["animation-duration"]) * (decls["animation-duration"].endsWith("ms") ? 0.001 : 1),
+    ).toBeLessThanOrEqual(0.5);
     expect(decls["animation-iteration-count"] ?? "1").toBe("1");
     expect(guards).toContainEqual(expect.stringContaining("(prefers-reduced-motion:no-preference)"));
   });
 
-  it.each([["desktop", false], ["phone", true]])("starts the intro below the drips on %s", (_, phone) => {
+  it.each([
+    ["desktop", false],
+    ["phone", true],
+  ])("starts the intro below the drips on %s", (_, phone) => {
     expect(clearanceBelowDrips($, ".intro", phone)).toBeGreaterThanOrEqual(24);
   });
 
@@ -232,13 +285,17 @@ describe("built Trick-R-Drink recap", () => {
       root.walkDecls("animation-timeline", (decl) => {
         const supports = [];
         for (let node = decl.parent; node; node = node.parent as typeof node) {
-          if (node.type === "atrule" && (node as { name: string }).name === "supports") supports.push((node as { params: string }).params);
+          if (node.type === "atrule" && (node as { name: string }).name === "supports")
+            supports.push((node as { params: string }).params);
         }
-        if (/view\(/.test(decl.value) && supports.some((s) => s.includes("animation-timeline"))) reveals.push(decl.parent?.toString().split("{")[0].trim() ?? "");
+        if (/view\(/.test(decl.value) && supports.some((s) => s.includes("animation-timeline")))
+          reveals.push(decl.parent?.toString().split("{")[0].trim() ?? "");
       });
     }
     expect(reveals.length).toBeGreaterThan(0);
-    const revealed = reveals.map((selector) => $(selector.replace(/\[data-astro-cid-[^\]]+\]/g, "")).length).reduce((a, b) => a + b, 0);
+    const revealed = reveals
+      .map((selector) => $(selector.replace(/\[data-astro-cid-[^\]]+\]/g, "")).length)
+      .reduce((a, b) => a + b, 0);
     expect(revealed).toBeGreaterThanOrEqual(5);
   });
 });
@@ -257,18 +314,32 @@ describe("built Halloween list", () => {
 
   const rows = () => $("main li");
 
-  it("opens with a short hero titled HALLOWEEN, October at the casa, and no stamp ring", () => {
+  it("opens with a hero titled HALLOWEEN and October at the casa", () => {
     expect($("h1")).toHaveLength(1);
     expect($("h1").text().trim()).toBe("HALLOWEEN");
     expect($("header p").filter((_, p) => $(p).text().trim() === "October at the casa")).toHaveLength(1);
-    expect($("header svg text, .stamp")).toHaveLength(0);
+  });
+
+  it("rings the stamp with Halloween and the household's words", () => {
+    expect($("header .stamp svg text").text()).toBe("HALLOWEEN · THE DnA CASA · CON CARIÑO · ");
+  });
+
+  it("holds a still cream ghost in the stamp ring instead of the Beso", () => {
+    expectStampGhost($);
+  });
+
+  it("hides the hero's drawings from assistive tech", () => {
+    expectHiddenDrawings($, 3);
   });
 
   it("hangs the Trona drip edge into the cream under the hero, hidden from assistive tech", () => {
     expectDripEdge($);
   });
 
-  it.each([["desktop", false], ["phone", true]])("starts the parties below the drips on %s", (_, phone) => {
+  it.each([
+    ["desktop", false],
+    ["phone", true],
+  ])("starts the parties below the drips on %s", (_, phone) => {
     expect(clearanceBelowDrips($, "section", phone)).toBeGreaterThanOrEqual(24);
   });
 
@@ -279,18 +350,30 @@ describe("built Halloween list", () => {
 
   it("keeps the site's link preview image", () => {
     expect($("head meta[property='og:image']").attr("content")).toBe("https://thedna.casa/share.png");
-    expect($("head meta[property='og:image:alt']").attr("content")).toBe("The DnA Casa's sun-and-moon mark on mole brown");
+    expect($("head meta[property='og:image:alt']").attr("content")).toBe(
+      "The DnA Casa's sun-and-moon mark on mole brown",
+    );
   });
 
   it("has one row per party, newest first, each one link to its recap", () => {
     const years = parties.map((p: { year: number }) => p.year).sort((a: number, b: number) => b - a);
-    expect(rows().map((_, li) => [[$(li).find("a").length, $(li).find("a").attr("href")]]).get()).toEqual(years.map((y: number) => [1, `/halloween/${y}/`]));
+    expect(
+      rows()
+        .map((_, li) => [[$(li).find("a").length, $(li).find("a").attr("href")]])
+        .get(),
+    ).toEqual(years.map((y: number) => [1, `/halloween/${y}/`]));
   });
 
   // The row's words already name the party, so the thumbnail is decoration and must stay silent.
   it("shows each party's year, name and theme, with a circle thumbnail", () => {
     const newest = [...parties].sort((a: { year: number }, b: { year: number }) => b.year - a.year);
-    expect(rows().map((_, li) => readText($, li)).get()).toEqual(newest.map((p: { year: number; name: string; theme: string }) => `${p.year} ${p.name} A ${p.theme} Halloween`));
+    expect(
+      rows()
+        .map((_, li) => readText($, li))
+        .get(),
+    ).toEqual(
+      newest.map((p: { year: number; name: string; theme: string }) => `${p.year} ${p.name} A ${p.theme} Halloween`),
+    );
     rows().each((_, li) => {
       expect($(li).find("a img")).toHaveLength(1);
       expect($(li).find("a img").attr("alt")).toBe("");

@@ -5,9 +5,12 @@ import { palette } from "../palette";
 import type { Share } from "../content";
 import { ghostFigure } from "./shapes";
 
-interface Party { name: string; year: number }
+interface Party {
+  name: string;
+  year: number;
+}
 
-export const partyWords = ({ name, year }: Party) => `${name.toUpperCase()} · HALLOWEEN ${year}`;
+const partyWords = ({ name, year }: Party) => `${name.toUpperCase()} · HALLOWEEN ${year}`;
 
 // Beside the drawing, so the alt text cannot drift from what the image shows.
 export const partyShare = (party: Party): Share => ({
@@ -21,7 +24,9 @@ const margin = 80;
 
 // The same self-hosted file the pages load; librsvg has no way to load a web font, so the glyphs go in as paths.
 const serif = openSync(
-  createRequire(import.meta.url).resolve("@fontsource/averia-serif-libre/files/averia-serif-libre-latin-700-normal.woff2"),
+  createRequire(import.meta.url).resolve(
+    "@fontsource/averia-serif-libre/files/averia-serif-libre-latin-700-normal.woff2",
+  ),
 ) as Font;
 
 // Shrinks only when a long name would run past the margins, so most parties share one size.
