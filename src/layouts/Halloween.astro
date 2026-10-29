@@ -11,7 +11,7 @@ const { title, description } = Astro.props;
 </Base>
 
 <style is:global>
-  body { background: var(--trona); }
+  body { --dark: var(--trona); background: var(--dark); }
 
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {

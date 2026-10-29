@@ -38,6 +38,21 @@ describe("shipped pages", () => {
     }
   });
 
+  it("open the phone menu with a named button whose popovertarget is the panel right after it", () => {
+    for (const page of shippedPages()) {
+      const $ = builtPage(page);
+      const button = $("nav button[popovertarget]");
+      expect(button, page).toHaveLength(1);
+      expect(button.attr("aria-label"), page).toBe("Menu");
+      expect(button.find("svg").attr("aria-hidden"), page).toBe("true");
+      expect(button.find("svg path"), page).toHaveLength(3);
+      const panel = button.next();
+      expect(panel.attr("id"), page).toBe(button.attr("popovertarget"));
+      expect(panel.is("[popover]"), page).toBe(true);
+      expect(panel.find("ul a"), page).toHaveLength(2);
+    }
+  });
+
   it("mark the link to the page's own section, and only that one, as the current page", () => {
     const section: Record<string, string> = {
       "index.html": "/",
