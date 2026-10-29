@@ -2,6 +2,7 @@ import { createRequire } from "node:module";
 import { openSync, type Font } from "fontkit";
 import sharp from "sharp";
 import { palette } from "../palette";
+import type { Share } from "../content";
 import { ghostFigure } from "./shapes";
 
 interface Party { name: string; year: number }
@@ -9,7 +10,7 @@ interface Party { name: string; year: number }
 export const partyWords = ({ name, year }: Party) => `${name.toUpperCase()} · HALLOWEEN ${year}`;
 
 // Beside the drawing, so the alt text cannot drift from what the image shows.
-export const partyShare = (party: Party) => ({
+export const partyShare = (party: Party): Share => ({
   path: `/halloween/${party.year}/share.png`,
   alt: `A cream ghost over ${partyWords(party)} on Trona black`,
 });

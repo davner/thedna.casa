@@ -19,6 +19,8 @@ export const copy = {
   shareImageAlt: "The DnA Casa's sun-and-moon mark on mole brown",
 };
 
+export interface Share { path: string; alt: string }
+
 export interface Welcome {
   text: string;
   photo?: { src: ImageMetadata; alt: string };
