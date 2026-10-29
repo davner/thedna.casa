@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { getCollection, render } from "astro:content";
 import Halloween from "../../layouts/Halloween.astro";
+import Drips from "../../components/halloween/Drips.astro";
 import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
 import { marigoldMask } from "../../lib/shapes";
 
@@ -25,6 +26,7 @@ const clip = (photo: Photo) => `clip-path:${photo.shape === "circle" ? "circle(5
 <Halloween title={`${p.name} · The DnA Casa`} description={`Our ${p.theme} Halloween, ${p.year}: costumes, the contest, the drinks and what was new.`}>
   <HalloweenHero title={titleLines} subtitle={`Our ${p.theme} Halloween`} ring={`${upper} · HALLOWEEN ${p.year} · THE DnA CASA · `} />
   <main class="recap">
+    <Drips />
     <svg class="defs" aria-hidden="true">
       {petals.map((photo) => <clipPath id={petalId(photo)} clipPathUnits="objectBoundingBox"><path d={marigoldMask(seed(photo))} /></clipPath>)}
     </svg>

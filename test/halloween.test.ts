@@ -3,7 +3,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import type { CheerioAPI } from "cheerio";
 import { parse } from "yaml";
 import { builtPage, pageCss, readText } from "./site";
-import { ghost, marigoldMark } from "../src/lib/shapes";
+import { drips, ghost, marigoldMark } from "../src/lib/shapes";
 import { palette } from "../src/palette";
 
 // The party file itself is the source of truth for the recap's words.
@@ -108,6 +108,15 @@ describe("built Trick-R-Drink recap", () => {
     drawings.each((_, svg) => {
       expect($(svg).closest("[aria-hidden='true']"), $.html(svg).slice(0, 80)).toHaveLength(1);
     });
+  });
+
+  it("hangs the Trona drip edge into the cream under the hero, hidden from assistive tech", () => {
+    const edge = $("header + main > svg").first();
+    expect(edge.attr("aria-hidden")).toBe("true");
+    const fill = edge.find("path");
+    expect(fill).toHaveLength(1);
+    expect(fill.attr("d")).toBe(drips(66, 2400, 160, 18));
+    expect(fill.attr("fill")).toBe(palette.trona);
   });
 
   it("tints the phone's browser chrome Trona black", () => {
