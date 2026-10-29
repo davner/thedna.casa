@@ -1,7 +1,7 @@
 import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
-import { petalSeed } from "./lib/parties";
+import { photoSeed } from "./lib/parties";
 
 // A photo sits on the item it shows, so the page never has to guess which photo goes where.
 const halloween = defineCollection({
@@ -11,12 +11,13 @@ const halloween = defineCollection({
     const photo = z.preprocess(
       (raw) =>
         raw && typeof raw === "object" && "src" in raw && typeof raw.src === "string"
-          ? { ...raw, seed: petalSeed(raw.src) }
+          ? { ...raw, seed: photoSeed(raw.src) }
           : raw,
       z.object({
         src: image(),
         alt: z.string().min(1),
-        shape: z.enum(["petal", "circle"]).default("petal"),
+        // A small photo sits beside a large one at a smaller size, set lower, so the pair reads as a step.
+        size: z.enum(["large", "small"]).default("large"),
         seed: z.number().int(),
       }),
     );
@@ -40,7 +41,7 @@ const halloween = defineCollection({
       drinks: z
         .object({ names: z.array(z.string()).min(1), by: z.string().optional(), photo: photo.optional() })
         .optional(),
-      // Frames tell one moment in order, like stills from a video, so they keep their own shape instead of a petal.
+      // Frames tell one moment in order, like stills from a video, so they keep their whole frame instead of the soft mask.
       highlights: z
         .array(
           z.object({

@@ -237,8 +237,8 @@ describe("member portraits", () => {
 describe("welcome without a photo", () => {
   const $ = builtPage("no-photo/index.html", photoSiteDist);
 
-  // Without a real photo the petal is decoration, and announcing a placeholder tells a listener nothing.
-  it("hides the petal placeholder from assistive tech", () => {
+  // Without a real photo the pink shape is decoration, and announcing a placeholder tells a listener nothing.
+  it("hides the photo placeholder from assistive tech", () => {
     const section = $("section");
     expect(section.find("img, [role='img'], [aria-label]")).toHaveLength(0);
     const drawings = section.find("svg");

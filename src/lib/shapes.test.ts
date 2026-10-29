@@ -9,11 +9,11 @@ import {
   join,
   line,
   marigoldMark,
-  marigoldMask,
   menuStrokes,
   pebble,
   polar,
   quad,
+  softMask,
   wave,
 } from "./shapes";
 
@@ -25,7 +25,7 @@ const expectWellFormed = (d: string) => {
 
 const generators: [string, (seed: number) => string][] = [
   ["wave", (seed) => wave(seed, 1440, 80, 2)],
-  ["marigoldMask", (seed) => marigoldMask(seed)],
+  ["softMask", (seed) => softMask(seed)],
   ["brushSquiggle", (seed) => brushSquiggle(seed, 200, 24, 3, 6)],
   ["dot", (seed) => dot(seed, 208, 182, 10)],
   ["ghost", (seed) => ghost(seed)],
@@ -63,9 +63,13 @@ describe("wave", () => {
   });
 });
 
-describe("marigoldMask", () => {
-  it.each([1, 232, 233, 9999])("is a closed path inside the unit box (seed %i)", (seed) => {
-    const d = marigoldMask(seed);
+describe("softMask", () => {
+  it.each([
+    [1, 1],
+    [233, 4 / 5],
+    [9999, 2.5],
+  ])("is a closed path inside the unit box (seed %i, aspect %d)", (seed, aspect) => {
+    const d = softMask(seed, aspect);
     const segments = normalizePath(parsePathString(d));
     expect(isClosedPath(segments)).toBe(true);
     const [, startX, startY] = segments[0];
@@ -75,6 +79,19 @@ describe("marigoldMask", () => {
     expect(box.y).toBeGreaterThanOrEqual(0);
     expect(box.x2).toBeLessThanOrEqual(1);
     expect(box.y2).toBeLessThanOrEqual(1);
+  });
+
+  // A rounded rectangle, not a blob: its corners round off but its edges reach the box on all four sides.
+  it("reaches all four edges of the box", () => {
+    const box = getPathBBox(softMask(233, 4 / 5));
+    expect([box.x, box.y, box.x2, box.y2]).toEqual([0, 0, 1, 1]);
+  });
+
+  // On a non-square photo the unit box stretches, so the corners are drawn pre-squashed to come out round.
+  it("shrinks its corners along the long side of the photo", () => {
+    const start = (aspect: number) => Number(softMask(7, aspect).match(/^M([\d.]+) 0/)?.[1]);
+    expect(start(2)).toBeCloseTo(start(1) / 2, 3);
+    expect(start(1 / 2)).toBeCloseTo(start(1), 3);
   });
 });
 

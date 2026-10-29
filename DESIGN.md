@@ -113,7 +113,7 @@ components:
 
 The page is two colors holding a household between them: a deep mole brown above and below, a cream middle, and a marigold sun at the top. Everything else is a small accent on those two fields. It should feel warm, restrained and hand-made: a person made it, and they stopped before it got busy.
 
-Density is low. Each section does one thing: the hero names the page, the middle tells the story, and the footer signs off. The hand shows in a few seeded, drawn shapes (one squiggle, one edge between hero and middle, a petal mask, hand-pressed dots, the logo strokes), never in ornament spread across the page. One page-wide grain layer gives both fields a paper feel.
+Density is low. Each section does one thing: the hero names the page, the middle tells the story, and the footer signs off. The hand shows in a few seeded, drawn shapes (one squiggle, one edge between hero and middle, the soft photo mask, hand-pressed dots, the logo strokes), never in ornament spread across the page. One page-wide grain layer gives both fields a paper feel.
 
 Halloween pages keep the same system and swap one thing: Trona black stands in for mole as the dark field, and drips stand in for the wave. Same fonts, same sizes, same accents.
 
@@ -145,7 +145,7 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 - **Salamander** (`salamander`): Dan's color, his member circle.
 - **Sage** (`sage`): Milly's circle.
-- **Cheek** (`cheek`): the cheeks on the Beso and the ghost, and the petal shape that stands in for the welcome photo.
+- **Cheek** (`cheek`): the cheeks on the Beso and the ghost, and the soft photo shape that stands in for the welcome photo.
 - **Blush** (`blush`): the italic hero subtitle on the dark field.
 
 ### Neutral
@@ -204,7 +204,7 @@ Two-column grids on wide screens use a fluid gap between columns (`spacing.colum
 
 **The Wave On Screen Rule.** At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns across the page column.
 
-A party recap has a short hero with no stamp: the party name, the theme with the party's date under it, and the squiggle (its top padding grows to 120 to 180px, 104px on phones). Then the drips, then its sections in the page column: the intro (centered), our costumes (a large petal photo beside a smaller circle photo set lower), the costume contest (heading, rule and result beside the winners as rows; with a photo of the winners and the trophy, the words and rows stack on the left and the photo stands on the right), the drinks (with a photo of the bar beside them when there is one), new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own; a highlight told in frames, like stills from a video, sits centered above a strip of its frames, four across at up to 240px and two across at 160px on phones, rounded 14px, tipped alternately ±1.5deg, each captioned, never masked), and, when the party file has one, the invite (the card shown whole, never masked, 420px wide, 280px on phones, tipped -2deg like a scrapbook cutting; a banner more than twice as wide as it is tall spans the page column, full width on phones, tipped -1deg so its words stay readable). A section the party file has nothing for is left out, so a party known only from its invite shows the hero, the intro and the invite. Section headings sit on the left.
+A party recap has a short hero with no stamp: the party name, the theme with the party's date under it, and the squiggle (its top padding grows to 120 to 180px, 104px on phones). Then the drips, then its sections in the page column: the intro (centered), our costumes (a large photo beside a small one set lower), the costume contest (heading, rule and result beside the winners as rows; with a photo of the winners and the trophy, the words and rows stack on the left and the photo stands on the right), the drinks (with a photo of the bar beside them when there is one), new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own; a highlight told in frames, like stills from a video, sits centered above a strip of its frames, four across at up to 240px and two across at 160px on phones, rounded 14px, tipped alternately ±1.5deg, each captioned, never masked), and, when the party file has one, the invite (the card shown whole, never masked, 420px wide, 280px on phones, tipped -2deg like a scrapbook cutting; a banner more than twice as wide as it is tall spans the page column, full width on phones, tipped -1deg so its words stay readable). A section the party file has nothing for is left out, so a party known only from its invite shows the hero, the intro and the invite. Section headings sit on the left.
 
 The Halloween list uses the full hero, with the stamp, then the drips, then the trophy (see Trophy), then one row per party, newest first: the year, the name over the theme and the short date ("Sat, Oct 17"), and a small circle photo. Rows are links, divided by hairlines.
 
@@ -230,12 +230,12 @@ The page is flat: no shadows, no cards, no raised surfaces. Depth comes from the
 
 ## Shapes
 
-Shapes are organic and drawn, never boxy. The only hard geometry is the circle: member circles and circle photos. Every other shape comes from a seeded generator, so it's the same on every build:
+Shapes are organic and drawn, never boxy. The only hard geometry is the circle: member circles, their portraits and the Halloween list thumbnails. Every other shape comes from a seeded generator, so it's the same on every build:
 
 - the wave between hero and welcome on household pages,
 - the drip edge under the hero on Halloween pages,
 - the brush squiggle under the subtitle,
-- the petal mask that clips large photos (each photo gets its own seed),
+- the soft mask that clips photos (each photo gets its own seed),
 - the hand-pressed dots for cheeks and the ghost's eyes,
 - the pebble behind every button,
 - the ghost's body,
@@ -279,7 +279,13 @@ The Trona field hanging into the cream under a Halloween hero: 18 seeded drips (
 
 ### Photos
 
-Large photos (the welcome photo, a couple's costume photo, the contest, drinks and new-this-year photos) are clipped by the seeded petal mask, each with its own seed, 420 to 500px square at most (280 to 300px on phones). Smaller photos are circles: the pets' costume photo (340px, 220px on phones) and the Halloween list thumbnails (72 to 112px), which show a party's first costume photo, or its invite when it has no photos yet. In a party file a photo is a petal unless it says `shape: circle`. With no welcome photo, the petal shape itself shows, filled in cheek pink. Every photo ships at its largest shown width and at twice that, so 2x screens get a sharp file and 1x screens a small one.
+Photos take their shape from their role, the way the reference sites do (griefgroupsla.com rounds people into circles; tronaeast.com rounds every scene photo's corners):
+
+- **People are circles:** the member portraits under "Who lives here".
+- **Scenes are soft:** the welcome photo and every photo on a recap (costumes, contest, drinks, new this year) are 4:5 portraits clipped by the seeded soft mask: a rounded rectangle whose four corners each round by their own 7 to 13% and whose edges sag inward up to 1.5%, so it reads as trimmed by hand rather than drawn by a tool. Each photo gets its own seed from its file name. A large photo is at most 500px wide (300px on phones), a photo beside words 420px (280px), and a small one, like the pets' costume photo, 340px (220px). In a party file a photo is large unless it says `size: small`.
+- **Thumbnails are circles:** the Halloween list thumbnails (72 to 112px), which show a party's first costume photo, or its invite when it has no photos yet.
+
+The petal (scalloped) mask was replaced; circles, plain rectangles and blobs were tried for scene photos and lost to the soft mask. With no welcome photo, the soft shape itself shows, filled in cheek pink. Every photo ships at its largest shown width and at twice that, so 2x screens get a sharp file and 1x screens a small one.
 
 ### Kicker
 

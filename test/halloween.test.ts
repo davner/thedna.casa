@@ -4,8 +4,8 @@ import type { CheerioAPI } from "cheerio";
 import { parse } from "yaml";
 import sharp from "sharp";
 import { builtFileExists, builtFilePath, builtPage, pageCss, readText } from "./site";
-import { drips, ghost, marigoldMark, marigoldMask } from "../src/lib/shapes";
-import { petalSeed } from "../src/lib/parties";
+import { drips, ghost, marigoldMark, softMask } from "../src/lib/shapes";
+import { photoSeed } from "../src/lib/parties";
 import { palette } from "../src/palette";
 
 // The party file itself is the source of truth for the recap's words.
@@ -172,16 +172,16 @@ describe("built Trick-R-Drink recap", () => {
   });
 
   // Keyed to the photo itself, so adding or dropping another photo never reshapes this one.
-  it("clips each petal photo with the mask seeded by its own file name", () => {
-    type Photo = { src: string; alt: string; shape?: string };
-    const petals: Photo[] = [...party.ourCostumes, ...party.highlights, party.contest, party.drinks].flatMap(
-      (item: { photo?: Photo } | undefined) => (item?.photo && item.photo.shape !== "circle" ? [item.photo] : []),
+  it("clips every photo, large or small, with the soft mask seeded by its own file name", () => {
+    type Photo = { src: string; alt: string; size?: string };
+    const photos: Photo[] = [...party.ourCostumes, ...party.highlights, party.contest, party.drinks].flatMap(
+      (item: { photo?: Photo } | undefined) => (item?.photo ? [item.photo] : []),
     );
-    expect(petals.length).toBeGreaterThan(0);
-    for (const photo of petals) {
+    expect(photos.some((photo) => photo.size === "small")).toBe(true);
+    for (const photo of photos) {
       const img = $("img").filter((_, el) => $(el).attr("alt") === photo.alt);
       const id = img.attr("style")?.match(/url\(#([^)]+)\)/)?.[1] ?? "";
-      expect($(`svg [id='${id}'] path`).attr("d"), photo.alt).toBe(marigoldMask(petalSeed(photo.src)));
+      expect($(`svg [id='${id}'] path`).attr("d"), photo.alt).toBe(softMask(photoSeed(photo.src), 4 / 5));
     }
   });
 
@@ -380,7 +380,7 @@ describe("built recap with a highlight told in frames", () => {
     $ = builtPage("halloween/2021/index.html");
   });
 
-  // Stills from a video only make sense in the order they happened, and a petal would cut the ball out of frame.
+  // Stills from a video only make sense in the order they happened, and the soft mask would trim the ball at a corner.
   it("shows the frames in order, unmasked, each with its caption and alt text", () => {
     const told = first.highlights.find((h: { frames?: unknown[] }) => h.frames);
     const frames = $("h3")

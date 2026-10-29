@@ -30,24 +30,28 @@ export const wave = (seed: number, w: number, h: number, bumps: number): string 
   return `${smooth(pts, false)}L${w},${h}L0,${h}Z`;
 };
 
-// Unit-box coordinates let a viewBox of 0 0 1 1 scale the mask to any photo size.
-export const marigoldMask = (seed: number): string => {
-  const petals = 18;
-  const depth = 0.05;
-  const noise = createNoise2D(mulberry32(seed));
-  const at = (deg: number, r: number) => {
-    const a = (deg * Math.PI) / 180;
-    return `${(0.5 + r * Math.cos(a)).toFixed(4)} ${(0.5 + r * Math.sin(a)).toFixed(4)}`;
-  };
-  const step = 360 / petals;
-  const valleys = Array.from({ length: petals }, (_, i) => 0.5 - depth + depth * 0.3 * noise(i, 2));
-  const parts = [`M${at(0, valleys[0])}`];
-  for (let i = 0; i < petals; i++) {
-    const r = 0.5 + depth * 0.4 * noise(i, 1);
-    const next = (i + 1) % petals;
-    parts.push(`Q${at((i + 0.5) * step, r + depth * 0.6)} ${at(next * step, valleys[next])}`);
-  }
-  return `${parts.join(" ")} Z`;
+// A rounded rectangle trimmed by hand: each corner rounds by its own 7 to 13%, and each edge sags inward up to 1.5%.
+// Unit-box coordinates let clipPathUnits="objectBoundingBox" stretch it over any photo; aspect is the photo's
+// width over height, which shrinks the corners along the long side so they stay round instead of oval.
+export const softMask = (seed: number, aspect = 1): string => {
+  const rnd = mulberry32(seed);
+  const corner = () => 0.07 + 0.06 * rnd();
+  const sag = () => 0.03 * rnd();
+  const [tl, tr, br, bl] = [corner(), corner(), corner(), corner()];
+  const sx = Math.min(1, 1 / aspect);
+  const sy = Math.min(1, aspect);
+  const f = (n: number) => n.toFixed(4);
+  return [
+    `M${f(tl * sx)} 0`,
+    `Q0.5 ${f(sag() * sy)} ${f(1 - tr * sx)} 0`,
+    `Q1 0 1 ${f(tr * sy)}`,
+    `Q${f(1 - sag() * sx)} 0.5 1 ${f(1 - br * sy)}`,
+    `Q1 1 ${f(1 - br * sx)} 1`,
+    `Q0.5 ${f(1 - sag() * sy)} ${f(bl * sx)} 1`,
+    `Q0 1 0 ${f(1 - bl * sy)}`,
+    `Q${f(sag() * sx)} 0.5 0 ${f(tl * sy)}`,
+    `Q0 0 ${f(tl * sx)} 0Z`,
+  ].join(" ");
 };
 
 // perfect-freehand returns outline points only, so midpoint quadratics join them into a smooth closed path.

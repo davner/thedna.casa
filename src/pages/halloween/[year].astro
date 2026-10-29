@@ -7,7 +7,7 @@ import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
 import { heroTitle } from "../../lib/hero-title";
 import { partyDate } from "../../lib/parties";
 import { partyShare } from "../../lib/party-preview";
-import { marigoldMask } from "../../lib/shapes";
+import { softMask } from "../../lib/shapes";
 
 export async function getStaticPaths() {
   const parties = await getCollection("halloween");
@@ -18,19 +18,19 @@ const party = entry.data;
 const { Content } = await render(entry);
 const title = heroTitle(party.name.toUpperCase());
 type Photo = NonNullable<(typeof party.ourCostumes)[number]["photo"]>;
-const petals = [...party.ourCostumes, ...party.highlights, party.contest, party.drinks].flatMap((item) =>
-  item?.photo?.shape === "petal" ? [item.photo] : [],
+const photos = [...party.ourCostumes, ...party.highlights, party.contest, party.drinks].flatMap((item) =>
+  item?.photo ? [item.photo] : [],
 );
-const petalId = (photo: Photo) => `petal-${photo.seed}`;
-const shapes = {
-  petal: { clip: (photo: Photo) => `url(#${petalId(photo)})`, shown: 500, phone: 300 },
-  circle: { clip: () => "circle(50%)", shown: 340, phone: 220 },
-} satisfies Record<Photo["shape"], { clip: (photo: Photo) => string; shown: number; phone: number }>;
-const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
+const softId = (photo: Photo) => `soft-${photo.seed}`;
+const clip = (photo: Photo) => `clip-path:url(#${softId(photo)})`;
+const sizes = { large: { shown: 500, phone: 300 }, small: { shown: 340, phone: 220 } } satisfies Record<
+  Photo["size"],
+  { shown: number; phone: number }
+>;
 // The contest, drinks and highlight photos all share one size beside their words.
 // A banner invite would be unreadable at a card's width, so it spans the column instead.
 const wide = party.invite && party.invite.src.width > 2 * party.invite.src.height;
-const beside = { width: 840, height: 840, widths: [420, 840], sizes: "(max-width: 760px) 280px, 420px" };
+const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-width: 760px) 280px, 420px" };
 ---
 
 <Halloween
@@ -47,9 +47,9 @@ const beside = { width: 840, height: 840, widths: [420, 840], sizes: "(max-width
   <main class="recap">
     <Drips />
     <svg class="defs" aria-hidden="true">
-      {petals.map((photo) => (
-        <clipPath id={petalId(photo)} clipPathUnits="objectBoundingBox">
-          <path d={marigoldMask(photo.seed)} />
+      {photos.map((photo) => (
+        <clipPath id={softId(photo)} clipPathUnits="objectBoundingBox">
+          <path d={softMask(photo.seed, 4 / 5)} />
         </clipPath>
       ))}
     </svg>
@@ -67,17 +67,17 @@ const beside = { width: 840, height: 840, widths: [420, 840], sizes: "(max-width
         </h2>
         <div class="costume-grid">
           {party.ourCostumes.map((c) => (
-            <figure class:list={[c.photo?.shape ?? "petal", "reveal"]}>
+            <figure class:list={[c.photo?.size ?? "large", "reveal"]}>
               {c.photo && (
                 <Image
                   class="photo"
                   style={clip(c.photo)}
                   src={c.photo.src}
                   alt={c.photo.alt}
-                  width={2 * shapes[c.photo.shape].shown}
-                  height={2 * shapes[c.photo.shape].shown}
-                  widths={[shapes[c.photo.shape].shown, 2 * shapes[c.photo.shape].shown]}
-                  sizes={`(max-width: 760px) ${shapes[c.photo.shape].phone}px, ${shapes[c.photo.shape].shown}px`}
+                  width={2 * sizes[c.photo.size].shown}
+                  height={2.5 * sizes[c.photo.size].shown}
+                  widths={[sizes[c.photo.size].shown, 2 * sizes[c.photo.size].shown]}
+                  sizes={`(max-width: 760px) ${sizes[c.photo.size].phone}px, ${sizes[c.photo.size].shown}px`}
                 />
               )}
               <figcaption>
@@ -238,7 +238,7 @@ const beside = { width: 840, height: 840, widths: [420, 840], sizes: "(max-width
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 1;
+    aspect-ratio: 4 / 5;
     object-fit: cover;
   }
   figure {
@@ -276,15 +276,15 @@ const beside = { width: 840, height: 840, widths: [420, 840], sizes: "(max-width
     align-items: start;
     margin: 48px auto 0;
   }
-  .petal .photo {
+  .large .photo {
     max-width: 500px;
     margin: 0 auto;
   }
-  /* The smaller circle sits lower than the petal beside it, so the pair reads as a step, not a row. */
-  .circle {
+  /* The small photo sits lower than the large one beside it, so the pair reads as a step, not a row. */
+  .small {
     margin-top: clamp(80px, 14vw, 200px);
   }
-  .circle .photo {
+  .small .photo {
     max-width: 340px;
     margin: 0 auto;
   }
@@ -494,13 +494,13 @@ const beside = { width: 840, height: 840, widths: [420, 840], sizes: "(max-width
       margin-top: 28px;
       gap: 40px;
     }
-    .petal .photo {
+    .large .photo {
       max-width: 300px;
     }
-    .circle {
+    .small {
       margin-top: 0;
     }
-    .circle .photo {
+    .small .photo {
       max-width: 220px;
     }
     .contest,

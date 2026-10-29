@@ -1,13 +1,13 @@
 ---
 import { Image } from "astro:assets";
 import { copy, welcome as householdWelcome, type Welcome } from "../content";
-import { marigoldMask, wave } from "../lib/shapes";
+import { softMask, wave } from "../lib/shapes";
 
 interface Props {
   welcome?: Welcome;
 }
 const { welcome = householdWelcome } = Astro.props;
-const petals = marigoldMask(233);
+const outline = softMask(233, 4 / 5);
 ---
 
 <section class="welcome" aria-labelledby="welcome-heading">
@@ -24,8 +24,8 @@ const petals = marigoldMask(233);
   {welcome.photo ? (
     <>
       <svg class="defs" aria-hidden="true">
-        <clipPath id="petals" clipPathUnits="objectBoundingBox">
-          <path d={petals} />
+        <clipPath id="soft" clipPathUnits="objectBoundingBox">
+          <path d={outline} />
         </clipPath>
       </svg>
       <Image
@@ -33,14 +33,14 @@ const petals = marigoldMask(233);
         src={welcome.photo.src}
         alt={welcome.photo.alt}
         width={880}
-        height={880}
+        height={1100}
         widths={[440, 880]}
         sizes="(max-width: 760px) min(72vw, 280px), 440px"
       />
     </>
   ) : (
-    <svg class="photo" viewBox="0 0 1 1" aria-hidden="true">
-      <path d={petals} />
+    <svg class="photo" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
+      <path d={outline} />
     </svg>
   )}
 </section>
@@ -77,13 +77,13 @@ const petals = marigoldMask(233);
     display: block;
     width: min(100%, 440px);
     height: auto;
-    aspect-ratio: 1;
+    aspect-ratio: 4 / 5;
     justify-self: center;
     fill: var(--cheek);
     object-fit: cover;
   }
   img.photo {
-    clip-path: url(#petals);
+    clip-path: url(#soft);
   }
   /* 1.3rem bold is large text, where terracotta on page cream (3.6:1) passes WCAG. */
   .kicker {
