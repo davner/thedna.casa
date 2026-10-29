@@ -4,8 +4,9 @@ import { getCollection } from "astro:content";
 import Halloween from "../../layouts/Halloween.astro";
 import Drips from "../../components/halloween/Drips.astro";
 import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
+import { newestFirst } from "../../lib/parties";
 
-const parties = (await getCollection("halloween")).sort((a, b) => b.data.year - a.data.year);
+const parties = newestFirst(await getCollection("halloween"));
 ---
 <Halloween title="Halloween · The DnA Casa" description="Every Halloween party at the casa, newest first.">
   <HalloweenHero title={["HALLOWEEN"]} subtitle="October at the casa" />
