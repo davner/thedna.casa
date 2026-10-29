@@ -145,6 +145,24 @@ describe("built Trick-R-Drink recap", () => {
     expect(guards).toContainEqual(expect.stringContaining("(prefers-reduced-motion:no-preference)"));
   });
 
+  // The drips overlap the top of the cream block, so the intro must start below the longest one.
+  it.each([["desktop", false], ["phone", true]])("starts the intro below the drips on %s", (_, phone) => {
+    const value = (selector: string, prop: string) => {
+      let found: string | undefined;
+      for (const root of pageCss($)) {
+        root.walkDecls(prop, (decl) => {
+          const rule = decl.parent as { selector?: string; parent?: { type: string; params?: string } };
+          const at = rule.parent?.type === "atrule" ? (rule.parent.params ?? "").replace(/\s+/g, "") : "";
+          if ((phone ? /760px/.test(at) : at === "") && rule.selector?.replace(/\[data-astro-cid-[^\]]+\]/g, "") === selector) found = decl.value;
+        });
+      }
+      return found;
+    };
+    const dripHeight = parseFloat(value(".drips", "height") ?? "NaN");
+    const introTop = parseFloat(value(".intro", "padding-top") ?? "NaN");
+    expect(introTop - dripHeight).toBeGreaterThanOrEqual(24);
+  });
+
   it("tints the phone's browser chrome Trona black", () => {
     expect($("head meta[name='theme-color']").attr("content")).toBe("#201d1e");
   });
