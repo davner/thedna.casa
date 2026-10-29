@@ -170,7 +170,7 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 ### Hierarchy
 
-- **Display:** the hero title, all caps: THE DnA CASA and a party's name (TRICK-R-DRINK, broken after its last hyphen) on two lines, HALLOWEEN on one. On phones it drops to `clamp(3rem, 14vw, 4.2rem)`, small enough that HALLOWEEN fits inside the 20px hero gutters from 360px up.
+- **Display:** the hero title, all caps: THE DnA CASA and a party's name, broken between words or after a hyphen wherever it would overflow a 360px phone (TRICK-R- / DRINK, LET'S GET / TIKI FREAKY), the same breaks on every screen; HALLOWEEN on one line. On phones it drops to `clamp(3rem, 14vw, 4.2rem)`, small enough that HALLOWEEN fits inside the 20px hero gutters from 360px up.
 - **Headline:** section headings on every page. On phones the clamp bottoms out at 2.2rem, which is also the size of the phone menu links.
 - **Title:** names and short items: member names, contest winners, the drinks, the new-this-year titles, the year and name on the Halloween list. 1.5rem on phones.
 - **Subtitle:** the hero subtitle ("Dan & Alexis", "Our tiki Halloween", "October at the casa") and a party recap's intro, in italic. One fluid size at every width.

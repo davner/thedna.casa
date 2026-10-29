@@ -1,8 +1,7 @@
-import { createRequire } from "node:module";
-import { openSync, type Font } from "fontkit";
 import sharp from "sharp";
 import { palette } from "../palette";
 import type { Share } from "../content";
+import { serif } from "./serif";
 import { ghostFigure } from "./shapes";
 
 interface Party {
@@ -22,13 +21,7 @@ const width = 1200;
 const height = 630;
 const margin = 80;
 
-// The same self-hosted file the pages load; librsvg has no way to load a web font, so the glyphs go in as paths.
-const serif = openSync(
-  createRequire(import.meta.url).resolve(
-    "@fontsource/averia-serif-libre/files/averia-serif-libre-latin-700-normal.woff2",
-  ),
-) as Font;
-
+// librsvg has no way to load a web font, so the glyphs go in as paths.
 // Shrinks only when a long name would run past the margins, so most parties share one size.
 const line = (text: string, baseline: number, size: number) => {
   const run = serif.layout(text);

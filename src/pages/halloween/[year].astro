@@ -4,6 +4,7 @@ import { getCollection, render } from "astro:content";
 import Halloween from "../../layouts/Halloween.astro";
 import Drips from "../../components/halloween/Drips.astro";
 import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
+import { heroTitleLines } from "../../lib/hero-title";
 import { partyShare } from "../../lib/party-preview";
 import { marigoldMask } from "../../lib/shapes";
 
@@ -14,9 +15,7 @@ export async function getStaticPaths() {
 const { party: entry } = Astro.props;
 const party = entry.data;
 const { Content } = await render(entry);
-const upper = party.name.toUpperCase();
-// Breaking after the last hyphen leaves a visible hyphen at the line end, so the name still reads as one word.
-const titleLines = upper.split(/(?<=-)(?=[^-]*$)/);
+const titleLines = heroTitleLines(party.name.toUpperCase());
 type Photo = NonNullable<(typeof party.ourCostumes)[number]["photo"]>;
 const petals = [...party.ourCostumes, ...party.highlights].flatMap((item) =>
   item.photo?.shape === "petal" ? [item.photo] : [],
