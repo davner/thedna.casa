@@ -1,0 +1,22 @@
+---
+import { getCollection } from "astro:content";
+import Halloween from "../../layouts/Halloween.astro";
+import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
+
+const parties = (await getCollection("halloween")).sort((a, b) => b.data.year - a.data.year);
+---
+<Halloween title="Halloween · The DnA Casa" description="Every Halloween party at the casa, newest first.">
+  <HalloweenHero title={["HALLOWEEN"]} subtitle="October at the casa" />
+  <main class="list">
+    <section>
+      <h2 class="reveal">The parties</h2>
+      <ul>
+        {parties.map(({ data: p }) => (
+          <li class="reveal">
+            <a href={`/halloween/${p.year}/`}>{p.year}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+</Halloween>

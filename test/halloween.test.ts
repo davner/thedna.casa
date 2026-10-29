@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import type { CheerioAPI } from "cheerio";
 import { parse } from "yaml";
 import { builtPage, pageCss, readText } from "./site";
@@ -113,5 +113,37 @@ describe("built Trick-R-Drink recap", () => {
     expect(reveals.length).toBeGreaterThan(0);
     const revealed = reveals.map((selector) => $(selector.replace(/\[data-astro-cid-[^\]]+\]/g, "")).length).reduce((a, b) => a + b, 0);
     expect(revealed).toBeGreaterThanOrEqual(5);
+  });
+});
+
+// Every party file, read straight from disk, so the list is checked against what the collection holds.
+const partyDir = new URL("../src/content/halloween/", import.meta.url);
+const parties = readdirSync(partyDir)
+  .filter((file) => file.endsWith(".md"))
+  .map((file) => parse(readFileSync(new URL(file, partyDir), "utf8").match(/^---\n([\s\S]*?)\n---\n/)?.[1] ?? ""));
+
+describe("built Halloween list", () => {
+  let $: CheerioAPI;
+  beforeAll(() => {
+    $ = builtPage("halloween/index.html");
+  });
+
+  const rows = () => $("main li");
+
+  it("opens with a short hero titled HALLOWEEN, October at the casa, and no stamp ring", () => {
+    expect($("h1")).toHaveLength(1);
+    expect($("h1").text().trim()).toBe("HALLOWEEN");
+    expect($("header p").filter((_, p) => $(p).text().trim() === "October at the casa")).toHaveLength(1);
+    expect($("header svg text, .stamp")).toHaveLength(0);
+  });
+
+  it("is titled Halloween in the tab and the link preview", () => {
+    expect($("head title").text()).toBe("Halloween · The DnA Casa");
+    expect($("head meta[property='og:title']").attr("content")).toBe("Halloween · The DnA Casa");
+  });
+
+  it("has one row per party, newest first, each one link to its recap", () => {
+    const years = parties.map((p: { year: number }) => p.year).sort((a: number, b: number) => b - a);
+    expect(rows().map((_, li) => [[$(li).find("a").length, $(li).find("a").attr("href")]]).get()).toEqual(years.map((y: number) => [1, `/halloween/${y}/`]));
   });
 });
