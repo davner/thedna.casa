@@ -1,7 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import { getCollection, render } from "astro:content";
 import Halloween from "../../layouts/Halloween.astro";
 import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
+import { marigoldMask } from "../../lib/shapes";
 
 export async function getStaticPaths() {
   const parties = await getCollection("halloween");
@@ -13,10 +15,20 @@ const { Content } = await render(party);
 const upper = p.name.toUpperCase();
 // A hyphenated name breaks after its last hyphen, so TRICK-R- sits over DRINK; any other name stays on one line.
 const titleLines = upper.split(/(?<=-)(?=[^-]*$)/);
+type Photo = NonNullable<(typeof p.ourCostumes)[number]["photo"]>;
+// Each petal photo gets its own fixed seed, counted in page order, so no two petals on a page match.
+const petals = [...p.ourCostumes, ...p.highlights].flatMap((item) => (item.photo?.shape === "petal" ? [item.photo] : []));
+const seed = (photo: Photo) => 301 + petals.indexOf(photo);
+const petalId = (photo: Photo) => `petal-${seed(photo)}`;
+const clip = (photo: Photo) => `clip-path:${photo.shape === "circle" ? "circle(50%)" : `url(#${petalId(photo)})`}`;
 ---
 <Halloween title={`${p.name} · The DnA Casa`} description={`Our ${p.theme} Halloween, ${p.year}: costumes, the contest, the drinks and what was new.`}>
   <HalloweenHero title={titleLines} subtitle={`Our ${p.theme} Halloween`} />
   <main class="recap">
+    <svg class="defs" aria-hidden="true">
+      {petals.map((photo) => <clipPath id={petalId(photo)} clipPathUnits="objectBoundingBox"><path d={marigoldMask(seed(photo))} /></clipPath>)}
+    </svg>
+
     <section class="intro">
       <div class="intro-text"><Content /></div>
     </section>
@@ -25,7 +37,8 @@ const titleLines = upper.split(/(?<=-)(?=[^-]*$)/);
       <h2 id="costumes-h">Our costumes</h2>
       <div class="costume-grid">
         {p.ourCostumes.map((c) => (
-          <figure>
+          <figure class={c.photo?.shape ?? "petal"}>
+            {c.photo && <Image class="photo" style={clip(c.photo)} src={c.photo.src} alt={c.photo.alt} width={c.photo.shape === "circle" ? 640 : 880} height={c.photo.shape === "circle" ? 640 : 880} />}
             <figcaption>{c.who} as <span lang={c.asLang}>{c.as}</span></figcaption>
           </figure>
         ))}
@@ -52,7 +65,12 @@ const titleLines = upper.split(/(?<=-)(?=[^-]*$)/);
     <section class="new" aria-labelledby="new-h">
       <h2 id="new-h">New this year</h2>
       <ul>
-        {p.highlights.map((h) => <li><div><h3>{h.title}</h3><p>{h.text}</p></div></li>)}
+        {p.highlights.map((h, i) => (
+          <li class:list={{ flip: i % 2 === 1, plain: !h.photo }}>
+            {h.photo && <Image class="photo" style={clip(h.photo)} src={h.photo.src} alt={h.photo.alt} width={720} height={720} />}
+            <div><h3>{h.title}</h3><p>{h.text}</p></div>
+          </li>
+        ))}
       </ul>
     </section>
   </main>

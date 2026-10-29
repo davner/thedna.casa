@@ -71,4 +71,12 @@ describe("built Trick-R-Drink recap", () => {
     const highlights = section("New this year").find("li").map((_, li) => [[$(li).find("h3").text().trim(), readText($, $(li).find("p"))]]).get();
     expect(highlights).toEqual(party.highlights.map((h: { title: string; text: string }) => [h.title, h.text]));
   });
+
+  it("shows each photo from the party file on the item it shows, with its alt text", () => {
+    const alts = (heading: string) => section(heading).find("img").map((_, img) => $(img).attr("alt") ?? "").get();
+    const fromFile = (items: { photo?: { alt: string } }[]) => items.flatMap((item) => (item.photo ? [item.photo.alt] : []));
+    expect(alts("Our costumes")).toEqual(fromFile(party.ourCostumes));
+    expect(alts("New this year")).toEqual(fromFile(party.highlights));
+    expect($("img").map((_, img) => $(img).attr("alt")).get().filter((alt) => !alt?.trim())).toEqual([]);
+  });
 });
