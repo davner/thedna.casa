@@ -357,23 +357,14 @@ describe("built recap with an invite", () => {
   });
 });
 
-describe("built recap known only from its invite", () => {
-  it("skips the sections it has nothing for and keeps the hero and the intro", () => {
-    const $ = builtPage("halloween/2022/index.html");
-    expect(readText($, "h1")).toBe("HALLOWEEN BASH");
-    expect($("header time").attr("datetime")).toBe("2022-10-22");
-    expect(
-      $("main h2")
-        .map((_, h) => $(h).text().trim())
-        .get(),
-    ).toEqual(["The invite"]);
-    expect(readText($, "main")).toContain("Our second annual.");
-  });
-
+describe("built recap with a banner invite", () => {
   // A banner shrunk to a card's 420px would leave its words too small to read.
   it("spreads a banner invite across the column", () => {
     const $ = builtPage("halloween/2022/index.html");
-    const img = $("main img");
+    const img = $("h2")
+      .filter((_, h) => $(h).text().trim() === "The invite")
+      .closest("section")
+      .find("img");
     const widest = Math.max(
       ...(img.attr("srcset") ?? "").split(",").map((entry) => parseInt(entry.trim().split(/\s+/)[1] ?? "0")),
     );
@@ -400,6 +391,13 @@ describe("built recap with a highlight told in frames", () => {
       told.frames.map((f: { caption: string; alt: string }) => [f.caption, f.alt]),
     );
     frames.each((_, f) => expect($(f).find("img").attr("style") ?? "").not.toMatch(/clip-path/));
+  });
+
+  // 2021's drinks aren't known, and an empty heading would read as if there were none.
+  it("leaves out the drinks section when the party file has none", () => {
+    expect(first.drinks).toBeUndefined();
+    expect($("h2").filter((_, h) => $(h).text().trim() === "The drinks")).toHaveLength(0);
+    expect($("h2").filter((_, h) => $(h).text().trim() === "The costume contest")).toHaveLength(1);
   });
 
   it("states the contest result without a rule when the party file has none", () => {
