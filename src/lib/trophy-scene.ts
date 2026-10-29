@@ -298,15 +298,17 @@ export const mountTrophy = async (stage: HTMLElement, data: TrophyData) => {
   const pumpkin = new Mesh(pumpkinGeo, lambert(skin));
   pumpkin.position.y = 13.25 + 0.99;
   trophy.add(pumpkin);
-  const stem = new Mesh(new CylinderGeometry(0.07, 0.13, 0.45, 5), goldMat);
-  stem.position.set(0.05, 14.3, 0);
-  stem.rotation.z = -0.25;
+  // Sunk a little into the top of the squashed pumpkin (radius 1.1, height 0.9), like the cast stem.
+  const pumpkinTop = pumpkin.position.y + 1.1 * 0.9;
+  const stem = new Mesh(new CylinderGeometry(0.11, 0.18, 0.6, 6), pumpkinMat);
+  stem.position.set(0.06, pumpkinTop + 0.22, 0);
+  stem.rotation.z = -0.3;
   trophy.add(stem);
   scene.add(trophy);
 
   const camera = new PerspectiveCamera(26, 1, 1, 200);
-  camera.position.set(0, 9.5, 37);
-  camera.lookAt(0, 7.3, 0);
+  camera.position.set(0, 9.7, 40);
+  camera.lookAt(0, 7.6, 0);
 
   const draw = () => renderer.render(scene, camera);
   // Resizing clears a WebGL canvas, so it redraws at once rather than waiting for the next turn.
@@ -315,7 +317,7 @@ export const mountTrophy = async (stage: HTMLElement, data: TrophyData) => {
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     // A narrow phone stage backs the camera off so the base's corners never leave the frame as it turns.
-    camera.position.z = Math.max(37, 26 / camera.aspect);
+    camera.position.z = Math.max(40, 28 / camera.aspect);
     camera.updateProjectionMatrix();
     draw();
   };
