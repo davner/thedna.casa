@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Astro static site. The page ships no JavaScript and works with JavaScript off.
+Astro static site. No page ships JavaScript, and every page works with JavaScript off.
 
 - Shapes (the wave, the brush squiggle, the petal mask, the hand-pressed dots for the Beso's cheeks and the logo strokes) are drawn at build time by seeded generators in `src/lib/shapes.ts`. A seed is a fixed number that makes a shape come out the same way every time, so every deploy looks the same. They use simplex-noise (smooth random wobble), perfect-freehand (brush strokes), d3-shape (curve smoothing) and a hand-written mulberry32 seeded random number generator.
 - The favicon is the full Beso logo, saved as an SVG copied from the page's logo markup (a test fails if the two drift apart); its moon turns cream on dark tab bars. sharp renders the PNG favicon sizes and the 1200x630 link preview image (the Beso, dark green moon and all, on mole) from that SVG at build time.
@@ -29,10 +29,13 @@ The site is the household itself. Nothing on it could belong to another family: 
 
 ## Capabilities and Constraints
 
-- v1 is one landing page: hero, a welcome with one photo, the four members ("Who lives here"), footer with the year.
+- Pages:
+  - Home: hero, a welcome with one photo, the four members ("Who lives here"), footer with the year.
+  - `/halloween/<year>/`: one party's recap: hero with the party name and theme, intro, our costumes, the costume contest, the drinks, new this year.
 - Nothing to sell, no sign-up, no contact link, no CMS, no analytics, no search, no RSS, no dark mode.
 - Copy and member data live in a TypeScript content module, `src/content.ts`, edited in the repo by Dan and Claude. Changing the words never means touching layout code.
-- Photos go in `src/assets/photos/` and are imported in `src/content.ts`. They must be shown through Astro's `Image` or `Picture` component, which strips EXIF and GPS. Never link a photo's raw source URL: that ships the original file with its GPS.
+- Each party is one Markdown file in an Astro content collection, `src/content/halloween/`, typed by a schema in `src/content.config.ts`; a file missing a field fails the build. It holds the year, name, theme, intro (the Markdown body), drinks and who made them, our costumes, the contest (rule, result, winners by first names and costume) and highlights. A photo sits on the costume or highlight it shows.
+- Photos go in `src/assets/photos/` (party photos in `src/assets/photos/halloween/<year>/`) and are imported in `src/content.ts` or a party file. They must be shown through Astro's `Image` or `Picture` component, which strips EXIF and GPS. Never link a photo's raw source URL: that ships the original file with its GPS.
 - Without photos the welcome shows a pink petal shape and each member shows a solid color circle.
 - Phone layout (760px and narrower, variant 1 "Stamp first"): one centered column that opens with the turning stamp above the wordmark and "Dan & Alexis", a short hero so the wave and the cream welcome start on the first screen, the welcome words before the petal photo, and the members as rows with a small circle on the left and the name and one-liner on the right.
 - Prototypes live only on the branches `prototype/landing` (all landing variants) and `prototype/mobile`. Nothing from them ships, and there is no `pnpm prototype` command.

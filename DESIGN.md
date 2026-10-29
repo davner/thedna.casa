@@ -12,6 +12,7 @@ colors:
   sage: "#b9c9b4"
   cheek: "#f7c6d9"
   blush: "#f0c7b4"
+  trona: "#201d1e"
 typography:
   display:
     fontFamily: "Averia Serif Libre, serif"
@@ -110,7 +111,7 @@ Rejected and settled: a literal house, many arches, leaf or dappled shadows, squ
 - Big, tight, all-caps serif wordmark; italic serif for the soft voice.
 - Accents (pink, gold, terra) only in small doses.
 - Flat surfaces; depth from grain, not shadows.
-- Two slow motions, both off under reduced motion.
+- Quiet motion, all of it off under reduced motion.
 
 ## Colors
 
@@ -122,20 +123,21 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 ### Secondary
 - **Rosa Mexicano** (`pink`): Alexis's color. The squiggle, Alexis's circle, the text selection highlight.
-- **Terracotta** (`terra`): the "Who lives here" heading and the "Bienvenidos" kicker on cream. Large or bold text only. The welcome heading stays mole.
+- **Terracotta** (`terra`): the one orange. Section headings and large text on cream ("Who lives here", "Bienvenidos", every Halloween heading, the contest result). On the dark field: the Halloween squiggle. Large or bold text only. The welcome heading stays mole.
 
 ### Tertiary
 - **Salamander** (`salamander`): Dan's color, his member circle.
 - **Sage** (`sage`): Milly's circle.
 - **Cheek** (`cheek`): the petal shape that stands in for the welcome photo.
-- **Blush** (`blush`): the italic "Dan & Alexis" subtitle on mole.
+- **Blush** (`blush`): the italic hero subtitle on the dark field.
 
 ### Neutral
-- **Cream Ink** (`cream`): text and the stamp ring on mole.
-- **Page Cream** (`cream-page`): the middle field behind the welcome and the members.
+- **Cream Ink** (`cream`): text and the stamp ring on the dark field.
+- **Page Cream** (`cream-page`): the middle field on every page.
+- **Trona Black** (`trona`): the hero and footer field on Halloween pages, and their theme color. A warm near-black, darker than mole.
 
 ### Named Rules
-**The No Black Rule.** Mole is the darkest color on the page. Nothing is pure black.
+**The No Black Rule.** Mole is the darkest color on household pages and Trona black on Halloween pages. Nothing is pure black.
 
 **The Large Terracotta Rule.** Terracotta on page cream is about 3.6:1, which passes only as large text. Use it at 1.2rem bold or larger, never for body text.
 
@@ -151,15 +153,15 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 **Character:** a soft, slightly irregular serif for every heading and the warm asides, and a plain grotesk for reading. Only three faces ship: serif 700, serif italic 400, grotesk 400. All are self-hosted through Fontsource.
 
 ### Hierarchy
-- **Display:** the THE DnA CASA wordmark, all caps on two lines. On phones it drops to `clamp(3rem, 15vw, 4.2rem)`.
+- **Display:** the hero title, all caps on two lines: THE DnA CASA, a party's name (TRICK-R-DRINK). On phones it drops to `clamp(3rem, 15vw, 4.2rem)`.
 - **Headline:** section headings ("Hola, we're Dan & Alexis.", "Who lives here").
-- **Title:** member names. 1.5rem on phones.
-- **Subtitle:** the "Dan & Alexis" line, in italic, in blush. One fluid size at every width.
+- **Title:** names and short items: member names, contest winners, the drinks, the new-this-year titles. 1.5rem on phones.
+- **Subtitle:** the hero subtitle ("Dan & Alexis", "Our tiki Halloween") and a party recap's intro, in italic. One fluid size at every width.
 - **Sign-off:** the footer, italic at the 16px body size.
 - **Body:** the welcome text, at most 38ch wide.
-- **Caption:** member one-liners at 1rem.
+- **Caption:** member one-liners, photo captions, costume lines, "Made by" lines, at 1rem.
 - **Ring:** the stamp ring text, 15px in the ring's 200-unit SVG, so it scales with the stamp.
-- **Label:** the "Bienvenidos" kicker, in terracotta.
+- **Label:** the "Bienvenidos" kicker and a recap's contest result, in terracotta.
 
 ### Named Rules
 **The One Scale Rule.** Every text size on every page is one of the roles above. A page never invents its own size; an element that feels too quiet moves up to an existing role instead. Only display and title have separate phone sizes.
@@ -209,25 +211,25 @@ The site has no rounded rectangles, boxed borders or buttons. The only lines are
 ## Components
 
 ### Stamp
-The signature piece. The Beso sun-and-moon logo (marigold sun, thin moon) sits at 64% of a circle of words: "THE DnA CASA · DAN & ALEXIS · CON CARIÑO", set in serif 700 caps with wide 0.08em tracking, in cream on mole. It is at most 380px wide on desktop and `min(76vw, 300px)` on phones.
+The signature piece. The Beso sun-and-moon logo (marigold sun, thin moon) sits at 64% of a circle of words set in serif 700 caps with wide 0.08em tracking, in cream on the dark field. On household pages the ring reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO"; on a party recap it reads the party's name, "HALLOWEEN" and the year, then "THE DnA CASA". A longer ring tightens its spacing, never its size. It is at most 380px wide on desktop and `min(76vw, 300px)` on phones.
 - **Motion:** the ring turns once every 40s, linear and endless. It runs only under `prefers-reduced-motion: no-preference`.
 
 ### Brush squiggle
-One rosa mexicano brush stroke under "Dan & Alexis", 130px wide (112px on phones).
+One brush stroke under the hero subtitle, 130px wide (112px on phones): rosa mexicano on household pages, terracotta on Halloween pages.
 - **Motion:** it paints on left to right once on load, over 1.6s after a 0.4s delay, with `cubic-bezier(0.16, 1, 0.3, 1)`. It runs only under `prefers-reduced-motion: no-preference`.
 
 ### Member circle
 - **Shape:** a full circle (`rounded.circle`), at most 200px on desktop, 84px on phones.
 - **Fill:** the member's color, or their portrait cropped to the circle. Portraits have empty alt text, because the name heading beside them says who it is.
 
-### Petal photo
-The welcome photo is clipped by the seeded petal mask, at most 440px square (280px on phones). With no photo, the petal shape itself shows, filled in cheek pink.
+### Photos
+Large photos (the welcome photo, a couple's costume photo, new-this-year photos) are clipped by the seeded petal mask, each with its own seed, 420 to 500px square at most (280 to 300px on phones). The pets' costume photo is a circle (340px, 220px on phones). With no welcome photo, the petal shape itself shows, filled in cheek pink.
 
 ### Kicker
 A small serif-bold word in terracotta above a section heading ("Bienvenidos"). It's the only place a Spanish word sits above an English heading.
 
 ### Footer
-One centered italic serif line at body size in cream on mole: "Con cariño · © year The DnA Casa".
+One centered italic serif line at body size in cream on the page's dark field: "Con cariño · © year The DnA Casa".
 
 ## Do's and Don'ts
 
@@ -243,4 +245,4 @@ One centered italic serif line at body size in cream on mole: "Con cariño · ©
 - **Don't** add a third typeface or another weight without retiring one.
 - **Don't** set body text in terracotta or pink on cream.
 - **Don't** add a marquee, a literal house, arches, leaf shadows, sparkles or extra squiggles.
-- **Don't** add a third motion. The ring and the squiggle are the whole motion vocabulary.
+- **Don't** add motion that bounces, loops (other than the ring) or runs longer than half a second (other than the ring and the squiggle). Beyond those two, recap sections and photos fade up as they scroll into view (CSS scroll-driven animation behind `@supports`) and photos react subtly on hover.
