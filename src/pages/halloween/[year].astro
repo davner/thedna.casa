@@ -28,6 +28,8 @@ const shapes = {
 } satisfies Record<Photo["shape"], { clip: (photo: Photo) => string; shown: number; phone: number }>;
 const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
 // The contest, drinks and highlight photos all share one size beside their words.
+// A banner invite would be unreadable at a card's width, so it spans the column instead.
+const wide = party.invite && party.invite.src.width > 2 * party.invite.src.height;
 const beside = { width: 840, height: 840, widths: [420, 840], sizes: "(max-width: 760px) 280px, 420px" };
 ---
 
@@ -161,14 +163,25 @@ const beside = { width: 840, height: 840, widths: [420, 840], sizes: "(max-width
     {party.invite && (
       <section class="invite reveal" aria-labelledby="invite-h">
         <h2 id="invite-h">The invite</h2>
-        <Image
-          class="card"
-          src={party.invite.src}
-          alt={party.invite.alt}
-          width={840}
-          widths={[420, 840]}
-          sizes="(max-width: 760px) 280px, 420px"
-        />
+        {wide ? (
+          <Image
+            class="card wide"
+            src={party.invite.src}
+            alt={party.invite.alt}
+            width={2200}
+            widths={[1100, 2200]}
+            sizes="(max-width: 760px) calc(100vw - 48px), 1100px"
+          />
+        ) : (
+          <Image
+            class="card"
+            src={party.invite.src}
+            alt={party.invite.alt}
+            width={840}
+            widths={[420, 840]}
+            sizes="(max-width: 760px) 280px, 420px"
+          />
+        )}
       </section>
     )}
   </main>
@@ -409,6 +422,10 @@ const beside = { width: 840, height: 840, widths: [420, 840], sizes: "(max-width
     margin: 48px auto 0;
     transform: rotate(-2deg);
   }
+  .card.wide {
+    max-width: 1100px;
+    transform: rotate(-1deg);
+  }
 
   @media (prefers-reduced-motion: no-preference) {
     .photo {
@@ -483,6 +500,9 @@ const beside = { width: 840, height: 840, widths: [420, 840], sizes: "(max-width
     .card {
       max-width: 280px;
       margin-top: 28px;
+    }
+    .card.wide {
+      max-width: 100%;
     }
   }
 </style>

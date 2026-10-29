@@ -358,12 +358,8 @@ describe("built recap with an invite", () => {
 });
 
 describe("built recap known only from its invite", () => {
-  let $: CheerioAPI;
-  beforeAll(() => {
-    $ = builtPage("halloween/2021/index.html");
-  });
-
   it("skips the sections it has nothing for and keeps the hero and the intro", () => {
+    const $ = builtPage("halloween/2021/index.html");
     expect(readText($, "h1")).toBe("HALLOWEEN COSTUME PARTY");
     expect($("header time").attr("datetime")).toBe("2021-10-23");
     expect(
@@ -371,7 +367,18 @@ describe("built recap known only from its invite", () => {
         .map((_, h) => $(h).text().trim())
         .get(),
     ).toEqual(["The invite"]);
-    expect(readText($, "main")).toContain("A potluck, and everyone brought Mexican food.");
+    expect(readText($, "main")).toContain("It was a potluck, everyone brought Mexican food");
+  });
+
+  // A banner shrunk to a card's 420px would leave its words too small to read.
+  it("spreads a banner invite across the column", () => {
+    const $ = builtPage("halloween/2022/index.html");
+    const img = $("main img");
+    const widest = Math.max(
+      ...(img.attr("srcset") ?? "").split(",").map((entry) => parseInt(entry.trim().split(/\s+/)[1] ?? "0")),
+    );
+    expect(widest).toBeGreaterThanOrEqual(2200);
+    expect(img.attr("sizes")).toContain("1100px");
   });
 });
 
