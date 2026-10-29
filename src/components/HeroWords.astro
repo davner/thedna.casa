@@ -3,12 +3,13 @@ import { brushSquiggle } from "../lib/shapes";
 interface Props {
   lines: string[];
   subtitle: string;
+  fit?: number;
 }
-const { lines, subtitle } = Astro.props;
+const { lines, subtitle, fit = 1 } = Astro.props;
 ---
 
 <div class="words">
-  <h1>
+  <h1 style={fit < 1 ? `--fit: ${fit}` : undefined}>
     {lines.map((line, i) => (
       <>
         {i > 0 && <br />}
@@ -64,7 +65,7 @@ const { lines, subtitle } = Astro.props;
 
   @media (max-width: 760px) {
     h1 {
-      font-size: clamp(3rem, 14vw, 4.2rem);
+      font-size: calc(clamp(3rem, 14vw, 4.2rem) * var(--fit, 1));
       line-height: 0.88;
     }
     .sub {

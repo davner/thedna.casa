@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { heroTitleLines, phoneTitleRoom, phoneTitleWidth } from "./hero-title";
+import { heroTitle, heroTitleLines, phoneTitleRoom, phoneTitleWidth } from "./hero-title";
 
 describe("heroTitleLines", () => {
   it("keeps a short name on one line", () => {
@@ -22,5 +22,19 @@ describe("heroTitleLines", () => {
 
   it("gives a word too wide for a phone a line of its own rather than splitting it", () => {
     expect(heroTitleLines("ANTIDISESTABLISHMENTARIANISM GHOSTS")).toEqual(["ANTIDISESTABLISHMENTARIANISM", "GHOSTS"]);
+  });
+});
+
+describe("heroTitle", () => {
+  it("keeps the full phone size when every line fits", () => {
+    expect(heroTitle("LET'S GET TIKI FREAKY")).toEqual({ lines: ["LET'S GET", "TIKI FREAKY"], fit: 1 });
+  });
+
+  it("shrinks the phone size just enough for a word too wide to break", () => {
+    const { lines, fit } = heroTitle("HAUNTED HOMECOMING");
+    expect(lines).toEqual(["HAUNTED", "HOMECOMING"]);
+    expect(fit).toBeLessThan(1);
+    expect(fit).toBeGreaterThan(0.85);
+    for (const line of lines) expect(phoneTitleWidth(line) * fit).toBeLessThanOrEqual(phoneTitleRoom);
   });
 });

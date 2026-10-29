@@ -21,3 +21,11 @@ export const heroTitleLines = (name: string): string[] => {
   }
   return lines;
 };
+
+// A word too wide to break shrinks the phone title just for that party, the way the link preview shrinks long names.
+export const heroTitle = (name: string) => {
+  const lines = heroTitleLines(name);
+  const widest = Math.max(...lines.map(phoneTitleWidth));
+  const fit = Math.min(1, Math.floor((phoneTitleRoom / widest) * 1000) / 1000);
+  return { lines, fit };
+};

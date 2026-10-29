@@ -5,13 +5,14 @@ import HeroWords from "../HeroWords.astro";
 interface Props {
   title: string[];
   subtitle: string;
+  fit?: number;
   ring?: string;
 }
-const { title, subtitle, ring } = Astro.props;
+const { title, subtitle, fit, ring } = Astro.props;
 ---
 
 <header class:list={["hero", { short: !ring }]}>
-  <HeroWords lines={title} subtitle={subtitle} />
+  <HeroWords lines={title} subtitle={subtitle} fit={fit} />
   {ring && (
     <Stamp ring={ring}>
       <Ghost class="stamp-ghost" />

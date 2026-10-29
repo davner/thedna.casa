@@ -278,7 +278,15 @@ describe("shipped pages", () => {
         }
         return found;
       };
-      const fontSize = cssLength(phoneDecl("h1", "font-size", true) ?? "", screen);
+      // A page shrinks its own title through --fit, so the shared size is read apart from the page's factor.
+      const shared =
+        (phoneDecl("h1", "font-size", true) ?? "").match(/^calc\((.+)\s*\*\s*var\(--fit,\s*1\)\)$/)?.[1] ?? "";
+      const fit = Number(
+        $("header h1")
+          .attr("style")
+          ?.match(/--fit:\s*([\d.]+)/)?.[1] ?? 1,
+      );
+      const fontSize = cssLength(shared.trim(), screen) * fit;
       const tracking = cssLength(phoneDecl("h1", "letter-spacing", false) ?? "0", screen, fontSize);
       const gutter = cssLength((phoneDecl(".hero", "padding", true) ?? "").split(/\s+/)[1], screen);
       const room = screen - 2 * gutter;
