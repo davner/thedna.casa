@@ -1,5 +1,6 @@
 ---
 import { brushSquiggle } from "../lib/shapes";
+import { serif } from "../lib/serif";
 interface Props {
   lines: string[];
   subtitle: string;
@@ -7,10 +8,12 @@ interface Props {
   date?: { datetime: string; long: string };
 }
 const { lines, subtitle, fit = 1, date } = Astro.props;
+// The widest line in ems, so a long title shrinks to its column instead of pushing the stamp out of its slot.
+const ems = Math.max(...lines.map((l) => serif.layout(l).advanceWidth / serif.unitsPerEm - 0.03 * [...l].length));
 ---
 
 <div class="words">
-  <h1 style={fit < 1 ? `--fit: ${fit}` : undefined}>
+  <h1 style={`--ems: ${ems.toFixed(3)}${fit < 1 ? `; --fit: ${fit}` : ""}`}>
     {lines.map((line, i) => (
       <>
         {i > 0 && <br />}
@@ -30,10 +33,15 @@ const { lines, subtitle, fit = 1, date } = Astro.props;
 </div>
 
 <style>
+  /* Size containment keeps the title from widening its own column; the width keeps it from collapsing when centered. */
+  .words {
+    container-type: inline-size;
+    width: 100%;
+  }
   h1 {
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: clamp(3.4rem, 10vw, 9.5rem);
+    font-size: min(clamp(3.4rem, 10vw, 9.5rem), 100cqi / var(--ems));
     letter-spacing: -0.03em;
     line-height: 0.9;
     margin: 0;

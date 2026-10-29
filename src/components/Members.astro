@@ -37,18 +37,16 @@ const { members = householdMembers } = Astro.props;
   .members {
     background: var(--cream-page);
     color: var(--mole);
-    padding: 0 clamp(20px, 6vw, 96px) clamp(96px, 11vw, 150px);
+    padding: 0 var(--inline) clamp(96px, 11vw, 150px);
   }
   h2 {
     color: var(--terra);
-    max-width: 1000px;
-    margin: 0 auto;
+    margin: 0;
   }
   ul {
     list-style: none;
     padding: 0;
-    margin: 48px auto 0;
-    max-width: 1000px;
+    margin: 48px 0 0;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: clamp(20px, 3vw, 44px);
@@ -84,7 +82,7 @@ const { members = householdMembers } = Astro.props;
 
   @media (max-width: 760px) {
     .members {
-      padding: 8px 24px 72px;
+      padding: 8px var(--inline) 72px;
     }
     ul {
       margin-top: 28px;

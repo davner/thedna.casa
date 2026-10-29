@@ -198,10 +198,7 @@ const scene = {
 <style>
   /* The first thing under the drips, sharing one column with the parties list below. */
   .trophy {
-    padding: 200px clamp(20px, 6vw, 96px) clamp(96px, 11vw, 150px);
-    max-width: 900px;
-    margin: 0 auto;
-    box-sizing: content-box;
+    padding: 200px var(--inline) clamp(96px, 11vw, 150px);
   }
   h2 {
     color: var(--terra);
@@ -279,7 +276,7 @@ const scene = {
 
   @media (max-width: 760px) {
     .trophy {
-      padding: 136px 24px 72px;
+      padding: 136px var(--inline) 72px;
     }
   }
 </style>

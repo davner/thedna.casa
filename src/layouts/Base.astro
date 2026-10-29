@@ -59,6 +59,15 @@ const colorTokens = Object.entries(palette)
   :root {
     --font-serif: "Averia Serif Libre", serif;
     --divider: 1px solid color-mix(in srgb, var(--mole) 18%, transparent);
+    --gutter: clamp(20px, 6vw, 96px);
+    --column: 1200px;
+    /* Sections pad by this, so every page's content shares one column while its background runs edge to edge. */
+    --inline: max(var(--gutter), (100% - var(--column)) / 2);
+  }
+  @media (max-width: 760px) {
+    :root {
+      --gutter: 24px;
+    }
   }
   html,
   body {

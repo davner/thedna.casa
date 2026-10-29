@@ -54,7 +54,7 @@ const petals = marigoldMask(233);
     grid-template-columns: 1fr 1.1fr;
     gap: clamp(32px, 6vw, 96px);
     align-items: center;
-    padding: clamp(56px, 7vw, 96px) clamp(20px, 6vw, 96px) clamp(88px, 10vw, 130px);
+    padding: clamp(56px, 7vw, 96px) var(--inline) clamp(88px, 10vw, 130px);
   }
   /* Overlaps the hero by one pixel less than its height so no seam shows between wave and section. */
   .edge {
@@ -105,7 +105,7 @@ const petals = marigoldMask(233);
     .welcome {
       grid-template-columns: 1fr;
       gap: 28px;
-      padding: 24px 24px 64px;
+      padding: 24px var(--inline) 64px;
     }
     /* A shallower wave so the cream welcome starts inside the first phone screen. */
     .edge {

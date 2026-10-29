@@ -16,7 +16,7 @@ colors:
 typography:
   display:
     fontFamily: "Averia Serif Libre, serif"
-    fontSize: "clamp(3.4rem, 10vw, 9.5rem)"
+    fontSize: "min(clamp(3.4rem, 10vw, 9.5rem), 100cqi / var(--ems))"
     fontWeight: 700
     lineHeight: 0.9
     letterSpacing: "-0.03em"
@@ -74,6 +74,7 @@ rounded:
   circle: "50%"
 spacing:
   gutter: "clamp(20px, 6vw, 96px)"
+  column: "1200px"
   column-gap: "clamp(32px, 6vw, 96px)"
   gutter-phone: "24px"
   gutter-phone-hero: "20px"
@@ -194,11 +195,16 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 ## Layout
 
-Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), with a fluid gap between columns (`spacing.column-gap`). The hero is 1.2fr words to 1fr stamp, at least `min(92dvh, 880px)` tall with its padding counted inside, so the edge shows at the bottom of the first desktop screen. Its top padding (96px, 72px on phones) leaves room for the navbar, which sits over it.
+Every page is built the same way, like Bootstrap's `container-fluid` around a `container`:
 
-**The Wave On Screen Rule.** At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.
+- **The hero and navbar run the full width,** padded only by the fluid gutter (`spacing.gutter`). Every hero has the same box, so the title starts at the same left edge on every page, and the stamp sits in the same slot: the right-hand column, `min(380px, 34%)` wide, flush with the right gutter. The words take the rest (`minmax(0, 1fr)`); a title too wide for it, like HALLOWEEN, shrinks to fit (the display size is capped at `100cqi` divided by the title's widest line in ems) rather than pushing the stamp around.
+- **Everything below the hero sits in one column** at most `spacing.column` (1200px) wide, centered. Each section's background still runs edge to edge; its content is padded in by `max(gutter, (100% - column) / 2)`, the `--inline` token in the base layout. A section never sets its own max width, so headings, rows and photos share the same left and right edges on every page.
 
-A party recap has a short hero with no stamp: the party name, the theme with the party's date under it, and the squiggle (its top padding grows to 120 to 180px, 104px on phones). Then the drips, then its sections in one column at most 1100px wide: the intro (centered), our costumes (a large petal photo beside a smaller circle photo set lower), the costume contest (heading, rule and result beside the winners as rows; with a photo of the winners and the trophy, the words and rows stack on the left and the photo stands on the right), the drinks (with a photo of the bar beside them when there is one), new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own; a highlight told in frames, like stills from a video, sits centered above a strip of its frames, four across at up to 240px and two across at 160px on phones, rounded 14px, tipped alternately ±1.5deg, each captioned, never masked), and, when the party file has one, the invite (the card shown whole, never masked, 420px wide, 280px on phones, tipped -2deg like a scrapbook cutting; a banner more than twice as wide as it is tall spans the 1100px column, full width on phones, tipped -1deg so its words stay readable). A section the party file has nothing for is left out, so a party known only from its invite shows the hero, the intro and the invite. Section headings sit on the left.
+Two-column grids on wide screens use a fluid gap between columns (`spacing.column-gap`). The hero is at least `min(92dvh, 880px)` tall with its padding counted inside (96px top, 150px bottom on every page), so the edge shows at the bottom of the first desktop screen. Its top padding (72px on phones) leaves room for the navbar, which sits over it.
+
+**The Wave On Screen Rule.** At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns across the page column.
+
+A party recap has a short hero with no stamp: the party name, the theme with the party's date under it, and the squiggle (its top padding grows to 120 to 180px, 104px on phones). Then the drips, then its sections in the page column: the intro (centered), our costumes (a large petal photo beside a smaller circle photo set lower), the costume contest (heading, rule and result beside the winners as rows; with a photo of the winners and the trophy, the words and rows stack on the left and the photo stands on the right), the drinks (with a photo of the bar beside them when there is one), new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own; a highlight told in frames, like stills from a video, sits centered above a strip of its frames, four across at up to 240px and two across at 160px on phones, rounded 14px, tipped alternately ±1.5deg, each captioned, never masked), and, when the party file has one, the invite (the card shown whole, never masked, 420px wide, 280px on phones, tipped -2deg like a scrapbook cutting; a banner more than twice as wide as it is tall spans the page column, full width on phones, tipped -1deg so its words stay readable). A section the party file has nothing for is left out, so a party known only from its invite shows the hero, the intro and the invite. Section headings sit on the left.
 
 The Halloween list uses the full hero, with the stamp, then the drips, then the trophy (see Trophy), then one row per party, newest first: the year, the name over the theme and the short date ("Sat, Oct 17"), and a small circle photo. Rows are links, divided by hairlines.
 

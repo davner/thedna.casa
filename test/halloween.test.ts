@@ -368,8 +368,8 @@ describe("built recap with a banner invite", () => {
     const widest = Math.max(
       ...(img.attr("srcset") ?? "").split(",").map((entry) => parseInt(entry.trim().split(/\s+/)[1] ?? "0")),
     );
-    expect(widest).toBeGreaterThanOrEqual(2200);
-    expect(img.attr("sizes")).toContain("1100px");
+    expect(widest).toBeGreaterThanOrEqual(2400);
+    expect(img.attr("sizes")).toContain("1200px");
   });
 });
 
