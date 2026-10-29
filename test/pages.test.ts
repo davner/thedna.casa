@@ -231,15 +231,14 @@ describe("shipped pages", () => {
     }
   });
 
-  it("ship no JavaScript, so they render fully with JavaScript off", () => {
+  // The trophy's drag-to-turn is the one script; everything else is HTML and CSS.
+  it("ship JavaScript only on the Halloween list, as one module for the trophy", () => {
     for (const page of shippedPages()) {
-      const $ = builtPage(page);
-      expect(
-        $("script")
-          .map((_, s) => $.html(s))
-          .get(),
-        page,
-      ).toEqual([]);
+      const scripts = builtPage(page)("script");
+      if (page === "halloween/index.html") {
+        expect(scripts, page).toHaveLength(1);
+        expect(scripts.attr("type"), page).toBe("module");
+      } else expect(scripts, page).toHaveLength(0);
     }
   });
 

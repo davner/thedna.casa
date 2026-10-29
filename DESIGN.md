@@ -196,7 +196,7 @@ Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), w
 
 A party recap has a short hero with no stamp: the party name, the theme with the party's date under it, and the squiggle (its top padding grows to 120 to 180px, 104px on phones). Then the drips, then its sections in one column at most 1100px wide: the intro (centered), our costumes (a large petal photo beside a smaller circle photo set lower), the costume contest (heading, rule and result beside the winners as rows; with a photo of the winners and the trophy, the words and rows stack on the left and the photo stands on the right), the drinks (with a photo of the bar beside them when there is one), new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own; a highlight told in frames, like stills from a video, sits centered above a strip of its frames, four across at up to 240px and two across at 160px on phones, rounded 14px, tipped alternately ±1.5deg, each captioned, never masked), and, when the party file has one, the invite (the card shown whole, never masked, 420px wide, 280px on phones, tipped -2deg like a scrapbook cutting; a banner more than twice as wide as it is tall spans the 1100px column, full width on phones, tipped -1deg so its words stay readable). A section the party file has nothing for is left out, so a party known only from its invite shows the hero, the intro and the invite. Section headings sit on the left.
 
-The Halloween list uses the full hero, with the stamp, then the drips, then one row per party, newest first: the year, the name over the theme and the short date ("Sat, Oct 17"), and a small circle photo. Rows are links, divided by hairlines.
+The Halloween list uses the full hero, with the stamp, then the drips, then the trophy (see Trophy), then one row per party, newest first: the year, the name over the theme and the short date ("Sat, Oct 17"), and a small circle photo. Rows are links, divided by hairlines.
 
 One breakpoint, at 760px. Below it every page is one centered column ("Stamp first"):
 
@@ -231,7 +231,7 @@ Shapes are organic and drawn, never boxy. The only hard geometry is the circle: 
 - the three brushed strokes of the menu button,
 - the logo strokes.
 
-The site has no rounded rectangles, boxed borders or boxed buttons. The one control is the phone menu button, drawn as three brushed strokes. The only lines are hairline dividers between rows.
+The site has no rounded rectangles, boxed borders or boxed buttons. The controls are the phone menu button, drawn as three brushed strokes, and the trophy's Pause, an underlined word. The only lines are hairline dividers between rows.
 
 **The Seeded Shape Rule.** A new organic shape comes from the shared seeded generators with a fixed seed, never from randomness at runtime or a stock icon.
 
@@ -274,15 +274,20 @@ Large photos (the welcome photo, a couple's costume photo, the contest, drinks a
 
 A small serif-bold word in terracotta above a section heading ("Bienvenidos"). It's the only place a Spanish word sits above an English heading.
 
+### Trophy
+
+The real Best Costume trophy, rebuilt as an old PlayStation model: a walnut base and plinth, studded gold rims, a holographic orange column, a ribbed neck and a low-poly pumpkin carved with a classic jack-o'-lantern face (triangle eyes and nose, a grin with two square teeth). Its textures are 32 to 64 pixel crops of Dan's photos of the trophy, drawn in hard pixels, and it keeps the PS1's look: vertices that snap to a 320x240 grid, texture warp on big faces, 15-bit color with ordered dither, and about 24 frames a second. The front plaque reads "BEST COSTUME / DnA's Halloween Party"; the other three sides hold six plates each, Trona black with a gold edge and gold serif lettering (year, names in caps, costume in italic), drawn sharp and unwarped so every name reads. It sits on the page cream with no background, up to 820px tall (480px on phones). It turns once every 40s, and a visitor can drag or flick it, step face to face with the arrow keys (it is a slider that names the side facing them), or stop it with Pause, a serif-bold word with a terracotta underline that becomes Spin. Under reduced motion it starts still and the button reads Spin.
+
 ### Footer
 
 One centered italic serif line at sign-off size in cream on the page's dark field: "Con cariño · © year The DnA Casa", with "Con cariño" marked as Spanish.
 
 ### Motion
 
-Quiet and short: under about 0.5s (other than the ring and the squiggle), no bounce, all of it only under `prefers-reduced-motion: no-preference`, and every page is complete with JavaScript off.
+Quiet and short: under about 0.5s (other than the ring and the squiggle), no bounce, all of it only under `prefers-reduced-motion: no-preference`.
 
 - The stamp ring turns once every 40s, linear and endless.
+- The trophy turns once every 40s too, until a visitor pauses or turns it; a flick coasts and settles back.
 - The squiggle paints on left to right once on load, over 1.6s after a 0.4s delay, with `cubic-bezier(0.16, 1, 0.3, 1)`.
 - The drips run down once on load, over 0.5s after a 0.25s delay, with the same curve.
 - The menu panel fades and slides in (about 200ms), and its strokes turn into an X.
@@ -310,4 +315,4 @@ The drips and the scroll fade-ups set each `animation-*` property in longhand, b
 - **Don't** add an accent color for a page, a section or a party.
 - **Don't** set body or caption text in terracotta or pink.
 - **Don't** add a marquee, a literal house, arches, leaf shadows, sparkles or extra squiggles.
-- **Don't** add motion that bounces, loops (other than the ring) or runs longer than half a second (other than the ring and the squiggle).
+- **Don't** add motion that bounces, loops (other than the ring and the trophy) or runs longer than half a second (other than the ring, the trophy and the squiggle).

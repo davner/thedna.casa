@@ -25,7 +25,8 @@
     "fontkit": "^2.0.4",
     "perfect-freehand": "^1.2.3",
     "sharp": "^0.35.5",
-    "simplex-noise": "^4.0.3"
+    "simplex-noise": "^4.0.3",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
@@ -35,6 +36,7 @@
     "@playwright/test": "^1.64.1",
     "@types/d3-shape": "^3.2.0",
     "@types/fontkit": "^2.0.9",
+    "@types/three": "^0.186.0",
     "cheerio": "^1.2.0",
     "eslint": "^10.13.0",
     "eslint-plugin-astro": "^3.2.1",

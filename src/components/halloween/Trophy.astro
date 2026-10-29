@@ -1,0 +1,304 @@
+---
+import { plates, type Plate } from "../../lib/trophy";
+import { palette } from "../../palette";
+import wood from "../../assets/trophy/wood.png";
+import foil from "../../assets/trophy/foil.png";
+import gold from "../../assets/trophy/gold.png";
+import rim from "../../assets/trophy/rim.png";
+import pumpkin from "../../assets/trophy/pumpkin.png";
+
+interface Props {
+  parties: Parameters<typeof plates>[0];
+}
+
+const all = plates(Astro.props.parties);
+// The real base has six plate slots on each of its three plain sides: right, then back, then left.
+const slots = 6;
+const sides = [0, 1, 2].map((i) => Array.from({ length: slots }, (_, j): Plate | null => all[i * slots + j] ?? null));
+
+const sideText = (list: (Plate | null)[]) => {
+  const filled = list.filter((p): p is Plate => Boolean(p));
+  return filled.length
+    ? filled.map((p) => `${p.year}, ${p.names.toLowerCase()}, ${p.costume}`).join("; ")
+    : "empty plates, waiting for winners";
+};
+// What a screen reader hears for each face, front first, then turning to the right.
+const faces = [
+  "Front: Best Costume, DnA's Halloween Party",
+  `Right side: ${sideText(sides[0])}`,
+  `Back: ${sideText(sides[1])}`,
+  `Left side: ${sideText(sides[2])}`,
+];
+const scene = {
+  plates: sides,
+  // The textures are 32 to 64 pixels, so they ship as they are rather than through the image pipeline.
+  textures: { wood: wood.src, foil: foil.src, gold: gold.src, rim: rim.src, pumpkin: pumpkin.src },
+  gold: palette.gold,
+  ink: palette.trona,
+};
+---
+
+<section class="trophy" aria-labelledby="trophy-h">
+  <h2 id="trophy-h" class="reveal">
+    The trophy
+  </h2>
+  <p class="lede reveal">The best costume takes it home until next Halloween and gets a plate on the base.</p>
+  <div class="stage" data-trophy data-faces={JSON.stringify(faces)} data-scene={JSON.stringify(scene)}></div>
+  <div class="controls" hidden>
+    <p class="hint">Drag it, or use the arrow keys, to turn it.</p>
+    <button type="button" class="pause">
+      Pause
+    </button>
+  </div>
+  <ol class="winners">
+    {all.map((p) => (
+      <li>
+        <span class="year">{p.year}</span> {p.names.toLowerCase()}, {p.costume}
+      </li>
+    ))}
+  </ol>
+</section>
+
+<script>
+  import type { TrophyData } from "../../lib/trophy-scene";
+
+  const stage = document.querySelector<HTMLElement>("[data-trophy]");
+  const section = stage?.closest("section");
+  const webgl = (() => {
+    try {
+      return Boolean(document.createElement("canvas").getContext("webgl2"));
+    } catch {
+      return false;
+    }
+  })();
+
+  const run = async (stage: HTMLElement, section: HTMLElement) => {
+    const { mountTrophy } = await import("../../lib/trophy-scene");
+    const draw = await mountTrophy(stage, JSON.parse(stage.dataset.scene ?? "{}") as TrophyData);
+    const faces: string[] = JSON.parse(stage.dataset.faces ?? "[]");
+    const still = matchMedia("(prefers-reduced-motion: reduce)");
+    // One turn every 40 seconds, the stamp ring's pace.
+    const cruise = -9;
+    // The PS1 ran its 3D at 20 to 30 frames a second, and the choppiness is part of the look.
+    const step = 1 / 24;
+    let turn = 0;
+    let velocity = 0;
+    let target: number | null = null;
+    let drag: { x: number; t: number } | null = null;
+    let last = performance.now();
+    let banked = 0;
+    let running = false;
+
+    section.classList.add("live");
+    stage.tabIndex = 0;
+    stage.setAttribute("role", "slider");
+    stage.setAttribute("aria-label", "The trophy");
+    stage.setAttribute("aria-valuemin", "0");
+    stage.setAttribute("aria-valuemax", "359");
+    section.querySelector(".controls")?.removeAttribute("hidden");
+    const pause = section.querySelector<HTMLButtonElement>(".pause")!;
+    // Reduced motion starts still; the button lets a visitor choose the slow turn anyway.
+    let spinning = !still.matches;
+    const label = () => (pause.textContent = spinning ? "Pause" : "Spin");
+    label();
+    pause.addEventListener("click", () => {
+      spinning = !spinning;
+      label();
+      start();
+    });
+
+    const facing = () => ((Math.round(-turn / 90) % 4) + 4) % 4;
+    const announce = () => {
+      stage.setAttribute("aria-valuenow", String(((Math.round(-turn) % 360) + 360) % 360));
+      stage.setAttribute("aria-valuetext", faces[facing()]);
+    };
+
+    const frame = (now: number) => {
+      const dt = Math.min(0.1, (now - last) / 1000);
+      last = now;
+      if (target !== null) {
+        turn += (target - turn) * Math.min(1, dt * 10);
+        if (Math.abs(target - turn) < 0.2) [turn, target] = [target, null];
+      } else if (!drag) {
+        // A flick coasts and then settles back to the slow turn, or to a stop under reduced motion.
+        velocity += ((spinning ? cruise : 0) - velocity) * Math.min(1, dt * 1.5);
+        turn += velocity * dt;
+      }
+      banked += dt;
+      if (banked >= step) {
+        banked %= step;
+        draw(turn);
+        announce();
+      }
+      if (running) requestAnimationFrame(frame);
+    };
+    const start = () => {
+      if (running) return;
+      running = true;
+      last = performance.now();
+      requestAnimationFrame(frame);
+    };
+    const stop = () => void (running = false);
+    new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop())).observe(stage);
+    document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+    draw(turn);
+    announce();
+
+    stage.addEventListener("pointerdown", (e) => {
+      stage.setPointerCapture(e.pointerId);
+      drag = { x: e.clientX, t: e.timeStamp };
+      target = null;
+      velocity = 0;
+    });
+    stage.addEventListener("pointermove", (e) => {
+      if (!drag) return;
+      const delta = (e.clientX - drag.x) * 0.5;
+      const dt = Math.max(1, e.timeStamp - drag.t) / 1000;
+      turn += delta;
+      velocity = velocity * 0.6 + (delta / dt) * 0.4;
+      drag = { x: e.clientX, t: e.timeStamp };
+    });
+    const release = () => {
+      drag = null;
+      if (still.matches) velocity = 0;
+    };
+    stage.addEventListener("pointerup", release);
+    stage.addEventListener("pointercancel", release);
+
+    // Arrow keys step face to face, so every side can be reached and read without a pointer.
+    stage.addEventListener("keydown", (e) => {
+      const steps: Record<string, number> = { ArrowRight: -90, ArrowDown: -90, ArrowLeft: 90, ArrowUp: 90 };
+      if (!(e.key in steps) && e.key !== "Home") return;
+      e.preventDefault();
+      // From where a turn already under way will land, so quick presses each step one face.
+      const from = target ?? turn;
+      target = e.key === "Home" ? Math.round(from / 360) * 360 : Math.round(from / 90) * 90 + steps[e.key];
+      velocity = 0;
+      if (still.matches) [turn, target] = [target, null];
+      start();
+    });
+  };
+
+  // three.js is only fetched once the trophy is about to scroll into view.
+  if (stage && section && webgl)
+    new IntersectionObserver(
+      ([entry], observer) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        void run(stage, section);
+      },
+      { rootMargin: "400px" },
+    ).observe(section);
+</script>
+
+<style>
+  /* The first thing under the drips, sharing one column with the parties list below. */
+  .trophy {
+    padding: 200px clamp(20px, 6vw, 96px) clamp(96px, 11vw, 150px);
+    max-width: 900px;
+    margin: 0 auto;
+    box-sizing: content-box;
+  }
+  h2 {
+    color: var(--terra);
+  }
+  .lede {
+    margin-top: 20px;
+    max-width: 38ch;
+  }
+
+  .stage {
+    display: none;
+    position: relative;
+    height: clamp(480px, 70vw, 820px);
+    margin-top: clamp(24px, 4vw, 48px);
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: grab;
+  }
+  .stage:active {
+    cursor: grabbing;
+  }
+  .stage:focus-visible {
+    outline: 2px solid var(--terra);
+    outline-offset: 8px;
+  }
+  .stage :global(canvas) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .live .stage {
+    display: block;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px 24px;
+    margin-top: 16px;
+  }
+  .controls[hidden] {
+    display: none;
+  }
+  .hint {
+    margin: 0;
+    font-size: 1rem;
+  }
+  /* A word, not a box, like the nav links: serif bold with a terracotta underline. */
+  .pause {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 4px 2px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: var(--terra);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+  .pause:focus-visible {
+    outline: 2px solid var(--terra);
+    outline-offset: 4px;
+  }
+
+  /* Without the 3D trophy, the plates read as a plain list of winners. */
+  .winners {
+    list-style: none;
+    margin: 32px 0 0;
+    padding: 0;
+  }
+  .winners li {
+    padding: 14px 0;
+    border-top: var(--divider);
+    font-size: 1rem;
+  }
+  .winners li:last-child {
+    border-bottom: var(--divider);
+  }
+  .year {
+    font-family: var(--font-serif);
+    font-weight: 700;
+  }
+  .live .winners {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 760px) {
+    .trophy {
+      padding: 136px 24px 72px;
+    }
+  }
+</style>

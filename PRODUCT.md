@@ -8,12 +8,13 @@ web
 
 ## Stack
 
-Astro static site. No page ships JavaScript, and every page works with JavaScript off.
+Astro static site.
 
 - Shapes (the wave, the drip edge, the brush squiggle, the petal mask, the hand-pressed dots for cheeks and the ghost's eyes, the ghost, the menu strokes and the logo strokes) are drawn at build time by seeded generators in `src/lib/shapes.ts`. A seed is a fixed number that makes a shape come out the same way every time, so every deploy looks the same. They use simplex-noise (smooth random wobble), perfect-freehand (brush strokes), d3-shape (curve smoothing) and a hand-written mulberry32 seeded random number generator.
 - The favicon is the full Beso logo, saved as an SVG copied from the page's logo markup (a test fails if the two drift apart); its moon turns cream on dark tab bars. sharp renders the PNG favicon sizes and the site's 1200x630 link preview image (the Beso, dark green moon and all, on mole) from that SVG at build time. Each party recap gets its own 1200x630 preview instead, rendered with sharp from the party file: the ghost over "<NAME> · HALLOWEEN <year>" on Trona, with the words turned into Averia Serif Libre 700 outlines by fontkit (a font file reader), since sharp cannot load the web font.
+- The Halloween list's trophy is the one script on the site: a three.js (WebGL 3D library) model of the real Best Costume trophy, loaded only as it nears the screen. Without JavaScript or WebGL the section shows its winners as a plain list.
 - Halloween parties live in an Astro content collection: one Markdown file per party in `src/content/halloween/`, typed by a schema in `src/content.config.ts`. A party file missing a required field fails the build.
-- Page-to-page crossfades use CSS `@view-transition`, not Astro's client router, so no JavaScript ships.
+- Page-to-page crossfades use CSS `@view-transition`, not Astro's client router.
 - roughjs and svgo are not used.
 - Checks: on every push to any branch and on every pull request, one GitHub Actions workflow runs, in three parallel jobs, the unit tests (vitest, which build the site), the type check, the linter, html-validate (HTML rules) on the built pages, Playwright (scripted real browsers) in Chromium, Firefox and WebKit with an axe accessibility scan of each page, and Lighthouse CI (Google's page audit) on every page against budgets for accessibility, best practices, layout shift and image weight. Renovate (a bot) opens a weekly batch of pull requests to keep dependencies current.
 - Deploy: on a push to main, once every check passes, the same workflow deploys the tested build to GitHub Pages; any failing check stops the deploy. Canonical domain thedna.casa; www redirects to the apex.
@@ -36,7 +37,8 @@ The site is the household itself. Nothing on it could belong to another family: 
 
 - Pages:
   - Home: hero, a welcome with one photo, the four members ("Who lives here"), footer with the year.
-  - `/halloween/`: a hero with the ghost stamp, then every party, one row per year, newest first: year, party name, theme, date and a small photo.
+  - `/halloween/`: a hero with the ghost stamp, then the trophy (a turning 3D model of the real Best Costume trophy, with a plate for every contest winner), then every party, one row per year, newest first: year, party name, theme, date and a small photo.
+- The trophy's plates come from the party files' contest winners, first names only, oldest first, six to a side: the right side, then the back, then the left. 2025 had no party, so its plate reads "LIFE, The Party Pooper" until a 2025 party file names a real winner.
   - `/halloween/<year>/`: one party's recap: hero with the party name, theme and date (no stamp), intro, our costumes, the costume contest, the drinks, new this year, and the invite when there is one. A section with nothing in the party file is left out.
 - A navbar on every page links "Casa" and "Halloween". A section joins the navbar only when it ships.
 - Nothing to sell, no sign-up, no contact link, no CMS, no analytics, no search, no RSS, no dark mode.

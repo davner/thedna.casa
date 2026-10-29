@@ -421,7 +421,7 @@ describe("built Halloween list", () => {
     $ = builtPage("halloween/index.html");
   });
 
-  const rows = () => $("main li");
+  const rows = () => $("main section:not(.trophy) > ul > li");
 
   it("opens with a hero titled HALLOWEEN and October at the casa", () => {
     expect($("h1")).toHaveLength(1);
@@ -448,8 +448,9 @@ describe("built Halloween list", () => {
   it.each([
     ["desktop", false],
     ["phone", true],
-  ])("starts the parties below the drips on %s", (_, phone) => {
-    expect(clearanceBelowDrips($, "section", phone)).toBeGreaterThanOrEqual(24);
+  ])("starts the trophy, the first section, below the drips on %s", (_, phone) => {
+    expect($("main > section").first().hasClass("trophy")).toBe(true);
+    expect(clearanceBelowDrips($, ".trophy", phone)).toBeGreaterThanOrEqual(24);
   });
 
   it("is titled Halloween in the tab and the link preview", () => {
