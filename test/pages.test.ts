@@ -25,6 +25,26 @@ describe("shipped pages", () => {
     }
   });
 
+  it("mark the link to the page's own section, and only that one, as the current page", () => {
+    const section: Record<string, string> = {
+      "index.html": "/",
+      "halloween/index.html": "/halloween/",
+      "halloween/2026/index.html": "/halloween/",
+    };
+    expect(shippedPages().sort()).toEqual(Object.keys(section).sort());
+    for (const page of shippedPages()) {
+      const $ = builtPage(page);
+      const lists = $("nav ul");
+      expect(lists.length, page).toBeGreaterThanOrEqual(1);
+      // The inline links and the phone menu are two lists, and only one of them is ever displayed.
+      lists.each((_, list) => {
+        const current = $(list).find("a[aria-current='page']");
+        expect(current, page).toHaveLength(1);
+        expect(current.attr("href"), page).toBe(section[page]);
+      });
+    }
+  });
+
   it("ship no JavaScript, so they render fully with JavaScript off", () => {
     for (const page of shippedPages()) {
       const $ = builtPage(page);

@@ -4,6 +4,7 @@ import "@fontsource/averia-serif-libre/700.css";
 import "@fontsource/schibsted-grotesk/400.css";
 import { palette } from "../palette";
 import { copy } from "../content";
+import Nav from "../components/Nav.astro";
 
 interface Props { title?: string; description?: string; themeColor?: string }
 const {
@@ -39,6 +40,7 @@ const colorTokens = Object.entries(palette).map(([name, hex]) => `--${name}:${he
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
   <body>
+    <Nav />
     <slot />
     <div class="grain" aria-hidden="true"></div>
   </body>
