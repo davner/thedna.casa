@@ -2,6 +2,7 @@
 import "@fontsource/averia-serif-libre/400-italic.css";
 import "@fontsource/averia-serif-libre/700.css";
 import "@fontsource/schibsted-grotesk/400.css";
+import "../styles/global.css";
 import { palette } from "../palette";
 import { copy, type Share } from "../content";
 import Nav from "../components/Nav.astro";
@@ -72,6 +73,10 @@ const colorTokens = Object.entries(palette)
   html,
   body {
     margin: 0;
+  }
+  /* Preflight sets 1.5; every rule below was written against the browser's normal line height. */
+  html {
+    line-height: normal;
   }
   h2 {
     font-family: var(--font-serif);

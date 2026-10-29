@@ -1,4 +1,5 @@
 import { defineConfig, sharpImageService } from "astro/config";
+import tailwindcss from "@tailwindcss/vite";
 import favicons from "./integrations/favicons.ts";
 
 export default defineConfig({
@@ -8,5 +9,6 @@ export default defineConfig({
   build: { inlineStylesheets: "always" },
   // Night party photos are noisy; quality 70 keeps a recap with five photos and its invite inside the image budget.
   image: { service: sharpImageService({ webp: { quality: 70 } }) },
+  vite: { plugins: [tailwindcss()] },
   integrations: [favicons(new URL("./src/assets/favicon.svg", import.meta.url))],
 });

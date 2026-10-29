@@ -9,7 +9,7 @@ const { class: className, ring = copy.ring } = Astro.props;
 ---
 
 <div class:list={["stamp", className]}>
-  <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
+  <svg class="ring-text" viewBox="0 0 200 200" aria-hidden="true">
     <defs>
       <path id="stamp-ring" d="M100 100 m-82 0 a82 82 0 1 1 164 0 a82 82 0 1 1 -164 0" />
     </defs>
@@ -31,7 +31,7 @@ const { class: className, ring = copy.ring } = Astro.props;
     display: grid;
     place-items: center;
   }
-  .ring {
+  .ring-text {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -48,7 +48,7 @@ const { class: className, ring = copy.ring } = Astro.props;
     position: relative;
   }
   @media (prefers-reduced-motion: no-preference) {
-    .ring {
+    .ring-text {
       animation: turn 40s linear infinite;
     }
   }

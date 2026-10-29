@@ -17,6 +17,14 @@ const designFontSizes = () => {
   );
 };
 
+// Preflight's resets size text relative to its parent, which is itself checked against the scale.
+const isPreflightRelative = (decl: Declaration) => {
+  if (!/^(inherit|[\d.]+(em|%))$/.test(decl.value)) return false;
+  for (let node = decl.parent; node; node = node.parent as typeof node)
+    if (node.type === "atrule" && (node as AtRule).name === "layer" && (node as AtRule).params === "base") return true;
+  return false;
+};
+
 describe("shipped pages", () => {
   it("include no prototype route", () => {
     expect(shippedPages().filter((page) => /prototype/i.test(page))).toEqual([]);
@@ -269,6 +277,7 @@ describe("shipped pages", () => {
     for (const page of shippedPages()) {
       for (const root of pageCss(builtPage(page))) {
         root.walkDecls("font-size", (decl) => {
+          if (isPreflightRelative(decl)) return;
           declarations++;
           if (!scale.has(squash(decl.value)))
             offScale.push(`${page} ${decl.parent?.toString().split("{")[0].trim()} { font-size: ${decl.value} }`);
