@@ -1,7 +1,7 @@
 import { fileURLToPath } from "node:url";
 import { build } from "astro";
 
-// The photo fixture proves the image pipeline strips metadata, since the real site has no photos yet.
+// The photo fixture proves the image pipeline strips metadata, since the real site's photos are stripped before they are committed.
 const sites = ["..", "./fixtures/photo-site"];
 
 export default async function setup() {

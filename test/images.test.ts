@@ -12,7 +12,7 @@ const taggedIn = async (files: string[]) => {
 };
 
 describe("shipped images", () => {
-  // One test over the whole list, because the site ships no photos yet and an empty it.each would fail.
+  // One test over the whole list, so a failure names every tagged file at once.
   it("carry no EXIF, XMP or IPTC metadata", async () => {
     expect(await taggedIn(shippedImages())).toEqual([]);
   });

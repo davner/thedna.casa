@@ -5,7 +5,7 @@ import postcss, { type Root } from "postcss";
 import sharp from "sharp";
 
 const dist = new URL("../dist/", import.meta.url);
-// A second built site whose pages render the real components with photos, since the real site has none yet.
+// A second built site that renders the real components in states the real site doesn't use: a GPS-tagged photo and a welcome without one.
 export const photoSiteDist = new URL("fixtures/photo-site/dist/", import.meta.url);
 const inDist = (path: string, root = dist) => new URL(path.replace(/^\//, ""), root);
 const read = (path: string, root = dist) => readFileSync(inDist(path, root), "utf8");
