@@ -12,7 +12,7 @@ const strokes = menuStrokes(71);
   <ul class="inline">
     {links.map((l) => <li><a href={l.href} lang={l.lang} aria-current={current(l.href) ? "page" : undefined}>{l.label}</a></li>)}
   </ul>
-  <button class="menu-btn" popovertarget="site-menu" aria-label="Menu">
+  <button type="button" class="menu-btn" popovertarget="site-menu" aria-label="Menu">
     <svg viewBox="0 0 40 40" aria-hidden="true">{strokes.map((d, i) => <path class={`s${i}`} d={d} />)}</svg>
   </button>
   {/* Right after its button, so focus and reading order move straight into the panel. */}

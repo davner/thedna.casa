@@ -7,7 +7,7 @@ const { title, subtitle, ring } = Astro.props;
 ---
 <header class:list={["hero", { short: !ring }]}>
   <HeroWords lines={title} subtitle={subtitle} />
-  {ring && <Stamp class="stamp" ring={ring}><Ghost class="stamp-ghost" /></Stamp>}
+  {ring && <Stamp ring={ring}><Ghost class="stamp-ghost" /></Stamp>}
 </header>
 
 <style>
