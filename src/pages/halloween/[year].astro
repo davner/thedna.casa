@@ -15,4 +15,21 @@ const titleLines = upper.split(/(?<=-)(?=[^-]*$)/);
 ---
 <Halloween title={`${p.name} · The DnA Casa`} description={`Our ${p.theme} Halloween, ${p.year}: costumes, the contest, the drinks and what was new.`}>
   <HalloweenHero title={titleLines} />
+  <main class="recap">
+    <section class="costumes" aria-labelledby="costumes-h">
+      <h2 id="costumes-h">Our costumes</h2>
+    </section>
+    <section class="contest" aria-labelledby="contest-h">
+      <h2 id="contest-h">The costume contest</h2>
+    </section>
+    <section class="drinks" aria-labelledby="drinks-h">
+      <h2 id="drinks-h">The drinks</h2>
+    </section>
+    <section class="new" aria-labelledby="new-h">
+      <h2 id="new-h">New this year</h2>
+      <ul>
+        {p.highlights.map((h) => <li><h3>{h.title}</h3></li>)}
+      </ul>
+    </section>
+  </main>
 </Halloween>
