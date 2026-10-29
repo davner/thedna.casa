@@ -13,7 +13,7 @@ import { copy } from "../content";
 </header>
 
 <style>
-  .hero { position: relative; box-sizing: border-box; min-height: min(92dvh, 880px); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: clamp(32px, 6vw, 96px); padding: 64px clamp(20px, 6vw, 96px) 150px; color: var(--cream); }
+  .hero { position: relative; box-sizing: border-box; min-height: min(92dvh, 880px); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: clamp(32px, 6vw, 96px); padding: 96px clamp(20px, 6vw, 96px) 150px; color: var(--cream); }
   /* At 45 degrees the turning ring's box is about 1.41x the stamp, which reaches past the screen edge up to tablet widths. */
   .hero { overflow-x: clip; }
   h1 { font-family: var(--font-serif); font-weight: 700; font-size: clamp(3.4rem, 10vw, 9.5rem); letter-spacing: -0.03em; line-height: 0.9; margin: 0; }
@@ -28,7 +28,7 @@ import { copy } from "../content";
 
   /* A short hero so the wave lands inside the first phone screen. */
   @media (max-width: 760px) {
-    .hero { min-height: 0; grid-template-columns: 1fr; justify-items: center; gap: 22px; padding: 28px 20px 92px; text-align: center; }
+    .hero { min-height: 0; grid-template-columns: 1fr; justify-items: center; gap: 22px; padding: 72px 20px 92px; text-align: center; }
     .hero :global(.stamp) { order: -1; width: min(76vw, 300px); }
     h1 { font-size: clamp(3rem, 15vw, 4.2rem); line-height: 0.88; }
     .sub { margin-top: 12px; }
