@@ -10,7 +10,7 @@ web
 
 Astro static site. No page ships JavaScript, and every page works with JavaScript off.
 
-- Shapes (the wave, the brush squiggle, the petal mask, the hand-pressed dots for the Beso's cheeks and the logo strokes) are drawn at build time by seeded generators in `src/lib/shapes.ts`. A seed is a fixed number that makes a shape come out the same way every time, so every deploy looks the same. They use simplex-noise (smooth random wobble), perfect-freehand (brush strokes), d3-shape (curve smoothing) and a hand-written mulberry32 seeded random number generator.
+- Shapes (the wave, the drip edge, the brush squiggle, the petal mask, the hand-pressed dots for eyes and cheeks, the ghost and the logo strokes) are drawn at build time by seeded generators in `src/lib/shapes.ts`. A seed is a fixed number that makes a shape come out the same way every time, so every deploy looks the same. They use simplex-noise (smooth random wobble), perfect-freehand (brush strokes), d3-shape (curve smoothing) and a hand-written mulberry32 seeded random number generator.
 - The favicon is the full Beso logo, saved as an SVG copied from the page's logo markup (a test fails if the two drift apart); its moon turns cream on dark tab bars. sharp renders the PNG favicon sizes and the 1200x630 link preview image (the Beso, dark green moon and all, on mole) from that SVG at build time.
 - roughjs and svgo are not used.
 - Deploy: on every push to main a GitHub Actions workflow runs the tests, which build the site, and deploys that build to GitHub Pages; a failing test stops the deploy. Canonical domain thedna.casa; www redirects to the apex.
@@ -48,11 +48,12 @@ The site is the household itself. Nothing on it could belong to another family: 
 - Name: "The DnA Casa", set in all caps as THE DnA CASA; subtitle "Dan & Alexis".
 - English, with a few Spanish words ("Bienvenidos", "Hola", "Con cariño"). Spanish phrases carry `lang="es"`, except "Hola", which sits inside an English sentence.
 - Look (variant 23 "Mole"): a mole-brown (#43262A) hero and footer, a cream (#FAF4EC) middle, one wave between them, and one page-wide grain layer. No pure black anywhere.
-- Logo: the Beso sun-and-moon mark (marigold sun, thin moon), set inside a stamp ring that reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO".
+- Halloween look: the same system with a Trona black (#201D1E) hero and footer in place of mole, and a drip edge in place of the wave.
+- Logo: the Beso sun-and-moon mark (marigold sun, thin moon), set inside a stamp ring that reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO". On a party recap a still cream ghost takes its place, inside a ring with the party name, "HALLOWEEN", the year and "THE DnA CASA".
 - Palette: mole #43262A, cream ink #F6E7DA, page cream #FAF4EC, terracotta #C8643C, rosa mexicano #E4007C, marigold gold #F2B233, Salamander green #2F3E3E (Dan), sage #B9C9B4, cheek pink #F7C6D9, blush #F0C7B4. Member circles, in order: Salamander, rosa mexicano, sage, marigold gold.
 - Two fonts only: Averia Serif Libre (headings 700, subtitle and footer italic 400) and Schibsted Grotesk (body 400), self-hosted through Fontsource.
-- Restraint: one squiggle, one wave, solid color fields, no sparkles.
-- Motion: two effects. The stamp ring turns slowly (about 40s per turn), and the squiggle paints on once on load. Both run only under `prefers-reduced-motion: no-preference`. Nothing else moves.
+- Restraint: one squiggle per hero, one edge (wave or drips), solid color fields, no sparkles.
+- Motion: quiet and short. The stamp ring turns slowly (about 40s per turn), the squiggle paints on and the drips run once on load, and recap sections and photos fade up on scroll and react on hover. All of it runs only under `prefers-reduced-motion: no-preference`.
 - Excluded: sugar skulls, sombreros, papel picado, serape stripes, saguaro, rainbow palettes, kitschy sun faces, a scrolling word strip (marquee).
 - Rejected directions, settled; do not propose them again: a literal house, many arches (including the terracotta arch from the first brief), leaf or dappled shadows, squiggles everywhere, heavy hand-drawn ornament, house-sign or door metaphors.
 

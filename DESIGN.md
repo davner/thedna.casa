@@ -118,7 +118,7 @@ Rejected and settled: a literal house, many arches, leaf or dappled shadows, squ
 A deep, warm brown and two creams carry the page; the saturated colors are accents and member identities.
 
 ### Primary
-- **Mole** (`mole`): the hero and footer field, the ink on cream, and the welcome heading. The browser theme color. It stands in for black everywhere.
+- **Mole** (`mole`): the hero and footer field, the ink on cream, the welcome heading and the ghost's eyes. The browser theme color. It stands in for black everywhere.
 - **Marigold** (`gold`): the logo's sun, Penny's circle.
 
 ### Secondary
@@ -128,11 +128,11 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 ### Tertiary
 - **Salamander** (`salamander`): Dan's color, his member circle.
 - **Sage** (`sage`): Milly's circle.
-- **Cheek** (`cheek`): the petal shape that stands in for the welcome photo.
+- **Cheek** (`cheek`): the cheeks on the Beso and the ghost, and the petal shape that stands in for the welcome photo.
 - **Blush** (`blush`): the italic hero subtitle on the dark field.
 
 ### Neutral
-- **Cream Ink** (`cream`): text and the stamp ring on the dark field.
+- **Cream Ink** (`cream`): text and the stamp ring on the dark field, and the ghost's body.
 - **Page Cream** (`cream-page`): the middle field on every page.
 - **Trona Black** (`trona`): the hero and footer field on Halloween pages, and their theme color. A warm near-black, darker than mole.
 
@@ -185,40 +185,49 @@ One breakpoint, at 760px. Below it the page is one centered column ("Stamp first
 - The members become rows: an 84px circle on the left, the name and one-liner on the right, with hairline dividers in mole at 14%.
 - The gutter is 24px (`spacing.gutter-phone`); the hero uses 20px (`spacing.gutter-phone-hero`).
 
-**The First Screen Rule.** On a 390px-wide phone, the wave and the start of the cream welcome are visible without scrolling.
+**The First Screen Rule.** On a 390px-wide phone, the edge (wave or drips) and the start of the cream middle are visible without scrolling.
 
 **The No Sideways Scroll Rule.** Nothing scrolls sideways at any width. The hero clips its turning ring horizontally to keep this true.
 
 ## Elevation & Depth
 
-The page is flat: no shadows, no cards, no raised surfaces. Depth comes from the two color fields meeting at the wave, and from one fixed grain layer (fractal noise tinted mole, 22% opacity, multiply blend) over everything.
+The page is flat: no shadows, no cards, no raised surfaces. Depth comes from the two color fields meeting at the edge (the wave, or the drips on Halloween pages), and from one fixed grain layer (fractal noise tinted mole, 22% opacity, multiply blend) over everything.
 
 **The One Grain Rule.** One grain layer for the whole page. Sections don't add their own textures.
 
 ## Shapes
 
 Shapes are organic and drawn, never boxy. The only hard geometry is the member circle. Every other shape comes from a seeded generator, so it's the same on every build:
-- the wave between hero and welcome,
+- the wave between hero and welcome on household pages,
+- the drip edge under the hero on Halloween pages,
 - the brush squiggle under the subtitle,
 - the petal mask that clips the welcome photo,
-- the hand-pressed dots for the Beso's cheeks,
+- the hand-pressed dots for eyes and cheeks,
+- the ghost's body,
 - the logo strokes.
 
 The site has no rounded rectangles, boxed borders or buttons. The only lines are the hairline dividers between member rows on phones.
 
 **The Seeded Shape Rule.** A new organic shape comes from the shared seeded generators with a fixed seed, never from randomness at runtime or a stock icon.
 
-**The Restraint Rule.** One squiggle, one wave. No sparkles. A new shape has to replace one of these or earn a place the same way.
+**The Restraint Rule.** One squiggle per hero and one edge where the hero meets the middle (the wave, or the drips on Halloween pages). No sparkles. A new shape has to replace one of these or earn a place the same way.
 
 ## Components
 
 ### Stamp
-The signature piece. The Beso sun-and-moon logo (marigold sun, thin moon) sits at 64% of a circle of words set in serif 700 caps with wide 0.08em tracking, in cream on the dark field. On household pages the ring reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO"; on a party recap it reads the party's name, "HALLOWEEN" and the year, then "THE DnA CASA". A longer ring tightens its spacing, never its size. It is at most 380px wide on desktop and `min(76vw, 300px)` on phones.
+The signature piece. A circle of words set in serif 700 caps with wide 0.08em tracking, in cream on the dark field, around a center mark. On household pages the mark is the Beso sun-and-moon logo (marigold sun, thin moon) at 64%, and the ring reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO". On a party recap the mark is the ghost at 46%, and the ring reads the party's name, "HALLOWEEN" and the year, then "THE DnA CASA". A longer ring tightens its spacing, never its size. It is at most 380px wide on desktop and `min(76vw, 300px)` on phones.
 - **Motion:** the ring turns once every 40s, linear and endless. It runs only under `prefers-reduced-motion: no-preference`.
+
+### Ghost
+The Halloween mark: a cream body drawn from a seeded outline with no outline stroke, like the Beso. Hand-pressed mole eyes and cheek-pink cheeks. It holds still.
 
 ### Brush squiggle
 One brush stroke under the hero subtitle, 130px wide (112px on phones): rosa mexicano on household pages, terracotta on Halloween pages.
 - **Motion:** it paints on left to right once on load, over 1.6s after a 0.4s delay, with `cubic-bezier(0.16, 1, 0.3, 1)`. It runs only under `prefers-reduced-motion: no-preference`.
+
+### Drip edge
+The Trona field hanging into the cream under a Halloween hero: 18 seeded drips (seed 66), each a neck with a round bulb. 160px tall on desktop and 104px on phones, sliced at 1:1 so the bulbs never squash; narrow screens see the middle of the edge. The content below starts under the longest drip.
+- **Motion:** the drips run down once on load, over 0.5s after a 0.25s delay, with `cubic-bezier(0.16, 1, 0.3, 1)`. It runs only under `prefers-reduced-motion: no-preference`.
 
 ### Member circle
 - **Shape:** a full circle (`rounded.circle`), at most 200px on desktop, 84px on phones.
