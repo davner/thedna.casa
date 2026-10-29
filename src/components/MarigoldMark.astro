@@ -1,5 +1,5 @@
 ---
-import { marigoldMark } from "../lib/shapes";
+import { dot, marigoldMark } from "../lib/shapes";
 import { palette } from "../palette";
 
 interface Props { class?: string }
@@ -21,8 +21,8 @@ const mark = marigoldMark(3);
         <path d={mark.face.lips} fill-opacity="0.85" />
       </g>
       <g fill={palette.cheek}>
-        <circle cx="208" cy="182" r="10" />
-        <circle cx="270" cy="182" r="10" />
+        <path d={dot(81, 208, 182, 10)} />
+        <path d={dot(82, 270, 182, 10)} />
       </g>
     </g>
   </g>
@@ -32,6 +32,6 @@ const mark = marigoldMark(3);
       <path d={mark.face.moonEye} />
       <path d={mark.face.moonBrow} />
     </g>
-    <circle cx="160" cy="268" r="10" fill={palette.cheek} />
+    <path d={dot(83, 160, 268, 10)} fill={palette.cheek} />
   </g>
 </svg>

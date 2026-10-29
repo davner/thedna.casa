@@ -197,6 +197,7 @@ Shapes are organic and drawn, never boxy. The only hard geometry is the member c
 - the wave between hero and welcome,
 - the brush squiggle under the subtitle,
 - the petal mask that clips the welcome photo,
+- the hand-pressed dots for the Beso's cheeks,
 - the logo strokes.
 
 The site has no rounded rectangles, boxed borders or buttons. The only lines are the hairline dividers between member rows on phones.

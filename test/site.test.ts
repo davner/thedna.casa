@@ -34,6 +34,12 @@ describe("built root page", () => {
     expect(meta("property", "og:type")).toBe("website");
   });
 
+  it("presses the Beso's cheeks by hand instead of drawing perfect circles", () => {
+    const logo = $("svg.stamp-mark").first();
+    expect(logo.find("path").length).toBeGreaterThan(0);
+    expect(logo.find("circle")).toHaveLength(0);
+  });
+
   it("uses the page's own Beso logo as the favicon", () => {
     const paths = ($svg: ReturnType<typeof $>) => $svg.find("path").map((_, p) => $(p).attr("d")).get().sort();
     const logo = paths($("svg.stamp-mark").first());
