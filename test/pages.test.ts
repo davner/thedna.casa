@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
+import type { AtRule, Declaration } from "postcss";
 import { parse } from "yaml";
 import { builtPage, pageCss, shippedPages } from "./site";
 
@@ -21,6 +22,29 @@ describe("shipped pages", () => {
     for (const page of shippedPages()) {
       const $ = builtPage(page);
       expect($(".proto-switcher, [aria-label*='variant switcher' i]"), page).toHaveLength(0);
+    }
+  });
+
+  it("ship no JavaScript, so they render fully with JavaScript off", () => {
+    for (const page of shippedPages()) {
+      const $ = builtPage(page);
+      expect($("script").map((_, s) => $.html(s)).get(), page).toEqual([]);
+    }
+  });
+
+  it("animate only under prefers-reduced-motion: no-preference", () => {
+    for (const page of shippedPages()) {
+      const animations: Declaration[] = [];
+      for (const root of pageCss(builtPage(page))) root.walkDecls(/^(animation(-name)?|transition(-property)?)$/, (decl) => void animations.push(decl));
+      // A floor, so the guard check below cannot pass on an empty list if the CSS moves somewhere this test does not read.
+      expect(animations.length, page).toBeGreaterThanOrEqual(2);
+      for (const decl of animations) {
+        const guards: string[] = [];
+        for (let node = decl.parent; node; node = node.parent as typeof node) {
+          if (node.type === "atrule" && (node as AtRule).name === "media") guards.push(squash((node as AtRule).params));
+        }
+        expect(guards, `${page} ${decl.toString()}`).toContainEqual(expect.stringContaining("(prefers-reduced-motion:no-preference)"));
+      }
     }
   });
 

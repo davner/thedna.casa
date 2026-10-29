@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { AtRule, Declaration } from "postcss";
+import type { Declaration } from "postcss";
 import { readFileSync } from "node:fs";
 import { load } from "cheerio";
 import sharp from "sharp";
@@ -76,24 +76,6 @@ describe("built root page", () => {
     for (const icon of icons) {
       expect(icon).not.toBe("");
       expect(builtFileExists(icon), icon).toBe(true);
-    }
-  });
-
-  it("ships no JavaScript, so it renders fully with JavaScript off", () => {
-    expect($("script").map((_, s) => $.html(s)).get()).toEqual([]);
-  });
-
-  it("animates only under prefers-reduced-motion: no-preference", () => {
-    const animations: Declaration[] = [];
-    for (const root of pageCss($)) root.walkDecls(/^animation(-name)?$/, (decl) => void animations.push(decl));
-    // A floor, so the guard check below cannot pass on an empty list if the CSS moves somewhere this test does not read.
-    expect(animations.length).toBeGreaterThanOrEqual(2);
-    for (const decl of animations) {
-      const guards: string[] = [];
-      for (let node = decl.parent; node; node = node.parent as typeof node) {
-        if (node.type === "atrule" && (node as AtRule).name === "media") guards.push((node as AtRule).params.replace(/\s+/g, ""));
-      }
-      expect(guards, decl.toString()).toContainEqual(expect.stringContaining("(prefers-reduced-motion:no-preference)"));
     }
   });
 
