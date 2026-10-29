@@ -302,6 +302,28 @@ describe("shipped pages", () => {
     }
   });
 
+  // Tilted photos were tried and dropped; only the stamp's turning ring and the menu strokes' X may rotate.
+  it("never tilt a photo or card", () => {
+    const tilts: string[] = [];
+    for (const page of shippedPages()) {
+      for (const root of pageCss(builtPage(page))) {
+        root.walkDecls(/^(transform|rotate)$/, (decl) => {
+          if (decl.prop === "transform" && !/rotate/.test(decl.value)) return;
+          const rule = decl.parent as Rule;
+          if (rule.parent?.type === "atrule" && /keyframes/.test((rule.parent as AtRule).name)) return;
+          if (
+            /^\.nav:has\(#site-menu:popover-open\) \.s[02]$/.test(
+              rule.selector.replace(/\[data-astro-cid-[^\]]+\]/g, ""),
+            )
+          )
+            return;
+          tilts.push(`${page} ${rule.selector} { ${decl.prop}: ${decl.value} }`);
+        });
+      }
+    }
+    expect(tilts).toEqual([]);
+  });
+
   it("set every text size from DESIGN.md's type scale", () => {
     const scale = designFontSizes();
     expect(scale.size).toBeGreaterThan(0);

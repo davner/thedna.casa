@@ -432,12 +432,6 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
     gap: clamp(16px, 2vw, 28px);
     justify-content: center;
   }
-  .frames li:nth-child(odd) {
-    transform: rotate(-1.5deg);
-  }
-  .frames li:nth-child(even) {
-    transform: rotate(1.5deg);
-  }
   .frame {
     display: block;
     width: 100%;
@@ -451,18 +445,15 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
   .invite h2 {
     margin: 0 auto;
   }
-  /* Tipped like a cutting pasted into a scrapbook, so it reads as a keepsake rather than a photo of the night. */
   .card {
     display: block;
     width: 100%;
     max-width: 420px;
     height: auto;
     margin: 48px auto 0;
-    transform: rotate(-2deg);
   }
   .card.wide {
     max-width: 100%;
-    transform: rotate(-1deg);
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -470,7 +461,7 @@ const beside = { width: 840, height: 1050, widths: [420, 840], sizes: "(max-widt
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .photo:hover {
-      transform: scale(1.02) rotate(-0.6deg);
+      transform: scale(1.02);
     }
   }
 
