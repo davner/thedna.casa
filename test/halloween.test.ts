@@ -124,6 +124,24 @@ describe("built Trick-R-Drink recap", () => {
     expect({ width, height, format }).toEqual({ width: 1200, height: 630, format: "png" });
   });
 
+  it("paints its link preview as a cream ghost over a wide line of words on Trona black", async () => {
+    const path = new URL($("head meta[property='og:image']").attr("content") ?? "").pathname;
+    const { data, info } = await sharp(builtFilePath(path)).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+    const hex = (x: number, y: number) => {
+      const i = (y * info.width + x) * 3;
+      return `#${[data[i], data[i + 1], data[i + 2]].map((c) => c.toString(16).padStart(2, "0")).join("")}`;
+    };
+    const creamColumns = (top: number, bottom: number) => {
+      const xs = new Set<number>();
+      for (let y = top; y < bottom; y++) for (let x = 0; x < info.width; x++) if (hex(x, y) === palette.cream) xs.add(x);
+      return xs.size ? Math.max(...xs) - Math.min(...xs) : 0;
+    };
+    expect([hex(0, 0), hex(1199, 629)]).toEqual([palette.trona, palette.trona]);
+    expect(creamColumns(0, 315)).toBeGreaterThan(150);
+    expect(creamColumns(0, 315)).toBeLessThan(400);
+    expect(creamColumns(315, 630)).toBeGreaterThan(700);
+  });
+
   it("describes its link preview image by the party's name and year", () => {
     expect($("head meta[property='og:image:alt']").attr("content")).toBe("A cream ghost over TRICK-R-DRINK · HALLOWEEN 2026 on Trona black");
   });
