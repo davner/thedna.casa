@@ -107,8 +107,8 @@ const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
   .contest p { margin-top: 20px; max-width: 34ch; }
   .contest .result { margin-top: 8px; font-family: var(--font-serif); font-weight: 700; font-size: 1.3rem; letter-spacing: -0.02em; color: var(--terra); }
   .winners { list-style: none; margin: 0; padding: 0; }
-  .winners li { display: grid; gap: 4px; padding: 20px 0; border-top: 1px solid color-mix(in srgb, var(--mole) 18%, transparent); }
-  .winners li:last-child { border-bottom: 1px solid color-mix(in srgb, var(--mole) 18%, transparent); }
+  .winners li { display: grid; gap: 4px; padding: 20px 0; border-top: var(--divider); }
+  .winners li:last-child { border-bottom: var(--divider); }
   .names { font-family: var(--font-serif); font-weight: 700; font-size: 1.7rem; letter-spacing: -0.02em; line-height: 1.1; }
   .as { font-size: 1rem; }
 
