@@ -242,7 +242,7 @@ Shapes are organic and drawn, never boxy. The only hard geometry is the circle: 
 - the three brushed strokes of the menu button,
 - the logo strokes.
 
-The site has no rounded rectangles or boxed borders. Its controls are the phone menu button, drawn as three brushed strokes, and the stone button (see Button). The only lines are hairline dividers between rows.
+The site has no rounded-rectangle boxes, cards or boxed borders; the one rounded rectangle is the soft photo mask, and it only ever clips a photo. Its controls are the phone menu button, drawn as three brushed strokes, and the stone button (see Button). The only lines are hairline dividers between rows.
 
 **The Seeded Shape Rule.** A new organic shape comes from the shared seeded generators with a fixed seed, never from randomness at runtime or a stock icon.
 
