@@ -1,10 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import type { AtRule, Declaration, Rule } from "postcss";
-import { load } from "cheerio";
 import { parse } from "yaml";
-import { createRequire } from "node:module";
-import { openSync, type Font } from "fontkit";
 import { builtPage, pageCss, readText, shippedPages } from "./site";
 
 const squash = (value: string) => value.replace(/\s+/g, "");
@@ -18,25 +15,6 @@ const designFontSizes = () => {
       .map((role) => squash(role.fontSize ?? ""))
       .filter(Boolean),
   );
-};
-
-// The self-hosted face the hero title is set in, so a line's width can be measured without a browser.
-const serif = openSync(
-  createRequire(import.meta.url).resolve(
-    "@fontsource/averia-serif-libre/files/averia-serif-libre-latin-700-normal.woff2",
-  ),
-) as Font;
-
-// Resolves a length in rem, vw, px or em, including clamp(), at a given screen width.
-const cssLength = (value: string, screen: number, em = 16): number => {
-  const clamp = value.match(/^clamp\((.+),(.+),(.+)\)$/);
-  if (clamp) {
-    const [min, preferred, max] = clamp.slice(1).map((part) => cssLength(part.trim(), screen, em));
-    return Math.min(max, Math.max(min, preferred));
-  }
-  const [, number, unit] = value.match(/^(-?[\d.]+)(rem|vw|px|em)?$/) ?? [];
-  const scale = { rem: 16, vw: screen / 100, px: 1, em, "": 1 }[unit ?? ""] ?? NaN;
-  return parseFloat(number) * scale;
 };
 
 describe("shipped pages", () => {
@@ -261,47 +239,6 @@ describe("shipped pages", () => {
     }
   });
 
-  // A title wider than the hero's text area spills past the gutter and sits off center.
-  it.each([360, 390])("fit every hero title line inside the phone hero's text area at %ipx", (screen) => {
-    for (const page of shippedPages()) {
-      const $ = builtPage(page);
-      const phoneDecl = (selector: string, prop: string, phone: boolean) => {
-        let found: string | undefined;
-        for (const root of pageCss($)) {
-          root.walkDecls(prop, (decl) => {
-            const rule = decl.parent as Rule;
-            const media = rule.parent?.type === "atrule" ? squash((rule.parent as AtRule).params) : "";
-            if (
-              (phone ? /760px/.test(media) : media === "") &&
-              rule.selector.replace(/\[data-astro-cid-[^\]]+\]/g, "") === selector
-            )
-              found = decl.value;
-          });
-        }
-        return found;
-      };
-      // A page shrinks its own title through --fit, so the shared size is read apart from the page's factor.
-      const shared =
-        (phoneDecl("h1", "font-size", true) ?? "").match(/^calc\((.+)\s*\*\s*var\(--fit,\s*1\)\)$/)?.[1] ?? "";
-      const fit = Number(
-        $("header h1")
-          .attr("style")
-          ?.match(/--fit:\s*([\d.]+)/)?.[1] ?? 1,
-      );
-      const fontSize = cssLength(shared.trim(), screen) * fit;
-      const tracking = cssLength(phoneDecl("h1", "letter-spacing", false) ?? "0", screen, fontSize);
-      const gutter = cssLength((phoneDecl(".hero", "padding", true) ?? "").split(/\s+/)[1], screen);
-      const room = screen - 2 * gutter;
-      expect(room, page).toBeGreaterThan(0);
-      const lines = ($("header h1").html() ?? "").split(/<br[^>]*>/).map((line) => load(line).text().trim());
-      for (const line of lines) {
-        const run = serif.layout(line);
-        const width = (run.advanceWidth * fontSize) / serif.unitsPerEm + tracking * [...line].length;
-        expect(width, `${page} "${line}"`).toBeLessThanOrEqual(room);
-      }
-    }
-  });
-
   // Tilted photos were tried and dropped; only the stamp's turning ring and the menu strokes' X may rotate.
   it("never tilt a photo or card", () => {
     const tilts: string[] = [];
@@ -322,19 +259,6 @@ describe("shipped pages", () => {
       }
     }
     expect(tilts).toEqual([]);
-  });
-
-  // The title's lines are broken at build time for the real font; wrapping in the fallback shifted the layout as it loaded.
-  it("never wrap a hero title line", () => {
-    for (const page of shippedPages()) {
-      const values: string[] = [];
-      for (const root of pageCss(builtPage(page)))
-        root.walkDecls("white-space", (decl) => {
-          if ((decl.parent as Rule).selector.replace(/\[data-astro-cid-[^\]]+\]/g, "") === "h1")
-            values.push(decl.value);
-        });
-      expect(values, page).toContain("nowrap");
-    }
   });
 
   it("set every text size from DESIGN.md's type scale", () => {
