@@ -1,6 +1,6 @@
 import { getPathBBox, isClosedPath, normalizePath, parsePathString } from "svg-path-commander/util";
 import { describe, expect, it } from "vitest";
-import { brusher, brushSquiggle, dot, drips, ghost, join, line, marigoldMark, marigoldMask, polar, quad, wave } from "./shapes";
+import { brusher, brushSquiggle, dot, drips, ghost, join, line, marigoldMark, marigoldMask, menuStrokes, polar, quad, wave } from "./shapes";
 
 const expectWellFormed = (d: string) => {
   const segments = parsePathString(d);
@@ -15,6 +15,7 @@ const generators: [string, (seed: number) => string][] = [
   ["dot", (seed) => dot(seed, 208, 182, 10)],
   ["ghost", (seed) => ghost(seed)],
   ["drips", (seed) => drips(seed, 2400, 160, 18)],
+  ...[0, 1, 2].map((i): [string, (seed: number) => string] => [`menuStrokes stroke ${i}`, (seed) => menuStrokes(seed)[i]]),
 ];
 
 describe.each(generators)("%s", (_, generate) => {
@@ -81,6 +82,20 @@ describe("drips", () => {
 
   it("is a closed fill path", () => {
     expect(isClosedPath(parsePathString(drips(66, 2400, 160, 18)))).toBe(true);
+  });
+});
+
+describe("menuStrokes", () => {
+  it("draws three strokes inside the button's 40-unit box", () => {
+    const strokes = menuStrokes(71);
+    expect(strokes).toHaveLength(3);
+    for (const d of strokes) {
+      const box = getPathBBox(d);
+      expect(box.x).toBeGreaterThanOrEqual(0);
+      expect(box.y).toBeGreaterThanOrEqual(0);
+      expect(box.x2).toBeLessThanOrEqual(40);
+      expect(box.y2).toBeLessThanOrEqual(40);
+    }
   });
 });
 

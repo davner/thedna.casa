@@ -153,6 +153,11 @@ export const line = (p0: Pt, p1: Pt, n = 6): Pt[] =>
 
 export const join = (...parts: Pt[][]): Pt[] => parts.flatMap((p, i) => (i === 0 ? p : p.slice(1)));
 
+export const menuStrokes = (seed: number): string[] => {
+  const brush = brusher(seed, 0.5);
+  return [12, 20, 28].map((y) => brush.stroke(line([6, y], [34, y + 0.5], 10), 4.5));
+};
+
 // The Beso settings Dan picked in the prototype; changing any of them redraws the approved logo.
 const roughness = 0.5;
 const petalScale = 0.72;
