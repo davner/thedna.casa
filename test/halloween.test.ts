@@ -361,6 +361,19 @@ describe("built recap with an invite", () => {
   it("loads the hero invite right away", () => {
     expect($("header img").attr("loading")).toBe("eager");
   });
+
+  // Lighthouse failed the recaps on layout shift until the card's box was reserved before its file arrived.
+  it("reserves the hero invite's box from its aspect ratio", () => {
+    const img = $("header img");
+    const aspect = Number(img.attr("style")?.match(/--aspect:\s*([\d.]+)/)?.[1]);
+    expect(aspect).toBeCloseTo(Number(img.attr("width")) / Number(img.attr("height")), 2);
+  });
+
+  // Phones show the invite above the title; if it came later in the markup, it would push the title down as it streamed in.
+  it("puts the invite before the title in the markup", () => {
+    expect($("header > *").first().find("img")).toHaveLength(1);
+    expect($("header > *").first().find("h1")).toHaveLength(0);
+  });
 });
 
 describe("built recap with an invite taken on a phone", () => {

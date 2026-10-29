@@ -47,7 +47,7 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
       <Image
         slot="keepsake"
         class="invite"
-        style="clip-path:url(#soft-invite)"
+        style={`clip-path:url(#soft-invite); --aspect: ${party.invite.src.width / party.invite.src.height}`}
         src={party.invite.src}
         alt={party.invite.alt}
         width={760}

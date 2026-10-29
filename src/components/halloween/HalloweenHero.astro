@@ -13,13 +13,14 @@ const { title, subtitle, fit, date, ring } = Astro.props;
 ---
 
 <header class:list={["hero", { short: !ring, keepsake: !ring && Astro.slots.has("keepsake") }]}>
-  <HeroWords lines={title} subtitle={subtitle} fit={fit} date={date} />
-  {/* A recap has no stamp, so its keepsake (the party's invite) takes the stamp's slot instead. */}
+  {/* A recap has no stamp, so its keepsake (the party's invite) takes the stamp's slot instead. It comes first in the
+  markup because phones show it above the title; arriving after the title, it would push the title down mid-load. */}
   {!ring && Astro.slots.has("keepsake") && (
     <div class="keepsake-slot">
       <slot name="keepsake" />
     </div>
   )}
+  <HeroWords lines={title} subtitle={subtitle} fit={fit} date={date} />
   {ring && (
     <Stamp ring={ring}>
       <Ghost class="stamp-ghost" />
@@ -55,17 +56,18 @@ const { title, subtitle, fit, date, ring } = Astro.props;
   }
   /* Above the drips, which hang from the main column into the hero's lower edge. */
   .keepsake-slot {
+    grid-area: 1 / 2;
     position: relative;
     z-index: 2;
     display: grid;
     justify-items: center;
   }
+  /* The width comes from the card's own aspect ratio, so its box is reserved before the file arrives and nothing shifts. */
   .keepsake-slot :global(img) {
     display: block;
-    width: auto;
-    max-width: 100%;
+    width: min(100%, min(62vh, 540px) * var(--aspect, 1));
     height: auto;
-    max-height: min(62vh, 540px);
+    aspect-ratio: var(--aspect, 1);
   }
   .hero :global(.stamp-ghost) {
     width: 46%;
@@ -94,11 +96,13 @@ const { title, subtitle, fit, date, ring } = Astro.props;
       grid-template-columns: 1fr;
     }
     /* Small enough that the drips still land on the first phone screen. */
+    /* Full width, or the centered hero would size the slot from the card and the card from the slot. */
     .keepsake-slot {
-      order: -1;
+      grid-area: auto;
+      justify-self: stretch;
     }
     .keepsake-slot :global(img) {
-      max-height: 260px;
+      width: min(100%, 260px * var(--aspect, 1));
     }
   }
 </style>
