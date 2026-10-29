@@ -51,10 +51,6 @@ typography:
     fontSize: "clamp(3rem, 15vw, 4.2rem)"
     fontWeight: 700
     lineHeight: 0.88
-  subtitle-phone:
-    fontFamily: "Averia Serif Libre, serif"
-    fontSize: "1.35rem"
-    fontWeight: 400
   title-phone:
     fontFamily: "Averia Serif Libre, serif"
     fontSize: "1.5rem"
@@ -158,7 +154,7 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 - **Display:** the THE DnA CASA wordmark, all caps on two lines. On phones it drops to `clamp(3rem, 15vw, 4.2rem)`.
 - **Headline:** section headings ("Hola, we're Dan & Alexis.", "Who lives here").
 - **Title:** member names. 1.5rem on phones.
-- **Subtitle:** the "Dan & Alexis" line, in italic, in blush. 1.35rem on phones.
+- **Subtitle:** the "Dan & Alexis" line, in italic, in blush. One fluid size at every width.
 - **Sign-off:** the footer, italic at the 16px body size.
 - **Body:** the welcome text, at most 38ch wide.
 - **Caption:** member one-liners at 1rem.
@@ -166,6 +162,8 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 - **Label:** the "Bienvenidos" kicker, in terracotta.
 
 ### Named Rules
+**The One Scale Rule.** Every text size on every page is one of the roles above. A page never invents its own size; an element that feels too quiet moves up to an existing role instead. Only display and title have separate phone sizes.
+
 **The Two Families Rule.** Averia Serif Libre and Schibsted Grotesk only. A new role picks a weight these two already ship before it adds one.
 
 **The Tight Serif Rule.** Serif headings set tight, between -0.02em and -0.04em letter spacing with line height 1 or less. The italic voice resets letter spacing to 0.
