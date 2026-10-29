@@ -3,6 +3,8 @@ import { readdirSync, readFileSync } from "node:fs";
 import type { CheerioAPI } from "cheerio";
 import { parse } from "yaml";
 import { builtPage, pageCss, readText } from "./site";
+import { ghost, marigoldMark } from "../src/lib/shapes";
+import { palette } from "../src/palette";
 
 // The party file itself is the source of truth for the recap's words.
 const partyFile = readFileSync(new URL("../src/content/halloween/2026.md", import.meta.url), "utf8");
@@ -87,6 +89,25 @@ describe("built Trick-R-Drink recap", () => {
 
   it("rings the stamp with the party's name and year", () => {
     expect($("header svg text").text()).toBe("TRICK-R-DRINK · HALLOWEEN 2026 · THE DnA CASA · ");
+  });
+
+  it("holds a still cream ghost in the stamp ring instead of the Beso", () => {
+    const paths = $("header path").map((_, path) => $(path).attr("d")).get();
+    expect(paths).not.toContain(marigoldMark(3).disc);
+    const body = $("header path").filter((_, path) => $(path).attr("d") === ghost(41));
+    expect(body).toHaveLength(1);
+    expect(body.attr("fill")).toBe(palette.cream);
+    expect(body.attr("stroke")).toBeUndefined();
+    const face = body.siblings().find("path").map((_, path) => $(path).closest("[fill]").attr("fill")).get();
+    expect(face.sort()).toEqual([palette.mole, palette.mole, palette.cheek, palette.cheek].sort());
+  });
+
+  it("hides the hero's drawings from assistive tech", () => {
+    const drawings = $("header svg").filter((_, svg) => $(svg).parents("svg").length === 0);
+    expect(drawings.length).toBeGreaterThanOrEqual(3);
+    drawings.each((_, svg) => {
+      expect($(svg).closest("[aria-hidden='true']"), $.html(svg).slice(0, 80)).toHaveLength(1);
+    });
   });
 
   it("tints the phone's browser chrome Trona black", () => {

@@ -1,4 +1,5 @@
 ---
+import Ghost from "./Ghost.astro";
 import Stamp from "../Stamp.astro";
 import { brushSquiggle } from "../../lib/shapes";
 interface Props { title: string[]; subtitle: string; ring?: string }
@@ -10,7 +11,7 @@ const { title, subtitle, ring } = Astro.props;
     <p class="sub">{subtitle}</p>
     <svg class="squiggle" viewBox="0 0 200 24" aria-hidden="true"><path d={brushSquiggle(231, 200, 24, 3, 6)} /></svg>
   </div>
-  {ring && <Stamp class="stamp" ring={ring} />}
+  {ring && <Stamp class="stamp" ring={ring}><Ghost class="stamp-ghost" /></Stamp>}
 </header>
 
 <style>
@@ -20,6 +21,7 @@ const { title, subtitle, ring } = Astro.props;
   .sub { font-family: var(--font-serif); font-style: italic; letter-spacing: 0; font-size: clamp(1.3rem, 2.2vw, 1.8rem); margin: 20px 0 0; color: var(--blush); }
   .squiggle { display: block; width: 130px; height: 16px; margin: 18px 0 0; fill: var(--terra); }
   .hero :global(.stamp) { width: min(100%, 380px); justify-self: center; }
+  .hero :global(.stamp-ghost) { width: 46%; display: block; position: relative; }
 
   @media (prefers-reduced-motion: no-preference) {
     .squiggle { animation: paint 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards; }

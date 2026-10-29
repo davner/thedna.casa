@@ -1,0 +1,11 @@
+---
+import { dot, ghost } from "../../lib/shapes";
+import { palette } from "../../palette";
+interface Props { class?: string }
+const { class: className } = Astro.props;
+---
+<svg class={className} viewBox="8 4 84 114" aria-hidden="true">
+  <path d={ghost(41)} fill={palette.cream} />
+  <g fill={palette.mole}><path d={dot(91, 39, 54, 4, 5)} /><path d={dot(92, 61, 54, 4, 5)} /></g>
+  <g fill={palette.cheek}><path d={dot(93, 30, 66, 5.5)} /><path d={dot(94, 70, 66, 5.5)} /></g>
+</svg>
