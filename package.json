@@ -15,7 +15,7 @@
     "validate:html": "html-validate \"dist/**/*.html\"",
     "test:e2e": "playwright test",
     "lhci": "lhci autorun",
-    "check": "pnpm lint && pnpm format:check && pnpm typecheck && astro build && pnpm test && pnpm validate:html && pnpm test:e2e && pnpm lhci"
+    "check": "pnpm run \"/^(lint|format:check|typecheck|test)$/\" && pnpm run \"/^(validate:html|test:e2e|lhci)$/\""
   },
   "dependencies": {
     "@fontsource/averia-serif-libre": "^5.3.0",

@@ -17,7 +17,8 @@ export default defineConfig({
   ],
   webServer: {
     // Under a coding agent, astro preview detaches into the background unless told this is a one-off server.
-    command: "pnpm build && pnpm preview --port 4380 --ignore-lock",
+    // CI and `pnpm check` build dist/ before this runs, so only a bare local run builds it here.
+    command: `${process.env.CI ? "" : "pnpm build && "}pnpm preview --port 4380 --ignore-lock`,
     url: "http://localhost:4380",
     reuseExistingServer: !process.env.CI,
   },

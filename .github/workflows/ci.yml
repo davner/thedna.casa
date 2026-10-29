@@ -26,6 +26,23 @@ jobs:
       - run: pnpm format:check
       - run: pnpm validate:html
 
+      - if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist/
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/setup@v3
+        with:
+          version: 11
+          runtime: node@24
+          cache: true
+          require-lockfile: true
+      - run: pnpm exec astro build
+
       - id: playwright
         run: echo "version=$(pnpm exec playwright --version)" >> "$GITHUB_OUTPUT"
       - id: browsers
@@ -45,15 +62,21 @@ jobs:
           path: playwright-report/
           retention-days: 14
 
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/setup@v3
+        with:
+          version: 11
+          runtime: node@24
+          cache: true
+          require-lockfile: true
+      - run: pnpm exec astro build
       - run: pnpm lhci
 
-      - if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: dist/
-
   deploy:
-    needs: check
+    needs: [check, e2e, lighthouse]
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
