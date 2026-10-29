@@ -97,6 +97,17 @@ export const brushSquiggle = (seed: number, w: number, h: number, bumps: number,
   return brusher(seed, 0.6).stroke(pts, size);
 };
 
+// Nudged in or out a little around an ellipse, so eyes and cheeks are never perfect circles.
+export const dot = (seed: number, cx: number, cy: number, rx: number, ry = rx): string => {
+  const noise = createNoise2D(mulberry32(seed));
+  const pts: Pt[] = Array.from({ length: 7 }, (_, i) => {
+    const a = (i / 7) * Math.PI * 2;
+    const k = 1 + 0.07 * noise(Math.cos(a), Math.sin(a));
+    return [cx + rx * k * Math.cos(a), cy + ry * k * Math.sin(a)];
+  });
+  return smooth(pts, true);
+};
+
 export const polar = (cx: number, cy: number, r: number, deg: number): Pt => {
   const a = ((deg - 90) * Math.PI) / 180;
   return [+(cx + r * Math.cos(a)).toFixed(2), +(cy + r * Math.sin(a)).toFixed(2)];
