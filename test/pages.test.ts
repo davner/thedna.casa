@@ -150,6 +150,23 @@ describe("shipped pages", () => {
     expect(aligned).toEqual([]);
   });
 
+  it("inline their CSS, so no stylesheet request holds up first paint", () => {
+    for (const page of shippedPages()) {
+      const $ = builtPage(page);
+      expect($("link[rel='stylesheet']").map((_, l) => $.html(l)).get(), page).toEqual([]);
+      expect($("head style").length, page).toBeGreaterThan(0);
+    }
+  });
+
+  // A sparkle is a four-point star: one closed path of exactly four quadratic curves.
+  it("draw no sparkle in the hero", () => {
+    for (const page of shippedPages()) {
+      const $ = builtPage(page);
+      const stars = $("header path").filter((_, path) => /^M[^A-Za-z]*(Q[^A-Za-z]*){4}Z$/.test(($(path).attr("d") ?? "").trim()));
+      expect(stars.map((_, path) => $.html(path)).get(), page).toEqual([]);
+    }
+  });
+
   it("ship no JavaScript, so they render fully with JavaScript off", () => {
     for (const page of shippedPages()) {
       const $ = builtPage(page);

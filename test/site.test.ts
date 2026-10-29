@@ -105,11 +105,6 @@ describe("built root page", () => {
     }
   });
 
-  it("inlines its CSS, so no stylesheet request holds up first paint", () => {
-    expect($("link[rel='stylesheet']").map((_, l) => $.html(l)).get()).toEqual([]);
-    expect($("head style").length).toBeGreaterThan(0);
-  });
-
   it("loads only the font faces the page sets text in", () => {
     const faces = new Set<string>();
     for (const root of pageCss($)) {
@@ -182,15 +177,6 @@ describe("built root page", () => {
       });
     }
     expect(orders).toContainEqual(expect.stringMatching(/^-\d/));
-  });
-
-  // A sparkle is a four-point star: one closed path of exactly four quadratic curves.
-  it("draws no sparkle in the hero", () => {
-    const stars = $("header path").filter((_, path) => {
-      const d = $(path).attr("d") ?? "";
-      return /^M[^A-Za-z]*(Q[^A-Za-z]*){4}Z$/.test(d.trim());
-    });
-    expect(stars.map((_, path) => $.html(path)).get()).toEqual([]);
   });
 
   it("hides the hero's logo, ring and squiggle from assistive tech", () => {
