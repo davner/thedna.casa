@@ -2,23 +2,69 @@
 import Ghost from "./Ghost.astro";
 import Stamp from "../Stamp.astro";
 import HeroWords from "../HeroWords.astro";
-interface Props { title: string[]; subtitle: string; ring?: string }
+interface Props {
+  title: string[];
+  subtitle: string;
+  ring?: string;
+}
 const { title, subtitle, ring } = Astro.props;
 ---
+
 <header class:list={["hero", { short: !ring }]}>
   <HeroWords lines={title} subtitle={subtitle} />
-  {ring && <Stamp ring={ring}><Ghost class="stamp-ghost" /></Stamp>}
+  {ring && (
+    <Stamp ring={ring}>
+      <Ghost class="stamp-ghost" />
+    </Stamp>
+  )}
 </header>
 
 <style>
-  .hero { position: relative; box-sizing: border-box; min-height: min(92dvh, 880px); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: clamp(32px, 6vw, 96px); padding: 96px clamp(20px, 6vw, 96px) 72px; color: var(--cream); overflow-x: clip; --squiggle: var(--terra); }
-  .hero.short { min-height: 0; grid-template-columns: 1fr; padding-top: clamp(120px, 14vw, 180px); padding-bottom: 56px; }
-  .hero :global(.stamp) { width: min(100%, 380px); justify-self: center; }
-  .hero :global(.stamp-ghost) { width: 46%; display: block; position: relative; }
+  .hero {
+    position: relative;
+    box-sizing: border-box;
+    min-height: min(92dvh, 880px);
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    gap: clamp(32px, 6vw, 96px);
+    padding: 96px clamp(20px, 6vw, 96px) 72px;
+    color: var(--cream);
+    overflow-x: clip;
+    --squiggle: var(--terra);
+  }
+  .hero.short {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    padding-top: clamp(120px, 14vw, 180px);
+    padding-bottom: 56px;
+  }
+  .hero :global(.stamp) {
+    width: min(100%, 380px);
+    justify-self: center;
+  }
+  .hero :global(.stamp-ghost) {
+    width: 46%;
+    display: block;
+    position: relative;
+  }
 
   @media (max-width: 760px) {
-    .hero { min-height: 0; grid-template-columns: 1fr; justify-items: center; gap: 22px; padding: 72px 20px 48px; text-align: center; }
-    .hero.short { padding-top: 104px; padding-bottom: 40px; }
-    .hero :global(.stamp) { order: -1; width: min(76vw, 300px); }
+    .hero {
+      min-height: 0;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      gap: 22px;
+      padding: 72px 20px 48px;
+      text-align: center;
+    }
+    .hero.short {
+      padding-top: 104px;
+      padding-bottom: 40px;
+    }
+    .hero :global(.stamp) {
+      order: -1;
+      width: min(76vw, 300px);
+    }
   }
 </style>

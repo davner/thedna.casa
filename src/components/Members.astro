@@ -2,17 +2,30 @@
 import { Image } from "astro:assets";
 import { copy, members as householdMembers, type Member } from "../content";
 
-interface Props { members?: Member[] }
+interface Props {
+  members?: Member[];
+}
 const { members = householdMembers } = Astro.props;
 ---
+
 <section class="members" aria-labelledby="members-heading">
   <h2 id="members-heading">{copy.membersHeading}</h2>
   <ul>
     {members.map((m) => (
       <li>
-        {m.portrait
-          ? <Image class="circle" src={m.portrait.src} alt={m.portrait.alt} width={400} height={400} widths={[200, 400]} sizes="(max-width: 760px) 84px, 200px" />
-          : <span class="circle" style={`background:${m.color}`}></span>}
+        {m.portrait ? (
+          <Image
+            class="circle"
+            src={m.portrait.src}
+            alt={m.portrait.alt}
+            width={400}
+            height={400}
+            widths={[200, 400]}
+            sizes="(max-width: 760px) 84px, 200px"
+          />
+        ) : (
+          <span class="circle" style={`background:${m.color}`}></span>
+        )}
         <h3>{m.name}</h3>
         <span class="line">{m.line}</span>
       </li>
@@ -21,22 +34,88 @@ const { members = householdMembers } = Astro.props;
 </section>
 
 <style>
-  .members { background: var(--cream-page); color: var(--mole); padding: 0 clamp(20px, 6vw, 96px) clamp(96px, 11vw, 150px); }
-  h2 { color: var(--terra); max-width: 1000px; margin: 0 auto; }
-  ul { list-style: none; padding: 0; margin: 48px auto 0; max-width: 1000px; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(20px, 3vw, 44px); }
+  .members {
+    background: var(--cream-page);
+    color: var(--mole);
+    padding: 0 clamp(20px, 6vw, 96px) clamp(96px, 11vw, 150px);
+  }
+  h2 {
+    color: var(--terra);
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 48px auto 0;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(20px, 3vw, 44px);
+  }
   /* Rows keep their content height, so a short one-liner never stretches its circle or drops its name below the others. */
-  li { display: grid; justify-items: center; align-content: start; gap: 6px; text-align: center; }
-  .circle { display: block; width: 100%; max-width: 200px; height: auto; aspect-ratio: 1; border-radius: 50%; object-fit: cover; margin-bottom: 12px; }
-  h3 { font-family: var(--font-serif); font-weight: 700; font-size: 1.7rem; letter-spacing: -0.02em; margin: 0; }
-  .line { font-size: 1rem; }
+  li {
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: 6px;
+    text-align: center;
+  }
+  .circle {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 12px;
+  }
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.7rem;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .line {
+    font-size: 1rem;
+  }
 
   @media (max-width: 760px) {
-    .members { padding: 8px 24px 72px; }
-    ul { margin-top: 28px; grid-template-columns: 1fr; gap: 0; }
-    li { text-align: start; grid-template-columns: 84px 1fr; grid-template-rows: auto auto; column-gap: 18px; row-gap: 2px; justify-items: start; align-items: center; padding: 14px 0; border-top: 1px solid color-mix(in srgb, var(--mole) 14%, transparent); }
-    li:last-child { border-bottom: 1px solid color-mix(in srgb, var(--mole) 14%, transparent); }
-    .circle { grid-row: 1 / 3; width: 84px; margin: 0; }
-    h3 { align-self: end; font-size: 1.5rem; }
-    .line { align-self: start; }
+    .members {
+      padding: 8px 24px 72px;
+    }
+    ul {
+      margin-top: 28px;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    li {
+      text-align: start;
+      grid-template-columns: 84px 1fr;
+      grid-template-rows: auto auto;
+      column-gap: 18px;
+      row-gap: 2px;
+      justify-items: start;
+      align-items: center;
+      padding: 14px 0;
+      border-top: 1px solid color-mix(in srgb, var(--mole) 14%, transparent);
+    }
+    li:last-child {
+      border-bottom: 1px solid color-mix(in srgb, var(--mole) 14%, transparent);
+    }
+    .circle {
+      grid-row: 1 / 3;
+      width: 84px;
+      margin: 0;
+    }
+    h3 {
+      align-self: end;
+      font-size: 1.5rem;
+    }
+    .line {
+      align-self: start;
+    }
   }
 </style>

@@ -14,9 +14,17 @@ describe("built root page", () => {
 
   // Each member's visible texts in reading order, so the test does not care which tags hold them.
   const memberEntries = () =>
-    membersHeading().closest("section").find("li").map((_, li) => [
-      $(li).children().map((_, child) => $(child).text().trim()).get().filter(Boolean),
-    ]).get() as string[][];
+    membersHeading()
+      .closest("section")
+      .find("li")
+      .map((_, li) => [
+        $(li)
+          .children()
+          .map((_, child) => $(child).text().trim())
+          .get()
+          .filter(Boolean),
+      ])
+      .get() as string[][];
 
   it("has one h1 reading THE DnA CASA and the subtitle Dan & Alexis", () => {
     expect($("h1")).toHaveLength(1);
@@ -46,11 +54,21 @@ describe("built root page", () => {
   });
 
   it("uses the page's own Beso logo as the favicon", () => {
-    const paths = ($svg: ReturnType<typeof $>) => $svg.find("path").map((_, p) => $(p).attr("d")).get().sort();
+    const paths = ($svg: ReturnType<typeof $>) =>
+      $svg
+        .find("path")
+        .map((_, p) => $(p).attr("d"))
+        .get()
+        .sort();
     const logo = paths($("svg.stamp-mark").first());
     expect(logo.length).toBeGreaterThan(0);
     const favicon = load(readFileSync(builtFilePath("/favicon.svg"), "utf8"), { xmlMode: true });
-    expect(favicon("path").map((_, p) => favicon(p).attr("d")).get().sort()).toEqual(logo);
+    expect(
+      favicon("path")
+        .map((_, p) => favicon(p).attr("d"))
+        .get()
+        .sort(),
+    ).toEqual(logo);
   });
 
   // The link travels in messages, where a preview without an image is easy to scroll past.
@@ -109,11 +127,16 @@ describe("built root page", () => {
     const faces = new Set<string>();
     for (const root of pageCss($)) {
       root.walkAtRules("font-face", (face) => {
-        const prop = (name: string) => face.nodes?.find((n): n is Declaration => n.type === "decl" && n.prop === name)?.value ?? "";
+        const prop = (name: string) =>
+          face.nodes?.find((n): n is Declaration => n.type === "decl" && n.prop === name)?.value ?? "";
         faces.add(`${prop("font-family").replace(/["']/g, "")} ${prop("font-weight")} ${prop("font-style")}`);
       });
     }
-    expect([...faces].sort()).toEqual(["Averia Serif Libre 400 italic", "Averia Serif Libre 700 normal", "Schibsted Grotesk 400 normal"]);
+    expect([...faces].sort()).toEqual([
+      "Averia Serif Libre 400 italic",
+      "Averia Serif Libre 700 normal",
+      "Schibsted Grotesk 400 normal",
+    ]);
   });
 
   it("has no marquee", () => {
@@ -123,7 +146,9 @@ describe("built root page", () => {
 
   // Member names are h3s so a screen reader can jump from one member to the next.
   it("runs its headings as one h1, then h2s, with an h3 per member under Who lives here", () => {
-    const headings = $("h1, h2, h3, h4, h5, h6").map((_, h) => `${h.tagName} ${readText($, h)}`).get();
+    const headings = $("h1, h2, h3, h4, h5, h6")
+      .map((_, h) => `${h.tagName} ${readText($, h)}`)
+      .get();
     expect(headings).toEqual([
       "h1 THE DnA CASA",
       "h2 Hola, we're Dan & Alexis.",
@@ -133,7 +158,13 @@ describe("built root page", () => {
   });
 
   it("shows a photo for every member and a described welcome photo", () => {
-    expect(membersHeading().closest("section").find("li").map((_, li) => $(li).find("img").length).get()).toEqual(members.map(() => 1));
+    expect(
+      membersHeading()
+        .closest("section")
+        .find("li")
+        .map((_, li) => $(li).find("img").length)
+        .get(),
+    ).toEqual(members.map(() => 1));
     const photo = sectionHeading("Hola, we're Dan & Alexis.").closest("section").find("img");
     expect(photo).toHaveLength(1);
     expect(photo.attr("alt")).not.toBe("");
@@ -193,7 +224,11 @@ describe("member portraits", () => {
 
   // Meeting the household is the page's point, so a listener hears what each member looks like, not only the name.
   it("each describe the member", () => {
-    const alts = $("h2:contains('Who lives here')").closest("section").find("li img").map((_, img) => $(img).attr("alt") ?? "").get();
+    const alts = $("h2:contains('Who lives here')")
+      .closest("section")
+      .find("li img")
+      .map((_, img) => $(img).attr("alt") ?? "")
+      .get();
     expect(alts).toHaveLength(members.length);
     alts.forEach((alt, i) => expect(alt, members[i].name).toMatch(new RegExp(`^${members[i].name}\\b.+`)));
   });
@@ -225,7 +260,9 @@ describe("welcome photo", () => {
 
   // Phones show the words before the photo, so screen readers should meet them in that order too.
   it("comes after the welcome words in reading order", () => {
-    const order = $("h2, img").map((_, el) => (el.tagName === "h2" ? "words" : "photo")).get();
+    const order = $("h2, img")
+      .map((_, el) => (el.tagName === "h2" ? "words" : "photo"))
+      .get();
     expect(order).toEqual(["words", "photo"]);
   });
 });

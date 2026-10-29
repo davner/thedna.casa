@@ -1,6 +1,20 @@
 import { getPathBBox, isClosedPath, normalizePath, parsePathString } from "svg-path-commander/util";
 import { describe, expect, it } from "vitest";
-import { brusher, brushSquiggle, dot, drips, ghost, join, line, marigoldMark, marigoldMask, menuStrokes, polar, quad, wave } from "./shapes";
+import {
+  brusher,
+  brushSquiggle,
+  dot,
+  drips,
+  ghost,
+  join,
+  line,
+  marigoldMark,
+  marigoldMask,
+  menuStrokes,
+  polar,
+  quad,
+  wave,
+} from "./shapes";
 
 const expectWellFormed = (d: string) => {
   const segments = parsePathString(d);
@@ -15,7 +29,10 @@ const generators: [string, (seed: number) => string][] = [
   ["dot", (seed) => dot(seed, 208, 182, 10)],
   ["ghost", (seed) => ghost(seed)],
   ["drips", (seed) => drips(seed, 2400, 160, 18)],
-  ...[0, 1, 2].map((i): [string, (seed: number) => string] => [`menuStrokes stroke ${i}`, (seed) => menuStrokes(seed)[i]]),
+  ...[0, 1, 2].map((i): [string, (seed: number) => string] => [
+    `menuStrokes stroke ${i}`,
+    (seed) => menuStrokes(seed)[i],
+  ]),
 ];
 
 describe.each(generators)("%s", (_, generate) => {
@@ -60,7 +77,10 @@ describe("marigoldMask", () => {
 });
 
 describe("dot", () => {
-  it.each([[10, undefined], [6, 4]])("is a closed path (rx %i, ry %s)", (rx, ry) => {
+  it.each([
+    [10, undefined],
+    [6, 4],
+  ])("is a closed path (rx %i, ry %s)", (rx, ry) => {
     expect(isClosedPath(parsePathString(dot(81, 208, 182, rx, ry)))).toBe(true);
   });
 });
@@ -136,7 +156,10 @@ describe("centerlines", () => {
 
 describe("brusher", () => {
   const centerline = quad([206, 156], [216, 164], [226, 156], 8);
-  const lips = join(quad([222, 198], [240, 189], [258, 198], 6), quad([258, 198], [240, 213], [222, 198], 6)).slice(0, -1);
+  const lips = join(quad([222, 198], [240, 189], [258, 198], 6), quad([258, 198], [240, 213], [222, 198], 6)).slice(
+    0,
+    -1,
+  );
 
   it("draws the same strokes and shapes from the same seed", () => {
     const draw = () => {

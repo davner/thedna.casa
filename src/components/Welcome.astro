@@ -3,44 +3,127 @@ import { Image } from "astro:assets";
 import { copy, welcome as householdWelcome, type Welcome } from "../content";
 import { marigoldMask, wave } from "../lib/shapes";
 
-interface Props { welcome?: Welcome }
+interface Props {
+  welcome?: Welcome;
+}
 const { welcome = householdWelcome } = Astro.props;
 const petals = marigoldMask(233);
 ---
+
 <section class="welcome" aria-labelledby="welcome-heading">
-  <svg class="edge" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d={wave(232, 1440, 80, 2)} /></svg>
+  <svg class="edge" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+    <path d={wave(232, 1440, 80, 2)} />
+  </svg>
   <div>
-    <p class="kicker" lang="es">{copy.kicker}</p>
+    <p class="kicker" lang="es">
+      {copy.kicker}
+    </p>
     <h2 id="welcome-heading">{copy.hello}</h2>
     <p class="text">{welcome.text}</p>
   </div>
-  {welcome.photo
-    ? <>
-        <svg class="defs" aria-hidden="true"><clipPath id="petals" clipPathUnits="objectBoundingBox"><path d={petals} /></clipPath></svg>
-        <Image class="photo" src={welcome.photo.src} alt={welcome.photo.alt} width={880} height={880} widths={[440, 880]} sizes="(max-width: 760px) min(72vw, 280px), 440px" />
-      </>
-    : <svg class="photo" viewBox="0 0 1 1" aria-hidden="true"><path d={petals} /></svg>}
+  {welcome.photo ? (
+    <>
+      <svg class="defs" aria-hidden="true">
+        <clipPath id="petals" clipPathUnits="objectBoundingBox">
+          <path d={petals} />
+        </clipPath>
+      </svg>
+      <Image
+        class="photo"
+        src={welcome.photo.src}
+        alt={welcome.photo.alt}
+        width={880}
+        height={880}
+        widths={[440, 880]}
+        sizes="(max-width: 760px) min(72vw, 280px), 440px"
+      />
+    </>
+  ) : (
+    <svg class="photo" viewBox="0 0 1 1" aria-hidden="true">
+      <path d={petals} />
+    </svg>
+  )}
 </section>
 
 <style>
-  .welcome { position: relative; background: var(--cream-page); color: var(--mole); display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(32px, 6vw, 96px); align-items: center; padding: clamp(56px, 7vw, 96px) clamp(20px, 6vw, 96px) clamp(88px, 10vw, 130px); }
+  .welcome {
+    position: relative;
+    background: var(--cream-page);
+    color: var(--mole);
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: clamp(32px, 6vw, 96px);
+    align-items: center;
+    padding: clamp(56px, 7vw, 96px) clamp(20px, 6vw, 96px) clamp(88px, 10vw, 130px);
+  }
   /* Overlaps the hero by one pixel less than its height so no seam shows between wave and section. */
-  .edge { position: absolute; left: 0; top: -79px; width: 100%; height: 80px; display: block; fill: var(--cream-page); }
-  .defs { position: absolute; width: 0; height: 0; }
+  .edge {
+    position: absolute;
+    left: 0;
+    top: -79px;
+    width: 100%;
+    height: 80px;
+    display: block;
+    fill: var(--cream-page);
+  }
+  .defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
   /* The words come first in the markup for phones; wider screens put the photo back on the left. */
-  .photo { order: -1; display: block; width: min(100%, 440px); height: auto; aspect-ratio: 1; justify-self: center; fill: var(--cheek); object-fit: cover; }
-  img.photo { clip-path: url(#petals); }
+  .photo {
+    order: -1;
+    display: block;
+    width: min(100%, 440px);
+    height: auto;
+    aspect-ratio: 1;
+    justify-self: center;
+    fill: var(--cheek);
+    object-fit: cover;
+  }
+  img.photo {
+    clip-path: url(#petals);
+  }
   /* 1.3rem bold is large text, where terracotta on page cream (3.6:1) passes WCAG. */
-  .kicker { font-family: var(--font-serif); font-weight: 700; color: var(--terra); font-size: 1.3rem; letter-spacing: -0.02em; margin: 0 0 10px; }
-  .text { font-size: clamp(1.05rem, 1.4vw, 1.2rem); line-height: 1.6; max-width: 38ch; margin: 22px 0 0; }
+  .kicker {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    color: var(--terra);
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+  }
+  .text {
+    font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+    line-height: 1.6;
+    max-width: 38ch;
+    margin: 22px 0 0;
+  }
 
   @media (max-width: 760px) {
-    .welcome { grid-template-columns: 1fr; gap: 28px; padding: 24px 24px 64px; }
+    .welcome {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding: 24px 24px 64px;
+    }
     /* A shallower wave so the cream welcome starts inside the first phone screen. */
-    .edge { height: 48px; top: -47px; }
-    .photo { order: 0; width: min(72vw, 280px); }
-    .kicker { margin-bottom: 8px; }
-    h2 { text-wrap: balance; }
-    .text { margin-top: 16px; }
+    .edge {
+      height: 48px;
+      top: -47px;
+    }
+    .photo {
+      order: 0;
+      width: min(72vw, 280px);
+    }
+    .kicker {
+      margin-bottom: 8px;
+    }
+    h2 {
+      text-wrap: balance;
+    }
+    .text {
+      margin-top: 16px;
+    }
   }
 </style>

@@ -1,23 +1,60 @@
 ---
 import MarigoldMark from "./MarigoldMark.astro";
 import { copy } from "../content";
-interface Props { class?: string; ring?: string }
+interface Props {
+  class?: string;
+  ring?: string;
+}
 const { class: className, ring = copy.ring } = Astro.props;
 ---
+
 <div class:list={["stamp", className]}>
   <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
-    <defs><path id="stamp-ring" d="M100 100 m-82 0 a82 82 0 1 1 164 0 a82 82 0 1 1 -164 0" /></defs>
-    <text><textPath href="#stamp-ring" textLength="510" lengthAdjust="spacing">{ring}</textPath></text>
+    <defs>
+      <path id="stamp-ring" d="M100 100 m-82 0 a82 82 0 1 1 164 0 a82 82 0 1 1 -164 0" />
+    </defs>
+    <text>
+      <textPath href="#stamp-ring" textLength="510" lengthAdjust="spacing">
+        {ring}
+      </textPath>
+    </text>
   </svg>
-  <slot><MarigoldMark class="stamp-mark" /></slot>
+  <slot>
+    <MarigoldMark class="stamp-mark" />
+  </slot>
 </div>
 
 <style>
-  .stamp { position: relative; aspect-ratio: 1; display: grid; place-items: center; }
-  .ring { position: absolute; inset: 0; width: 100%; height: 100%; fill: currentColor; font-family: var(--font-serif); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; }
-  .stamp :global(.stamp-mark) { width: 64%; display: block; position: relative; }
-  @media (prefers-reduced-motion: no-preference) {
-    .ring { animation: turn 40s linear infinite; }
+  .stamp {
+    position: relative;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
   }
-  @keyframes turn { to { transform: rotate(360deg); } }
+  .ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+  }
+  .stamp :global(.stamp-mark) {
+    width: 64%;
+    display: block;
+    position: relative;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .ring {
+      animation: turn 40s linear infinite;
+    }
+  }
+  @keyframes turn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 </style>

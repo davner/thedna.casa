@@ -2,15 +2,24 @@
 import { dot, marigoldMark } from "../lib/shapes";
 import { palette } from "../palette";
 
-interface Props { class?: string }
+interface Props {
+  class?: string;
+}
 const { class: className } = Astro.props;
 
 const petalColors = ["#D9661A", "#EC8A1E", "#F5A623"];
 const mark = marigoldMark(3);
 ---
+
 <svg class={className} viewBox="86 76 288 248" aria-hidden="true">
   <g transform={mark.sunTransform}>
-    {mark.petals.map((ring, i) => <g fill={petalColors[i]}>{ring.map((d) => <path d={d} />)}</g>)}
+    {mark.petals.map((ring, i) => (
+      <g fill={petalColors[i]}>
+        {ring.map((d) => (
+          <path d={d} />
+        ))}
+      </g>
+    ))}
     <path d={mark.disc} fill={palette.gold} />
     <g transform={mark.faceTransform}>
       <g fill={palette.salamander}>

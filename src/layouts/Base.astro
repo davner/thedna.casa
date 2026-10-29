@@ -6,7 +6,12 @@ import { palette } from "../palette";
 import { copy, type Share } from "../content";
 import Nav from "../components/Nav.astro";
 
-interface Props { title?: string; description?: string; themeColor?: string; share?: Share }
+interface Props {
+  title?: string;
+  description?: string;
+  themeColor?: string;
+  share?: Share;
+}
 const {
   title = copy.title,
   description = copy.description,
@@ -15,8 +20,11 @@ const {
 } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site).href;
 const shareImage = new URL(share.path, Astro.site).href;
-const colorTokens = Object.entries(palette).map(([name, hex]) => `--${name}:${hex}`).join(";");
+const colorTokens = Object.entries(palette)
+  .map(([name, hex]) => `--${name}:${hex}`)
+  .join(";");
 ---
+
 <!doctype html>
 <html lang="en" style={colorTokens}>
   <head>
@@ -52,8 +60,18 @@ const colorTokens = Object.entries(palette).map(([name, hex]) => `--${name}:${he
     --font-serif: "Averia Serif Libre", serif;
     --divider: 1px solid color-mix(in srgb, var(--mole) 18%, transparent);
   }
-  html, body { margin: 0; }
-  h2 { font-family: var(--font-serif); font-weight: 700; letter-spacing: -0.04em; font-size: clamp(2.2rem, 4.4vw, 3.8rem); line-height: 1; margin: 0; }
+  html,
+  body {
+    margin: 0;
+  }
+  h2 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    font-size: clamp(2.2rem, 4.4vw, 3.8rem);
+    line-height: 1;
+    margin: 0;
+  }
   body {
     background: var(--mole);
     color: var(--cream);
@@ -63,9 +81,14 @@ const colorTokens = Object.entries(palette).map(([name, hex]) => `--${name}:${he
     -webkit-font-smoothing: antialiased;
   }
   @media (prefers-reduced-motion: no-preference) {
-    @view-transition { navigation: auto; }
+    @view-transition {
+      navigation: auto;
+    }
   }
-  ::selection { background: var(--pink); color: var(--cream-page); }
+  ::selection {
+    background: var(--pink);
+    color: var(--cream-page);
+  }
   .grain {
     position: fixed;
     inset: 0;

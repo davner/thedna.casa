@@ -19,7 +19,10 @@ export const copy = {
   shareImageAlt: "The DnA Casa's sun-and-moon mark on mole brown",
 };
 
-export interface Share { path: string; alt: string }
+export interface Share {
+  path: string;
+  alt: string;
+}
 
 export interface Welcome {
   text: string;
@@ -29,7 +32,10 @@ export interface Welcome {
 export const welcome: Welcome = {
   text: "We met in Flagstaff, AZ, on a first date where Alexis showed up thirty minutes late and ate a whole chicken. Dan knew right away. We moved to Tucson so Dan could play with telescopes, and then, somewhere in the middle of the pandemic, we looked at each other and asked what the heck we were still doing there. So we packed up and moved to Los Angeles to be close to Alexis' family. This is our little corner of the internet.",
   // Without a photo a pink petal shape stands in.
-  photo: { src: welcomePhoto, alt: "Dan and Alexis standing back to back in front of a red curtain, looking at the camera" },
+  photo: {
+    src: welcomePhoto,
+    alt: "Dan and Alexis standing back to back in front of a red curtain, looking at the camera",
+  },
 };
 
 export interface Member {
@@ -41,8 +47,37 @@ export interface Member {
 }
 
 export const members: Member[] = [
-  { name: "Dan", line: "Builds software for telescopes, collects vinyl and chases good coffee. Concerts took some of his hearing, and Alexis thinks half his \"huh?\"s are on purpose.", color: "var(--salamander)", portrait: { src: danPhoto, alt: "Dan in sunglasses and a patterned knit shirt, smiling on a sunny street lined with hedges" } },
-  { name: "Alexis", line: "Research tech at Caltech, artist at heart and the most thoughtful person you'll ever meet. Also the sleepiest, the cutest, and the one who decides where we're dropping.", color: "var(--pink)", portrait: { src: alexisPhoto, alt: "Alexis in a white embroidered blouse, smiling with her eyes down, red tile roofs behind her" } },
-  { name: "Milly", line: "Big floppy Dumbo ears, a whole lot of sass and zero fear of heights. She's sure she's invincible, and she's definitely the cutest pup around.", color: "var(--sage)", portrait: { src: millyPhoto, alt: "Milly, a brown cocker spaniel, nose to the camera on the lawn with one ear blown out sideways" } },
-  { name: "Penny", line: "A calico cuddle bug who will let you know, loudly, when dinner is late. She and Milly are Stinky and the Brainless.", color: "var(--gold)", portrait: { src: pennyPhoto, alt: "Penny, a calico cat, sitting in the sun with her eyes half closed" } },
+  {
+    name: "Dan",
+    line: 'Builds software for telescopes, collects vinyl and chases good coffee. Concerts took some of his hearing, and Alexis thinks half his "huh?"s are on purpose.',
+    color: "var(--salamander)",
+    portrait: {
+      src: danPhoto,
+      alt: "Dan in sunglasses and a patterned knit shirt, smiling on a sunny street lined with hedges",
+    },
+  },
+  {
+    name: "Alexis",
+    line: "Research tech at Caltech, artist at heart and the most thoughtful person you'll ever meet. Also the sleepiest, the cutest, and the one who decides where we're dropping.",
+    color: "var(--pink)",
+    portrait: {
+      src: alexisPhoto,
+      alt: "Alexis in a white embroidered blouse, smiling with her eyes down, red tile roofs behind her",
+    },
+  },
+  {
+    name: "Milly",
+    line: "Big floppy Dumbo ears, a whole lot of sass and zero fear of heights. She's sure she's invincible, and she's definitely the cutest pup around.",
+    color: "var(--sage)",
+    portrait: {
+      src: millyPhoto,
+      alt: "Milly, a brown cocker spaniel, nose to the camera on the lawn with one ear blown out sideways",
+    },
+  },
+  {
+    name: "Penny",
+    line: "A calico cuddle bug who will let you know, loudly, when dinner is late. She and Milly are Stinky and the Brainless.",
+    color: "var(--gold)",
+    portrait: { src: pennyPhoto, alt: "Penny, a calico cat, sitting in the sun with her eyes half closed" },
+  },
 ];

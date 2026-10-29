@@ -38,4 +38,7 @@ export const shippedImages = (root: URL = dist) =>
 
 export const shippedPages = () => shippedFiles(dist).filter((file) => file.endsWith(".html"));
 
-export const pageCss = ($: CheerioAPI): Root[] => $("style").map((_, el) => postcss.parse($(el).text())).get();
+export const pageCss = ($: CheerioAPI): Root[] =>
+  $("style")
+    .map((_, el) => postcss.parse($(el).text()))
+    .get();

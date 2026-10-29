@@ -1,11 +1,22 @@
 ---
 import { ghostFigure } from "../../lib/shapes";
 import { palette } from "../../palette";
-interface Props { class?: string }
+interface Props {
+  class?: string;
+}
 const { class: className } = Astro.props;
 ---
+
 <svg class={className} viewBox={ghostFigure.viewBox} aria-hidden="true">
   <path d={ghostFigure.body} fill={palette.cream} />
-  <g fill={palette.mole}>{ghostFigure.eyes.map((d) => <path d={d} />)}</g>
-  <g fill={palette.cheek}>{ghostFigure.cheeks.map((d) => <path d={d} />)}</g>
+  <g fill={palette.mole}>
+    {ghostFigure.eyes.map((d) => (
+      <path d={d} />
+    ))}
+  </g>
+  <g fill={palette.cheek}>
+    {ghostFigure.cheeks.map((d) => (
+      <path d={d} />
+    ))}
+  </g>
 </svg>

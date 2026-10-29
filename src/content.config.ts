@@ -9,8 +9,16 @@ const halloween = defineCollection({
   schema: ({ image }) => {
     // The seed is read from the path as written, before image() turns it into a hashed build URL.
     const photo = z.preprocess(
-      (raw) => (raw && typeof raw === "object" && "src" in raw && typeof raw.src === "string" ? { ...raw, seed: petalSeed(raw.src) } : raw),
-      z.object({ src: image(), alt: z.string().min(1), shape: z.enum(["petal", "circle"]).default("petal"), seed: z.number().int() }),
+      (raw) =>
+        raw && typeof raw === "object" && "src" in raw && typeof raw.src === "string"
+          ? { ...raw, seed: petalSeed(raw.src) }
+          : raw,
+      z.object({
+        src: image(),
+        alt: z.string().min(1),
+        shape: z.enum(["petal", "circle"]).default("petal"),
+        seed: z.number().int(),
+      }),
     );
     return z.object({
       year: z.number().int(),
@@ -18,7 +26,9 @@ const halloween = defineCollection({
       theme: z.string(),
       drinks: z.array(z.string()),
       drinksBy: z.string().optional(),
-      ourCostumes: z.array(z.object({ who: z.string(), as: z.string(), asLang: z.string().optional(), photo: photo.optional() })),
+      ourCostumes: z.array(
+        z.object({ who: z.string(), as: z.string(), asLang: z.string().optional(), photo: photo.optional() }),
+      ),
       contest: z.object({
         rule: z.string(),
         result: z.string(),

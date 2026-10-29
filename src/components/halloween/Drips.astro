@@ -2,15 +2,45 @@
 import { drips } from "../../lib/shapes";
 import { palette } from "../../palette";
 ---
-<svg class="drips" viewBox="0 0 2400 160" preserveAspectRatio="xMidYMin slice" aria-hidden="true"><path d={drips(66, 2400, 160, 18)} fill={palette.trona} /></svg>
+
+<svg class="drips" viewBox="0 0 2400 160" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+  <path d={drips(66, 2400, 160, 18)} fill={palette.trona} />
+</svg>
 
 <style>
   /* Placed first inside the cream block under a hero: the negative margin lets the content below start under the drips, and the 1px lift hides the seam with the hero. */
-  .drips { position: relative; top: -1px; display: block; width: 100%; height: 160px; margin-bottom: -160px; pointer-events: none; overflow: visible; }
-  /* Sliced at 1:1 so the round bulbs never squash; a shorter slice on phones shows more of the edge at a smaller scale. */
-  @media (max-width: 760px) { .drips { height: 104px; margin-bottom: -104px; } }
-  @media (prefers-reduced-motion: no-preference) {
-    .drips { animation-name: drip-run; animation-duration: 0.5s; animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); animation-delay: 0.25s; animation-fill-mode: backwards; }
+  .drips {
+    position: relative;
+    top: -1px;
+    display: block;
+    width: 100%;
+    height: 160px;
+    margin-bottom: -160px;
+    pointer-events: none;
+    overflow: visible;
   }
-  @keyframes drip-run { from { clip-path: inset(0 0 88% 0); } to { clip-path: inset(0 0 -10% 0); } }
+  /* Sliced at 1:1 so the round bulbs never squash; a shorter slice on phones shows more of the edge at a smaller scale. */
+  @media (max-width: 760px) {
+    .drips {
+      height: 104px;
+      margin-bottom: -104px;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .drips {
+      animation-name: drip-run;
+      animation-duration: 0.5s;
+      animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+      animation-delay: 0.25s;
+      animation-fill-mode: backwards;
+    }
+  }
+  @keyframes drip-run {
+    from {
+      clip-path: inset(0 0 88% 0);
+    }
+    to {
+      clip-path: inset(0 0 -10% 0);
+    }
+  }
 </style>

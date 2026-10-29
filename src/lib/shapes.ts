@@ -92,7 +92,10 @@ export const brushSquiggle = (seed: number, w: number, h: number, bumps: number,
   const noise = createNoise2D(mulberry32(seed + 500));
   const pts: Pt[] = Array.from({ length: 61 }, (_, i) => {
     const t = i / 60;
-    return [size + t * (w - 2 * size), h / 2 + Math.sin(t * bumps * Math.PI * 2) * (h / 2 - size) * (0.8 + 0.2 * noise(t * 3, 1))];
+    return [
+      size + t * (w - 2 * size),
+      h / 2 + Math.sin(t * bumps * Math.PI * 2) * (h / 2 - size) * (0.8 + 0.2 * noise(t * 3, 1)),
+    ];
   });
   return brusher(seed, 0.6).stroke(pts, size);
 };
@@ -116,7 +119,11 @@ const catmullRom = (pts: Pt[], perSegment: number): Pt[] => {
     return Array.from({ length: perSegment }, (_, k): Pt => {
       const t = k / perSegment;
       const at = (j: 0 | 1) =>
-        0.5 * (2 * p1[j] + (-p0[j] + p2[j]) * t + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * t ** 2 + (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * t ** 3);
+        0.5 *
+        (2 * p1[j] +
+          (-p0[j] + p2[j]) * t +
+          (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * t ** 2 +
+          (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * t ** 3);
       return [at(0), at(1)];
     });
   });
@@ -133,7 +140,19 @@ export const ghost = (seed: number): string => {
     const a = Math.PI + (i / 8) * Math.PI;
     return [50 + 34 * Math.cos(a), 50 + 40 * Math.sin(a)];
   });
-  const hem: Pt[] = [[85, 76], [87, 100], [86, 112], [75, 101], [63, 113], [51, 102], [39, 113], [27, 101], [15, 111], [13, 98], [15, 74]];
+  const hem: Pt[] = [
+    [85, 76],
+    [87, 100],
+    [86, 112],
+    [75, 101],
+    [63, 113],
+    [51, 102],
+    [39, 113],
+    [27, 101],
+    [15, 111],
+    [13, 98],
+    [15, 74],
+  ];
   const pts: Pt[] = [...dome, ...hem].map(([x, y], i) => [x + noise(i * 0.5, 1) * 2.2, y + noise(1, i * 0.5) * 2.2]);
   return polygon(catmullRom(pts, 6));
 };
@@ -248,11 +267,20 @@ const moon = (noise: (x: number, y: number) => number): string => {
 
 // The strokes are drawn in one fixed order, because each brush stroke takes the next noise row.
 const faces = (brush: ReturnType<typeof brusher>) => ({
-  browNose: brush.stroke(join(quad([198, 141], [213, 128], [230, 138]), quad([230, 138], [236, 142], [236, 152], 5), line([236, 152], [236, 176]), quad([236, 176], [236, 182], [230, 182], 4))),
+  browNose: brush.stroke(
+    join(
+      quad([198, 141], [213, 128], [230, 138]),
+      quad([230, 138], [236, 142], [236, 152], 5),
+      line([236, 152], [236, 176]),
+      quad([236, 176], [236, 182], [230, 182], 4),
+    ),
+  ),
   brow: brush.stroke(quad([282, 141], [267, 128], [250, 138])),
   eyeL: brush.stroke(quad([206, 156], [216, 164], [226, 156], 8), 5.5),
   eyeR: brush.stroke(quad([252, 156], [262, 164], [272, 156], 8), 5.5),
-  lips: brush.shape(join(quad([222, 198], [240, 189], [258, 198], 6), quad([258, 198], [240, 213], [222, 198], 6)).slice(0, -1)),
+  lips: brush.shape(
+    join(quad([222, 198], [240, 189], [258, 198], 6), quad([258, 198], [240, 213], [222, 198], 6)).slice(0, -1),
+  ),
   moonEye: brush.stroke(quad([140, 224], [152, 232], [164, 224], 8), 5.5),
   moonBrow: brush.stroke(quad([136, 210], [150, 200], [166, 208], 8), 5.5),
 });
@@ -264,7 +292,9 @@ export const marigoldMark = (seed: number) => {
   const [cx, cy] = sunCenter;
   const reach = (r1: number) => discRadius + (r1 - discRadius) * petalScale;
   const petals = petalRings.map((ring) =>
-    Array.from({ length: ring.count }, (_, i) => ruffle(jitter, discRadius - 10, reach(ring.reach), ring.offset + (i * 360) / ring.count, ring.width)),
+    Array.from({ length: ring.count }, (_, i) =>
+      ruffle(jitter, discRadius - 10, reach(ring.reach), ring.offset + (i * 360) / ring.count, ring.width),
+    ),
   );
   const disc = sunDisc(noise);
   const moonPath = moon(noise);
@@ -298,7 +328,8 @@ export const drips = (seed: number, w: number, h: number, count: number): string
       const dx = Math.abs(x - center);
       const shoulder = radius * 2.4;
       if (dx <= radius) depth = Math.max(depth, base + length - radius + Math.sqrt(radius * radius - dx * dx));
-      else if (dx < radius + shoulder) depth = Math.max(depth, base + (length - radius) * (1 - (dx - radius) / shoulder) ** 3);
+      else if (dx < radius + shoulder)
+        depth = Math.max(depth, base + (length - radius) * (1 - (dx - radius) / shoulder) ** 3);
     }
     return depth;
   };
