@@ -10,8 +10,9 @@ web
 
 Astro static site. No page ships JavaScript, and every page works with JavaScript off.
 
-- Shapes (the wave, the drip edge, the brush squiggle, the petal mask, the hand-pressed dots for eyes and cheeks, the ghost and the logo strokes) are drawn at build time by seeded generators in `src/lib/shapes.ts`. A seed is a fixed number that makes a shape come out the same way every time, so every deploy looks the same. They use simplex-noise (smooth random wobble), perfect-freehand (brush strokes), d3-shape (curve smoothing) and a hand-written mulberry32 seeded random number generator.
+- Shapes (the wave, the drip edge, the brush squiggle, the petal mask, the hand-pressed dots for eyes and cheeks, the ghost, the menu strokes and the logo strokes) are drawn at build time by seeded generators in `src/lib/shapes.ts`. A seed is a fixed number that makes a shape come out the same way every time, so every deploy looks the same. They use simplex-noise (smooth random wobble), perfect-freehand (brush strokes), d3-shape (curve smoothing) and a hand-written mulberry32 seeded random number generator.
 - The favicon is the full Beso logo, saved as an SVG copied from the page's logo markup (a test fails if the two drift apart); its moon turns cream on dark tab bars. sharp renders the PNG favicon sizes and the 1200x630 link preview image (the Beso, dark green moon and all, on mole) from that SVG at build time.
+- Page-to-page crossfades use CSS `@view-transition`, not Astro's client router, so no JavaScript ships.
 - roughjs and svgo are not used.
 - Deploy: on every push to main a GitHub Actions workflow runs the tests, which build the site, and deploys that build to GitHub Pages; a failing test stops the deploy. Canonical domain thedna.casa; www redirects to the apex.
 
@@ -38,6 +39,7 @@ The site is the household itself. Nothing on it could belong to another family: 
 - Each party is one Markdown file in an Astro content collection, `src/content/halloween/`, typed by a schema in `src/content.config.ts`; a file missing a field fails the build. It holds the year, name, theme, intro (the Markdown body), drinks and who made them, our costumes, the contest (rule, result, winners by first names and costume) and highlights. A photo sits on the costume or highlight it shows.
 - Photos go in `src/assets/photos/` (party photos in `src/assets/photos/halloween/<year>/`) and are imported in `src/content.ts` or a party file. They must be shown through Astro's `Image` or `Picture` component, which strips EXIF and GPS. Never link a photo's raw source URL: that ships the original file with its GPS.
 - Without photos the welcome shows a pink petal shape and each member shows a solid color circle.
+- A navbar on every page links "Casa" and "Halloween". A section joins the navbar only when it ships.
 - Phone layout (760px and narrower, variant 1 "Stamp first"): one centered column that opens with the turning stamp above the wordmark and "Dan & Alexis", a short hero so the wave and the cream welcome start on the first screen, the welcome words before the petal photo, and the members as rows with a small circle on the left and the name and one-liner on the right.
 - Prototypes live only on the branches `prototype/landing` (all landing variants) and `prototype/mobile`. Nothing from them ships, and there is no `pnpm prototype` command.
 - Privacy: public, first names only, photo EXIF/GPS stripped. The welcome names the cities Dan and Alexis have lived in and Alexis' employer, by Dan's choice; nothing narrower than a city (no neighborhood, street or home details).
@@ -46,14 +48,14 @@ The site is the household itself. Nothing on it could belong to another family: 
 ## Brand Commitments
 
 - Name: "The DnA Casa", set in all caps as THE DnA CASA; subtitle "Dan & Alexis".
-- English, with a few Spanish words ("Bienvenidos", "Hola", "Con cariño"). Spanish phrases carry `lang="es"`, except "Hola", which sits inside an English sentence.
+- English, with a few Spanish words ("Bienvenidos", "Hola", "Con cariño", the "Casa" nav link). Spanish phrases carry `lang="es"`, except "Hola", which sits inside an English sentence.
 - Look (variant 23 "Mole"): a mole-brown (#43262A) hero and footer, a cream (#FAF4EC) middle, one wave between them, and one page-wide grain layer. No pure black anywhere.
 - Halloween look: the same system with a Trona black (#201D1E) hero and footer in place of mole, and a drip edge in place of the wave.
 - Logo: the Beso sun-and-moon mark (marigold sun, thin moon), set inside a stamp ring that reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO". On a party recap a still cream ghost takes its place, inside a ring with the party name, "HALLOWEEN", the year and "THE DnA CASA".
 - Palette: mole #43262A, cream ink #F6E7DA, page cream #FAF4EC, terracotta #C8643C, rosa mexicano #E4007C, marigold gold #F2B233, Salamander green #2F3E3E (Dan), sage #B9C9B4, cheek pink #F7C6D9, blush #F0C7B4. Member circles, in order: Salamander, rosa mexicano, sage, marigold gold.
 - Two fonts only: Averia Serif Libre (headings 700, subtitle and footer italic 400) and Schibsted Grotesk (body 400), self-hosted through Fontsource.
 - Restraint: one squiggle per hero, one edge (wave or drips), solid color fields, no sparkles.
-- Motion: quiet and short. The stamp ring turns slowly (about 40s per turn), the squiggle paints on and the drips run once on load, and recap sections and photos fade up on scroll and react on hover. All of it runs only under `prefers-reduced-motion: no-preference`.
+- Motion: quiet and short. The stamp ring turns slowly (about 40s per turn), the squiggle paints on and the drips run once on load, recap sections and photos fade up on scroll, the phone menu slides in, links and photos react on hover, and pages crossfade. All of it runs only under `prefers-reduced-motion: no-preference`.
 - Excluded: sugar skulls, sombreros, papel picado, serape stripes, saguaro, rainbow palettes, kitschy sun faces, a scrolling word strip (marquee).
 - Rejected directions, settled; do not propose them again: a literal house, many arches (including the terracotta arch from the first brief), leaf or dappled shadows, squiggles everywhere, heavy hand-drawn ornament, house-sign or door metaphors.
 

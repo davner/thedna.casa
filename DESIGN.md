@@ -88,6 +88,12 @@ components:
   kicker:
     textColor: "{colors.terra}"
     typography: "{typography.label}"
+  nav-link:
+    textColor: "{colors.cream}"
+    typography: "{typography.label}"
+  menu-link:
+    textColor: "{colors.cream}"
+    typography: "{typography.headline}"
   footer:
     backgroundColor: "{colors.mole}"
     textColor: "{colors.cream}"
@@ -123,7 +129,7 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 ### Secondary
 - **Rosa Mexicano** (`pink`): Alexis's color. The squiggle, Alexis's circle, the text selection highlight.
-- **Terracotta** (`terra`): the one orange. Section headings and large text on cream ("Who lives here", "Bienvenidos", every Halloween heading, the contest result, the year on the Halloween list). On the dark field: the Halloween squiggle. Large or bold text only. The welcome heading stays mole.
+- **Terracotta** (`terra`): the one orange. Section headings and large text on cream ("Who lives here", "Bienvenidos", every Halloween heading, the contest result, the year on the Halloween list). On the dark fields: the Halloween squiggle, the nav's current-page underline and focus ring. Large or bold text only. The welcome heading stays mole.
 
 ### Tertiary
 - **Salamander** (`salamander`): Dan's color, his member circle.
@@ -134,7 +140,7 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 ### Neutral
 - **Cream Ink** (`cream`): text and the stamp ring on the dark field, and the ghost's body.
 - **Page Cream** (`cream-page`): the middle field on every page.
-- **Trona Black** (`trona`): the hero and footer field on Halloween pages, and their theme color. A warm near-black, darker than mole.
+- **Trona Black** (`trona`): the hero, footer and phone menu field on Halloween pages, and their theme color. A warm near-black, darker than mole.
 
 ### Named Rules
 **The No Black Rule.** Mole is the darkest color on household pages and Trona black on Halloween pages. Nothing is pure black.
@@ -154,14 +160,14 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 ### Hierarchy
 - **Display:** the hero title, all caps on two lines: THE DnA CASA, a party's name (TRICK-R-DRINK), HALLOWEEN. On phones it drops to `clamp(3rem, 15vw, 4.2rem)`.
-- **Headline:** section headings ("Hola, we're Dan & Alexis.", "Who lives here").
+- **Headline:** section headings ("Hola, we're Dan & Alexis.", "Who lives here"). On phones the clamp bottoms out at 2.2rem, which is also the size of the phone menu links.
 - **Title:** names and short items: member names, contest winners, the drinks, the new-this-year titles, the year and name on the Halloween list. 1.5rem on phones.
 - **Subtitle:** the hero subtitle ("Dan & Alexis", "Our tiki Halloween", "October at the casa") and a party recap's intro, in italic. One fluid size at every width.
 - **Sign-off:** the footer, italic at the 16px body size.
 - **Body:** the welcome text, at most 38ch wide.
 - **Caption:** member one-liners, photo captions, costume lines, the party theme on the list, "Made by" lines, at 1rem.
 - **Ring:** the stamp ring text, 15px in the ring's 200-unit SVG, so it scales with the stamp.
-- **Label:** the "Bienvenidos" kicker and a recap's contest result, in terracotta.
+- **Label:** the "Bienvenidos" kicker and a recap's contest result, in terracotta, and the desktop nav links in cream.
 
 ### Named Rules
 **The One Scale Rule.** Every text size on every page is one of the roles above. A page never invents its own size; an element that feels too quiet moves up to an existing role instead. Only display and title have separate phone sizes.
@@ -172,13 +178,14 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 ## Layout
 
-Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), with a fluid gap between columns (`spacing.column-gap`). The hero is 1.2fr words to 1fr stamp, at least `min(92dvh, 880px)` tall with its padding counted inside, so the wave shows at the bottom of the first desktop screen.
+Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), with a fluid gap between columns (`spacing.column-gap`). The hero is 1.2fr words to 1fr stamp, at least `min(92dvh, 880px)` tall with its padding counted inside, so the wave shows at the bottom of the first desktop screen. Its top padding (96px, 72px on phones) leaves room for the navbar, which sits over it.
 
 **The Wave On Screen Rule.** At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.
 
 The Halloween list has a short hero with no stamp, then the drips, then one row per party, newest first: the year, the name over the theme, and a small circle photo. Rows are links, divided by hairlines.
 
 One breakpoint, at 760px. Below it the page is one centered column ("Stamp first"):
+- The nav links fold into the menu button.
 - The stamp comes first, then the wordmark and the subtitle.
 - The hero is short, so the wave and the cream welcome start on the first screen.
 - The welcome words come before the petal photo.
@@ -204,15 +211,20 @@ Shapes are organic and drawn, never boxy. The only hard geometry is the member c
 - the petal mask that clips the welcome photo,
 - the hand-pressed dots for eyes and cheeks,
 - the ghost's body,
-- the logo strokes.
+- the logo strokes,
+- the three brushed strokes of the menu button.
 
-The site has no rounded rectangles, boxed borders or buttons. The only lines are the hairline dividers between member rows on phones.
+The site has no rounded rectangles, boxed borders or boxed buttons. The one control is the phone menu button, drawn as three brushed strokes. The only lines are the hairline dividers between member rows on phones.
 
 **The Seeded Shape Rule.** A new organic shape comes from the shared seeded generators with a fixed seed, never from randomness at runtime or a stock icon.
 
 **The Restraint Rule.** One squiggle per hero and one edge where the hero meets the middle (the wave, or the drips on Halloween pages). No sparkles. A new shape has to replace one of these or earn a place the same way.
 
 ## Components
+
+### Navbar
+On every page, over the top of the hero, in cream; it scrolls away with the page. Links: "Casa" (`lang="es"`) and "Halloween"; a section joins only when it ships. No logo: "Casa" is the way home. On wide screens the links sit inline at label size, the current page underlined in terracotta. At 760px and below a menu button (three brushed strokes that turn into an X) opens a full-width panel in the page's dark field, under the bar, with the links at headline size. It is an HTML `popover` with CSS only, so it works with JavaScript off.
+- **Motion:** the panel fades and slides in (about 200ms) and the strokes turn into an X; links react on hover. Pages crossfade into each other with CSS `@view-transition`, with no client-side router. All of it runs only under `prefers-reduced-motion: no-preference`.
 
 ### Stamp
 The signature piece. A circle of words set in serif 700 caps with wide 0.08em tracking, in cream on the dark field, around a center mark. On household pages the mark is the Beso sun-and-moon logo (marigold sun, thin moon) at 64%, and the ring reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO". On a party recap the mark is the ghost at 46%, and the ring reads the party's name, "HALLOWEEN" and the year, then "THE DnA CASA". A longer ring tightens its spacing, never its size. It is at most 380px wide on desktop and `min(76vw, 300px)` on phones.
@@ -256,4 +268,4 @@ One centered italic serif line at body size in cream on the page's dark field: "
 - **Don't** add a third typeface or another weight without retiring one.
 - **Don't** set body text in terracotta or pink on cream.
 - **Don't** add a marquee, a literal house, arches, leaf shadows, sparkles or extra squiggles.
-- **Don't** add motion that bounces, loops (other than the ring) or runs longer than half a second (other than the ring and the squiggle). Beyond those two, recap sections and photos fade up as they scroll into view (CSS scroll-driven animation behind `@supports`) and photos react subtly on hover.
+- **Don't** add motion that bounces, loops (other than the ring) or runs longer than half a second (other than the ring and the squiggle). Beyond those two, recap sections and photos fade up as they scroll into view (CSS scroll-driven animation behind `@supports`), photos and links react subtly on hover, the phone menu slides in, and pages crossfade.
