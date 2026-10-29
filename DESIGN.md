@@ -16,7 +16,7 @@ colors:
 typography:
   display:
     fontFamily: "Averia Serif Libre, serif"
-    fontSize: "min(clamp(3.4rem, 10vw, 9.5rem), 100cqi / var(--ems))"
+    fontSize: "text-4xl text-5xl text-6xl text-7xl text-8xl text-9xl"
     fontWeight: 700
     lineHeight: 0.9
     letterSpacing: "-0.03em"
@@ -49,7 +49,7 @@ typography:
     letterSpacing: "-0.02em"
   display-phone:
     fontFamily: "Averia Serif Libre, serif"
-    fontSize: "calc(clamp(3rem, 14vw, 4.2rem) * var(--fit, 1))"
+    fontSize: "text-4xl text-5xl"
     fontWeight: 700
     lineHeight: 0.88
   title-phone:

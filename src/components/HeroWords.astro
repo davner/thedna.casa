@@ -1,19 +1,17 @@
 ---
 import { brushSquiggle } from "../lib/shapes";
-import { serif } from "../lib/serif";
+import { heroTitleSize } from "../lib/hero-title";
 interface Props {
   lines: string[];
   subtitle: string;
-  fit?: number;
+  layout: "beside" | "full";
   date?: { datetime: string; long: string };
 }
-const { lines, subtitle, fit = 1, date } = Astro.props;
-// The widest line in ems, so a long title shrinks to its column instead of pushing the stamp out of its slot.
-const ems = Math.max(...lines.map((l) => serif.layout(l).advanceWidth / serif.unitsPerEm - 0.03 * [...l].length));
+const { lines, subtitle, layout, date } = Astro.props;
 ---
 
 <div class="words">
-  <h1 style={`--ems: ${ems.toFixed(3)}${fit < 1 ? `; --fit: ${fit}` : ""}`}>
+  <h1 class={heroTitleSize(lines, layout)}>
     {lines.map((line, i) => (
       <>
         {i > 0 && <br />}
@@ -41,7 +39,6 @@ const ems = Math.max(...lines.map((l) => serif.layout(l).advanceWidth / serif.un
   h1 {
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: min(clamp(3.4rem, 10vw, 9.5rem), 100cqi / var(--ems));
     /* The lines are broken at build time to fit the real font; a wider fallback must not wrap them while it loads. */
     white-space: nowrap;
     letter-spacing: -0.03em;
@@ -85,7 +82,6 @@ const ems = Math.max(...lines.map((l) => serif.layout(l).advanceWidth / serif.un
 
   @media (max-width: 760px) {
     h1 {
-      font-size: calc(clamp(3rem, 14vw, 4.2rem) * var(--fit, 1));
       line-height: 0.88;
     }
     .sub {

@@ -10,9 +10,16 @@ const designFontSizes = () => {
   const design = readFileSync(new URL("../DESIGN.md", import.meta.url), "utf8");
   const frontMatter = design.match(/^---\n([\s\S]*?)\n---\n/)?.[1] ?? "";
   const typography: Record<string, { fontSize?: string }> = parse(frontMatter)?.typography ?? {};
+  // A role written as Tailwind text classes ("text-5xl md:text-7xl") ships the theme variables those classes set.
+  const sizes = (fontSize: string) => {
+    const classes = fontSize.trim().split(/\s+/);
+    return classes.every((name) => /^([\w-]+:)?text-[\w.]+$/.test(name))
+      ? classes.map((name) => `var(--${name.replace(/^[\w-]+:/, "")})`)
+      : [squash(fontSize)];
+  };
   return new Set(
     Object.values(typography)
-      .map((role) => squash(role.fontSize ?? ""))
+      .flatMap((role) => sizes(role.fontSize ?? ""))
       .filter(Boolean),
   );
 };
@@ -267,6 +274,22 @@ describe("shipped pages", () => {
       }
     }
     expect(tilts).toEqual([]);
+  });
+
+  // The hero title's size classes are built in TypeScript, which Tailwind does not scan, so a missing one would ship no rule.
+  it("ship a rule for every size class on a hero title", () => {
+    const escape = (name: string) =>
+      name.replace(/^(\d)/, (digit) => `\\3${digit} `).replace(/[^\w\s\\-]/g, (char) => `\\${char}`);
+    const missing: string[] = [];
+    for (const page of shippedPages()) {
+      const $ = builtPage(page);
+      const selectors = new Set<string>();
+      for (const root of pageCss($)) root.walkRules((rule) => void selectors.add(rule.selector));
+      const classes = ($("header h1").attr("class") ?? "").split(/\s+/).filter(Boolean);
+      expect(classes.length, page).toBeGreaterThan(0);
+      for (const name of classes) if (!selectors.has(`.${escape(name)}`)) missing.push(`${page} ${name}`);
+    }
+    expect(missing).toEqual([]);
   });
 
   it("set every text size from DESIGN.md's type scale", () => {

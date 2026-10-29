@@ -5,11 +5,12 @@ import HeroWords from "../HeroWords.astro";
 interface Props {
   title: string[];
   subtitle: string;
-  fit?: number;
   date?: { datetime: string; long: string };
   ring?: string;
 }
-const { title, subtitle, fit, date, ring } = Astro.props;
+const { title, subtitle, date, ring } = Astro.props;
+// A stamp or an invite beside the words narrows the title's column.
+const beside = Boolean(ring) || Astro.slots.has("keepsake");
 ---
 
 <header class:list={["hero", { short: !ring, keepsake: !ring && Astro.slots.has("keepsake") }]}>
@@ -20,7 +21,7 @@ const { title, subtitle, fit, date, ring } = Astro.props;
       <slot name="keepsake" />
     </div>
   )}
-  <HeroWords lines={title} subtitle={subtitle} fit={fit} date={date} />
+  <HeroWords lines={title} subtitle={subtitle} layout={beside ? "beside" : "full"} date={date} />
   {ring && (
     <Stamp ring={ring}>
       <Ghost class="stamp-ghost" />

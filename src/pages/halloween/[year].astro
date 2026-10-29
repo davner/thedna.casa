@@ -4,7 +4,7 @@ import { getCollection, render } from "astro:content";
 import Halloween from "../../layouts/Halloween.astro";
 import Drips from "../../components/halloween/Drips.astro";
 import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
-import { heroTitle } from "../../lib/hero-title";
+import { heroTitleLines } from "../../lib/hero-title";
 import { partyDate } from "../../lib/parties";
 import { partyShare } from "../../lib/party-preview";
 import { softMask } from "../../lib/shapes";
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 const { party: entry } = Astro.props;
 const party = entry.data;
 const { Content } = await render(entry);
-const title = heroTitle(party.name.toUpperCase());
+const title = heroTitleLines(party.name.toUpperCase());
 type Photo = NonNullable<(typeof party.ourCostumes)[number]["photo"]>;
 const photos = [...party.ourCostumes, ...party.highlights, party.contest, party.drinks].flatMap((item) =>
   item?.photo ? [item.photo] : [],
@@ -37,12 +37,7 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
   share={partyShare(party)}
   description={`Our ${party.theme} Halloween, ${party.year}: costumes, the contest, the drinks and what was new.`}
 >
-  <HalloweenHero
-    title={title.lines}
-    fit={title.fit}
-    date={partyDate(party.date)}
-    subtitle={`Our ${party.theme} Halloween`}
-  >
+  <HalloweenHero title={title} date={partyDate(party.date)} subtitle={`Our ${party.theme} Halloween`}>
     {party.invite && (
       <Image
         slot="keepsake"

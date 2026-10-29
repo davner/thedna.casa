@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { heroTitle, heroTitleLines, phoneTitleRoom, phoneTitleWidth } from "./hero-title";
+import { heroTitleLines, heroTitleSize, phoneTitleRoom, phoneTitleWidth } from "./hero-title";
 
 describe("heroTitleLines", () => {
   it("keeps a short name on one line", () => {
@@ -25,16 +25,21 @@ describe("heroTitleLines", () => {
   });
 });
 
-describe("heroTitle", () => {
-  it("keeps the full phone size when every line fits", () => {
-    expect(heroTitle("LET'S GET TIKI FREAKY")).toEqual({ lines: ["LET'S GET", "TIKI FREAKY"], fit: 1 });
+describe("heroTitleSize", () => {
+  it("keeps the display size at every breakpoint for a name that fits", () => {
+    expect(heroTitleSize(["THE DnA", "CASA"], "beside")).toBe("text-5xl md:text-7xl lg:text-8xl xl:text-9xl");
   });
 
-  it("shrinks the phone size just enough for a word too wide to break", () => {
-    const { lines, fit } = heroTitle("HAUNTED HOMECOMING");
-    expect(lines).toEqual(["HAUNTED", "HOMECOMING"]);
-    expect(fit).toBeLessThan(1);
-    expect(fit).toBeGreaterThan(0.85);
-    for (const line of lines) expect(phoneTitleWidth(line) * fit).toBeLessThanOrEqual(phoneTitleRoom);
+  // Beside the stamp the column is 400px at md, 533px at lg, 670px at xl and 880px at 2xl; HALLOWEEN is 6.18em wide.
+  it("picks the largest step at each breakpoint whose longest line fits the column", () => {
+    expect(heroTitleSize(["HALLOWEEN"], "beside")).toBe("text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl");
+  });
+
+  it("gives a title the whole hero's width when nothing sits beside it", () => {
+    expect(heroTitleSize(["HALLOWEEN"], "full")).toBe("text-5xl md:text-7xl lg:text-8xl xl:text-9xl");
+  });
+
+  it("steps a phone title down exactly one size when a word is too wide to break", () => {
+    expect(heroTitleSize(["HAUNTED", "HOMECOMING"], "full").split(" ")[0]).toBe("text-4xl");
   });
 });
