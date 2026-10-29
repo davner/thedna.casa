@@ -25,17 +25,22 @@ const halloween = defineCollection({
       date: z.coerce.date(),
       name: z.string(),
       theme: z.string(),
-      drinks: z.array(z.string()),
-      drinksBy: z.string().optional(),
-      ourCostumes: z.array(
-        z.object({ who: z.string(), as: z.string(), asLang: z.string().optional(), photo: photo.optional() }),
-      ),
-      contest: z.object({
-        rule: z.string(),
-        result: z.string(),
-        winners: z.array(z.object({ names: z.string(), costume: z.string() })),
-      }),
-      highlights: z.array(z.object({ title: z.string(), text: z.string(), photo: photo.optional() })),
+      // A party known only from its invite has no costumes, contest, drinks or highlights yet, and skips those sections.
+      ourCostumes: z
+        .array(z.object({ who: z.string(), as: z.string(), asLang: z.string().optional(), photo: photo.optional() }))
+        .default([]),
+      contest: z
+        .object({
+          rule: z.string(),
+          result: z.string(),
+          winners: z.array(z.object({ names: z.string(), costume: z.string() })),
+          photo: photo.optional(),
+        })
+        .optional(),
+      drinks: z
+        .object({ names: z.array(z.string()).min(1), by: z.string().optional(), photo: photo.optional() })
+        .optional(),
+      highlights: z.array(z.object({ title: z.string(), text: z.string(), photo: photo.optional() })).default([]),
       invite: z.object({ src: image(), alt: z.string().min(1) }).optional(),
     });
   },

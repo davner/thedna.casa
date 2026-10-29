@@ -153,6 +153,7 @@ describe("shipped pages", () => {
     const section: Record<string, string> = {
       "index.html": "/",
       "halloween/index.html": "/halloween/",
+      "halloween/2021/index.html": "/halloween/",
       "halloween/2023/index.html": "/halloween/",
       "halloween/2024/index.html": "/halloween/",
       "halloween/2026/index.html": "/halloween/",

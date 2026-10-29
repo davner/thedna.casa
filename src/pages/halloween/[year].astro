@@ -18,8 +18,8 @@ const party = entry.data;
 const { Content } = await render(entry);
 const title = heroTitle(party.name.toUpperCase());
 type Photo = NonNullable<(typeof party.ourCostumes)[number]["photo"]>;
-const petals = [...party.ourCostumes, ...party.highlights].flatMap((item) =>
-  item.photo?.shape === "petal" ? [item.photo] : [],
+const petals = [...party.ourCostumes, ...party.highlights, party.contest, party.drinks].flatMap((item) =>
+  item?.photo?.shape === "petal" ? [item.photo] : [],
 );
 const petalId = (photo: Photo) => `petal-${photo.seed}`;
 const shapes = {
@@ -27,6 +27,8 @@ const shapes = {
   circle: { clip: () => "circle(50%)", shown: 340, phone: 220 },
 } satisfies Record<Photo["shape"], { clip: (photo: Photo) => string; shown: number; phone: number }>;
 const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
+// The contest, drinks and highlight photos all share one size beside their words.
+const beside = { width: 840, height: 840, widths: [420, 840], sizes: "(max-width: 760px) 280px, 420px" };
 ---
 
 <Halloween
@@ -56,88 +58,105 @@ const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
       </div>
     </section>
 
-    <section class="costumes" aria-labelledby="costumes-h">
-      <h2 id="costumes-h" class="reveal">
-        Our costumes
-      </h2>
-      <div class="costume-grid">
-        {party.ourCostumes.map((c) => (
-          <figure class:list={[c.photo?.shape ?? "petal", "reveal"]}>
-            {c.photo && (
-              <Image
-                class="photo"
-                style={clip(c.photo)}
-                src={c.photo.src}
-                alt={c.photo.alt}
-                width={2 * shapes[c.photo.shape].shown}
-                height={2 * shapes[c.photo.shape].shown}
-                widths={[shapes[c.photo.shape].shown, 2 * shapes[c.photo.shape].shown]}
-                sizes={`(max-width: 760px) ${shapes[c.photo.shape].phone}px, ${shapes[c.photo.shape].shown}px`}
-              />
-            )}
-            <figcaption>
-              {c.who} as <span lang={c.asLang}>{c.as}</span>
-            </figcaption>
-          </figure>
-        ))}
-      </div>
-    </section>
+    {party.ourCostumes.length > 0 && (
+      <section class="costumes" aria-labelledby="costumes-h">
+        <h2 id="costumes-h" class="reveal">
+          Our costumes
+        </h2>
+        <div class="costume-grid">
+          {party.ourCostumes.map((c) => (
+            <figure class:list={[c.photo?.shape ?? "petal", "reveal"]}>
+              {c.photo && (
+                <Image
+                  class="photo"
+                  style={clip(c.photo)}
+                  src={c.photo.src}
+                  alt={c.photo.alt}
+                  width={2 * shapes[c.photo.shape].shown}
+                  height={2 * shapes[c.photo.shape].shown}
+                  widths={[shapes[c.photo.shape].shown, 2 * shapes[c.photo.shape].shown]}
+                  sizes={`(max-width: 760px) ${shapes[c.photo.shape].phone}px, ${shapes[c.photo.shape].shown}px`}
+                />
+              )}
+              <figcaption>
+                {c.who} as <span lang={c.asLang}>{c.as}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
 
-    <section class="contest" aria-labelledby="contest-h">
-      <div class="reveal">
-        <h2 id="contest-h">The costume contest</h2>
-        <p>{party.contest.rule}</p>
-        <p class="result">{party.contest.result}</p>
-      </div>
-      <ul class="winners reveal">
-        {party.contest.winners.map((w) => (
-          <li>
-            <span class="names">{w.names}</span> <span class="as">as {w.costume}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
+    {party.contest && (
+      <section class:list={["contest", { shot: party.contest.photo }]} aria-labelledby="contest-h">
+        <div class="words reveal">
+          <h2 id="contest-h">The costume contest</h2>
+          <p>{party.contest.rule}</p>
+          <p class="result">{party.contest.result}</p>
+        </div>
+        <ul class="winners reveal">
+          {party.contest.winners.map((w) => (
+            <li>
+              <span class="names">{w.names}</span> <span class="as">as {w.costume}</span>
+            </li>
+          ))}
+        </ul>
+        {party.contest.photo && (
+          <Image
+            class="photo reveal"
+            style={clip(party.contest.photo)}
+            src={party.contest.photo.src}
+            alt={party.contest.photo.alt}
+            {...beside}
+          />
+        )}
+      </section>
+    )}
 
-    <section class="drinks reveal" aria-labelledby="drinks-h">
-      <h2 id="drinks-h">The drinks</h2>
-      <p class="drink-list">
-        {party.drinks.map((d, i) => (
-          <>
-            {i > 0 && <span class="amp"> & </span>}
-            <span class="drink">{d}</span>
-          </>
-        ))}
-      </p>
-      {party.drinksBy && <p class="by">Made by {party.drinksBy}.</p>}
-    </section>
+    {party.drinks && (
+      <section class:list={["drinks reveal", { shot: party.drinks.photo }]} aria-labelledby="drinks-h">
+        <div>
+          <h2 id="drinks-h">The drinks</h2>
+          <p class="drink-list">
+            {party.drinks.names.map((d, i) => (
+              <>
+                {i > 0 && <span class="amp"> & </span>}
+                <span class="drink">{d}</span>
+              </>
+            ))}
+          </p>
+          {party.drinks.by && <p class="by">Made by {party.drinks.by}.</p>}
+        </div>
+        {party.drinks.photo && (
+          <Image
+            class="photo"
+            style={clip(party.drinks.photo)}
+            src={party.drinks.photo.src}
+            alt={party.drinks.photo.alt}
+            {...beside}
+          />
+        )}
+      </section>
+    )}
 
-    <section class="new" aria-labelledby="new-h">
-      <h2 id="new-h" class="reveal">
-        New this year
-      </h2>
-      <ul>
-        {party.highlights.map((h, i) => (
-          <li class:list={["reveal", { flip: i % 2 === 1, plain: !h.photo }]}>
-            {h.photo && (
-              <Image
-                class="photo"
-                style={clip(h.photo)}
-                src={h.photo.src}
-                alt={h.photo.alt}
-                width={840}
-                height={840}
-                widths={[420, 840]}
-                sizes="(max-width: 760px) 280px, 420px"
-              />
-            )}
-            <div>
-              <h3>{h.title}</h3>
-              <p>{h.text}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </section>
+    {party.highlights.length > 0 && (
+      <section class="new" aria-labelledby="new-h">
+        <h2 id="new-h" class="reveal">
+          New this year
+        </h2>
+        <ul>
+          {party.highlights.map((h, i) => (
+            <li class:list={["reveal", { flip: i % 2 === 1, plain: !h.photo }]}>
+              {h.photo && <Image class="photo" style={clip(h.photo)} src={h.photo.src} alt={h.photo.alt} {...beside} />}
+              <div>
+                <h3>{h.title}</h3>
+                <p>{h.text}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
 
     {party.invite && (
       <section class="invite reveal" aria-labelledby="invite-h">
@@ -261,6 +280,25 @@ const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
     letter-spacing: -0.02em;
     color: var(--terra);
   }
+  /* With a photo, the words and winners stack on the left and the winners' photo stands beside them. */
+  .contest.shot {
+    grid-template-areas: "words photo" "winners photo";
+    align-items: center;
+  }
+  .contest.shot .words {
+    grid-area: words;
+    align-self: end;
+  }
+  .contest.shot .winners {
+    grid-area: winners;
+    align-self: start;
+  }
+  .contest.shot .photo,
+  .drinks.shot .photo {
+    grid-area: photo;
+    max-width: 420px;
+    justify-self: center;
+  }
   .winners {
     list-style: none;
     margin: 0;
@@ -286,9 +324,22 @@ const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
     font-size: 1rem;
   }
 
-  .drinks > * {
+  .drinks > div {
     max-width: 1100px;
     margin-inline: auto;
+  }
+  .drinks.shot {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    grid-template-areas: "words photo";
+    gap: clamp(32px, 6vw, 96px);
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    box-sizing: content-box;
+  }
+  .drinks.shot > div {
+    margin: 0;
   }
   .drink-list {
     margin-top: 28px;
@@ -397,9 +448,20 @@ const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
     .circle .photo {
       max-width: 220px;
     }
-    .contest {
+    .contest,
+    .drinks.shot {
       grid-template-columns: 1fr;
       gap: 28px;
+    }
+    .contest.shot {
+      grid-template-areas: "words" "photo" "winners";
+    }
+    .drinks.shot {
+      grid-template-areas: "words" "photo";
+    }
+    .contest.shot .photo,
+    .drinks.shot .photo {
+      max-width: 280px;
     }
     .new li,
     .new li.flip {

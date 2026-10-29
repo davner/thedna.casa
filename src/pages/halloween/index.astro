@@ -17,7 +17,8 @@ const parties = newestFirst(await getCollection("halloween"));
       <h2 class="reveal">The parties</h2>
       <ul>
         {parties.map(({ data: party }) => {
-          const photo = party.ourCostumes.find((c) => c.photo)?.photo;
+          // A party with no photos yet still gets a thumbnail, cut from its invite.
+          const photo = party.ourCostumes.find((c) => c.photo)?.photo ?? party.invite;
           const day = partyDate(party.date);
           return (
             <li class="reveal">

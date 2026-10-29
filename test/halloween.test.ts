@@ -92,7 +92,6 @@ describe("built Trick-R-Drink recap", () => {
       "h2 New this year",
       "h3 The Wanted Wall",
       "h3 The garage",
-      "h3 Garrett and Ainsley",
       "h2 The invite",
     ]);
   });
@@ -142,8 +141,8 @@ describe("built Trick-R-Drink recap", () => {
 
   it("names the drinks and who made them", () => {
     const drinks = readText($, section("The drinks"));
-    for (const drink of party.drinks) expect(drinks).toContain(drink);
-    expect(drinks).toContain(`Made by ${party.drinksBy}.`);
+    for (const drink of party.drinks.names) expect(drinks).toContain(drink);
+    expect(drinks).toContain(`Made by ${party.drinks.by}.`);
   });
 
   it("tells each highlight under its title", () => {
@@ -175,8 +174,8 @@ describe("built Trick-R-Drink recap", () => {
   // Keyed to the photo itself, so adding or dropping another photo never reshapes this one.
   it("clips each petal photo with the mask seeded by its own file name", () => {
     type Photo = { src: string; alt: string; shape?: string };
-    const petals: Photo[] = [...party.ourCostumes, ...party.highlights].flatMap((item: { photo?: Photo }) =>
-      item.photo && item.photo.shape !== "circle" ? [item.photo] : [],
+    const petals: Photo[] = [...party.ourCostumes, ...party.highlights, party.contest, party.drinks].flatMap(
+      (item: { photo?: Photo } | undefined) => (item?.photo && item.photo.shape !== "circle" ? [item.photo] : []),
     );
     expect(petals.length).toBeGreaterThan(0);
     for (const photo of petals) {
@@ -308,15 +307,35 @@ describe("built Trick-R-Drink recap", () => {
   });
 });
 
-describe("built recap with an invite", () => {
-  let $: CheerioAPI;
-  const invited = parse(
-    readFileSync(new URL("../src/content/halloween/2024.md", import.meta.url), "utf8").match(
+const partyData = (year: number) =>
+  parse(
+    readFileSync(new URL(`../src/content/halloween/${year}.md`, import.meta.url), "utf8").match(
       /^---\n([\s\S]*?)\n---\n/,
     )?.[1] ?? "",
   );
+
+describe("built recap with an invite", () => {
+  let $: CheerioAPI;
+  const invited = partyData(2024);
   beforeAll(() => {
     $ = builtPage("halloween/2024/index.html");
+  });
+  const section = (heading: string) =>
+    $("h2")
+      .filter((_, h) => $(h).text().trim() === heading)
+      .closest("section");
+
+  // The winners with the trophy belong with the contest, and the bar with the drinks, not under what was new.
+  it("shows the winners' photo in the contest and the bar's photo in the drinks", () => {
+    const alts = (heading: string) =>
+      section(heading)
+        .find("img")
+        .map((_, img) => $(img).attr("alt"))
+        .get();
+    expect(alts("The costume contest")).toEqual([invited.contest.photo.alt]);
+    expect(alts("The drinks")).toEqual([invited.drinks.photo.alt]);
+    expect(alts("New this year")).not.toContain(invited.contest.photo.alt);
+    expect(alts("New this year")).not.toContain(invited.drinks.photo.alt);
   });
 
   it("closes with The invite, after New this year", () => {
@@ -335,6 +354,24 @@ describe("built recap with an invite", () => {
     expect(img).toHaveLength(1);
     expect(img.attr("alt")).toBe(invited.invite.alt);
     expect(img.attr("style") ?? "").not.toMatch(/clip-path/);
+  });
+});
+
+describe("built recap known only from its invite", () => {
+  let $: CheerioAPI;
+  beforeAll(() => {
+    $ = builtPage("halloween/2021/index.html");
+  });
+
+  it("skips the sections it has nothing for and keeps the hero and the intro", () => {
+    expect(readText($, "h1")).toBe("HALLOWEEN COSTUME PARTY");
+    expect($("header time").attr("datetime")).toBe("2021-10-23");
+    expect(
+      $("main h2")
+        .map((_, h) => $(h).text().trim())
+        .get(),
+    ).toEqual(["The invite"]);
+    expect(readText($, "main")).toContain("A potluck, and everyone brought Mexican food.");
   });
 });
 
