@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-29T02:23:04.000Z",
+  "generatedAt": "2026-10-29T06:33:30.000Z",
   "title": "Design System: The DnA Casa",
   "extensions": {
     "colorMeta": {
@@ -173,7 +173,7 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The hero title: THE DnA CASA, a party's name, HALLOWEEN."
+        "purpose": "The hero title: THE DnA CASA, a party's name, HALLOWEEN. A party's name breaks between words or after a hyphen wherever it would overflow a 360px phone, the same breaks on every screen."
       },
       "headline": {
         "displayName": "Headline",
@@ -197,7 +197,7 @@
       },
       "display-phone": {
         "displayName": "Display (phone)",
-        "purpose": "The hero title at 760px and narrower."
+        "purpose": "The hero title at 760px and narrower. A party name with a word too wide to break sets --fit below 1, shrinking only that page's phone title just enough to fit."
       },
       "title-phone": {
         "displayName": "Title (phone)",
