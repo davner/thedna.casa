@@ -1,0 +1,15 @@
+set -eu
+# Every check CI runs, against a clean checkout of the commit being pushed, so uncommitted files can't make it pass.
+sha=""
+while read -r _ local_sha _ _; do
+  case "$local_sha" in *[!0]*) sha=$local_sha ;; esac
+done
+[ -n "$sha" ] || exit 0
+root=$(git rev-parse --show-toplevel)
+dir=$(mktemp -d)
+trap 'git worktree remove --force "$dir" >/dev/null 2>&1 || true; rm -rf "$dir"' EXIT
+git worktree add --detach --quiet "$dir" "$sha"
+ln -s "$root/node_modules" "$dir/node_modules"
+cd "$dir"
+# CI mode stops Playwright reusing a preview server another checkout left running on its port.
+CI=1 npm_config_verify_deps_before_run=false pnpm run check

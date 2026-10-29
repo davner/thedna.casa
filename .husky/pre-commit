@@ -1,1 +1,5 @@
 pnpm exec lint-staged
+# The fast checks, so a broken party file or type error stops the commit. The slow ones wait for the push.
+pnpm typecheck
+pnpm exec astro build --silent
+pnpm test
