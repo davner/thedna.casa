@@ -2,6 +2,8 @@
   "ci": {
     "collect": {
       "staticDistDir": "./dist",
+      "maxAutodiscoverUrls": 0,
+      "numberOfRuns": 1,
       "settings": { "chromeFlags": "--force-prefers-reduced-motion" }
     },
     "assert": {
