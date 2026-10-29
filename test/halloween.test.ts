@@ -124,6 +124,10 @@ describe("built Trick-R-Drink recap", () => {
     expect({ width, height, format }).toEqual({ width: 1200, height: 630, format: "png" });
   });
 
+  it("describes its link preview image by the party's name and year", () => {
+    expect($("head meta[property='og:image:alt']").attr("content")).toBe("A cream ghost over TRICK-R-DRINK · HALLOWEEN 2026 on Trona black");
+  });
+
   it("rings the stamp with the party's name and year", () => {
     expect($("header svg text").text()).toBe("TRICK-R-DRINK · HALLOWEEN 2026 · THE DnA CASA · ");
   });

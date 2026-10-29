@@ -2,10 +2,10 @@
 import Base from "./Base.astro";
 import Footer from "../components/Footer.astro";
 import { palette } from "../palette";
-interface Props { title: string; description: string; shareImage?: string }
-const { title, description, shareImage } = Astro.props;
+interface Props { title: string; description: string; share?: { path: string; alt: string } }
+const { title, description, share } = Astro.props;
 ---
-<Base title={title} description={description} themeColor={palette.trona} shareImage={shareImage}>
+<Base title={title} description={description} themeColor={palette.trona} share={share}>
   <slot />
   <Footer />
 </Base>
