@@ -1,14 +1,14 @@
 ---
 const path = Astro.url.pathname;
 const links = [
-  { href: "/", label: "Casa" },
+  { href: "/", label: "Casa", lang: "es" },
   { href: "/halloween/", label: "Halloween" },
 ];
 const current = (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
 ---
 <nav class="nav" aria-label="Site">
   <ul class="inline">
-    {links.map((l) => <li><a href={l.href} aria-current={current(l.href) ? "page" : undefined}>{l.label}</a></li>)}
+    {links.map((l) => <li><a href={l.href} lang={l.lang} aria-current={current(l.href) ? "page" : undefined}>{l.label}</a></li>)}
   </ul>
 </nav>
 

@@ -25,6 +25,19 @@ describe("shipped pages", () => {
     }
   });
 
+  it("link Casa, in Spanish, home and Halloween to the party list from every nav list", () => {
+    for (const page of shippedPages()) {
+      const $ = builtPage(page);
+      $("nav ul").each((_, list) => {
+        const links = $(list).find("a").map((_, a) => ({ text: $(a).text().trim(), href: $(a).attr("href"), lang: $(a).attr("lang") })).get();
+        expect(links, page).toEqual([
+          { text: "Casa", href: "/", lang: "es" },
+          { text: "Halloween", href: "/halloween/", lang: undefined },
+        ]);
+      });
+    }
+  });
+
   it("mark the link to the page's own section, and only that one, as the current page", () => {
     const section: Record<string, string> = {
       "index.html": "/",
