@@ -15,7 +15,7 @@ Astro static site. No page ships JavaScript, and every page works with JavaScrip
 - Halloween parties live in an Astro content collection: one Markdown file per party in `src/content/halloween/`, typed by a schema in `src/content.config.ts`. A party file missing a required field fails the build.
 - Page-to-page crossfades use CSS `@view-transition`, not Astro's client router, so no JavaScript ships.
 - roughjs and svgo are not used.
-- Checks: on every push to any branch and on every pull request, one GitHub Actions workflow runs the unit tests (vitest, which build the site), the type check, the linter, html-validate (HTML rules) on the built pages, Playwright (scripted real browsers) in Chromium, Firefox and WebKit with an axe accessibility scan of each page, and Lighthouse CI (Google's page audit) against budgets for accessibility, best practices, layout shift and image weight.
+- Checks: on every push to any branch and on every pull request, one GitHub Actions workflow runs the unit tests (vitest, which build the site), the type check, the linter, html-validate (HTML rules) on the built pages, Playwright (scripted real browsers) in Chromium, Firefox and WebKit with an axe accessibility scan of each page, and Lighthouse CI (Google's page audit) against budgets for accessibility, best practices, layout shift and image weight. Renovate (a bot) opens a weekly batch of pull requests to keep dependencies current.
 - Deploy: on a push to main, once every check passes, the same workflow deploys the tested build to GitHub Pages; any failing check stops the deploy. Canonical domain thedna.casa; www redirects to the apex.
 
 ## Users
