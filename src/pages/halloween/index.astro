@@ -22,7 +22,7 @@ const parties = newestFirst(await getCollection("halloween"));
               <a href={`/halloween/${party.year}/`}>
                 <span class="year">{party.year}</span>{" "}
                 <span class="what"><span class="name">{party.name}</span>{" "}<span class="theme">A {party.theme} Halloween</span></span>
-                {photo && <Image class="thumb" src={photo.src} alt="" width={240} height={240} />}
+                {photo && <Image class="thumb" src={photo.src} alt="" width={224} height={224} widths={[112, 224]} sizes="clamp(72px, 10vw, 112px)" />}
               </a>
             </li>
           );

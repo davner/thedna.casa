@@ -21,9 +21,9 @@ type Photo = NonNullable<(typeof party.ourCostumes)[number]["photo"]>;
 const petals = [...party.ourCostumes, ...party.highlights].flatMap((item) => (item.photo?.shape === "petal" ? [item.photo] : []));
 const petalId = (photo: Photo) => `petal-${photo.seed}`;
 const shapes = {
-  petal: { clip: (photo: Photo) => `url(#${petalId(photo)})`, size: 880 },
-  circle: { clip: () => "circle(50%)", size: 640 },
-} satisfies Record<Photo["shape"], { clip: (photo: Photo) => string; size: number }>;
+  petal: { clip: (photo: Photo) => `url(#${petalId(photo)})`, shown: 500, phone: 300 },
+  circle: { clip: () => "circle(50%)", shown: 340, phone: 220 },
+} satisfies Record<Photo["shape"], { clip: (photo: Photo) => string; shown: number; phone: number }>;
 const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
 ---
 <Halloween title={`${party.name} · The DnA Casa`} share={partyShare(party)} description={`Our ${party.theme} Halloween, ${party.year}: costumes, the contest, the drinks and what was new.`}>
@@ -43,7 +43,7 @@ const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
       <div class="costume-grid">
         {party.ourCostumes.map((c) => (
           <figure class:list={[c.photo?.shape ?? "petal", "reveal"]}>
-            {c.photo && <Image class="photo" style={clip(c.photo)} src={c.photo.src} alt={c.photo.alt} width={shapes[c.photo.shape].size} height={shapes[c.photo.shape].size} />}
+            {c.photo && <Image class="photo" style={clip(c.photo)} src={c.photo.src} alt={c.photo.alt} width={2 * shapes[c.photo.shape].shown} height={2 * shapes[c.photo.shape].shown} widths={[shapes[c.photo.shape].shown, 2 * shapes[c.photo.shape].shown]} sizes={`(max-width: 760px) ${shapes[c.photo.shape].phone}px, ${shapes[c.photo.shape].shown}px`} />}
             <figcaption>{c.who} as <span lang={c.asLang}>{c.as}</span></figcaption>
           </figure>
         ))}
@@ -72,7 +72,7 @@ const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
       <ul>
         {party.highlights.map((h, i) => (
           <li class:list={["reveal", { flip: i % 2 === 1, plain: !h.photo }]}>
-            {h.photo && <Image class="photo" style={clip(h.photo)} src={h.photo.src} alt={h.photo.alt} width={720} height={720} />}
+            {h.photo && <Image class="photo" style={clip(h.photo)} src={h.photo.src} alt={h.photo.alt} width={840} height={840} widths={[420, 840]} sizes="(max-width: 760px) 280px, 420px" />}
             <div><h3>{h.title}</h3><p>{h.text}</p></div>
           </li>
         ))}

@@ -251,7 +251,7 @@ The Trona field hanging into the cream under a Halloween hero: 18 seeded drips (
 - **Fill:** the member's color, or their portrait cropped to the circle. Each portrait has one plain line of alt text, kept on the member's data: who it is and what they are doing or wearing.
 
 ### Photos
-Large photos (the welcome photo, a couple's costume photo, new-this-year photos) are clipped by the seeded petal mask, each with its own seed, 420 to 500px square at most (280 to 300px on phones). Smaller photos are circles: the pets' costume photo (340px, 220px on phones) and the Halloween list thumbnails (72 to 112px), which show a party's first costume photo. In a party file a photo is a petal unless it says `shape: circle`. With no welcome photo, the petal shape itself shows, filled in cheek pink.
+Large photos (the welcome photo, a couple's costume photo, new-this-year photos) are clipped by the seeded petal mask, each with its own seed, 420 to 500px square at most (280 to 300px on phones). Smaller photos are circles: the pets' costume photo (340px, 220px on phones) and the Halloween list thumbnails (72 to 112px), which show a party's first costume photo. In a party file a photo is a petal unless it says `shape: circle`. With no welcome photo, the petal shape itself shows, filled in cheek pink. Every photo ships at its largest shown width and at twice that, so 2x screens get a sharp file and 1x screens a small one.
 
 ### Kicker
 A small serif-bold word in terracotta above a section heading ("Bienvenidos"). It's the only place a Spanish word sits above an English heading.
