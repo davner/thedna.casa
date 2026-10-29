@@ -30,14 +30,14 @@ const clip = (photo: Photo) => `clip-path:${photo.shape === "circle" ? "circle(5
     </svg>
 
     <section class="intro">
-      <div class="intro-text"><Content /></div>
+      <div class="intro-text reveal"><Content /></div>
     </section>
 
     <section class="costumes" aria-labelledby="costumes-h">
-      <h2 id="costumes-h">Our costumes</h2>
+      <h2 id="costumes-h" class="reveal">Our costumes</h2>
       <div class="costume-grid">
         {p.ourCostumes.map((c) => (
-          <figure class={c.photo?.shape ?? "petal"}>
+          <figure class:list={[c.photo?.shape ?? "petal", "reveal"]}>
             {c.photo && <Image class="photo" style={clip(c.photo)} src={c.photo.src} alt={c.photo.alt} width={c.photo.shape === "circle" ? 640 : 880} height={c.photo.shape === "circle" ? 640 : 880} />}
             <figcaption>{c.who} as <span lang={c.asLang}>{c.as}</span></figcaption>
           </figure>
@@ -46,27 +46,27 @@ const clip = (photo: Photo) => `clip-path:${photo.shape === "circle" ? "circle(5
     </section>
 
     <section class="contest" aria-labelledby="contest-h">
-      <div>
+      <div class="reveal">
         <h2 id="contest-h">The costume contest</h2>
         <p>{p.contest.rule}</p>
         <p class="result">{p.contest.result}</p>
       </div>
-      <ul class="winners">
+      <ul class="winners reveal">
         {p.contest.winners.map((w) => <li><span class="names">{w.names}</span>{" "}<span class="as">as {w.costume}</span></li>)}
       </ul>
     </section>
 
-    <section class="drinks" aria-labelledby="drinks-h">
+    <section class="drinks reveal" aria-labelledby="drinks-h">
       <h2 id="drinks-h">The drinks</h2>
       <p class="drink-list">{p.drinks.map((d, i) => <>{i > 0 && <span class="amp"> & </span>}<span class="drink">{d}</span></>)}</p>
       {p.drinksBy && <p class="by">Made by {p.drinksBy}.</p>}
     </section>
 
     <section class="new" aria-labelledby="new-h">
-      <h2 id="new-h">New this year</h2>
+      <h2 id="new-h" class="reveal">New this year</h2>
       <ul>
         {p.highlights.map((h, i) => (
-          <li class:list={{ flip: i % 2 === 1, plain: !h.photo }}>
+          <li class:list={["reveal", { flip: i % 2 === 1, plain: !h.photo }]}>
             {h.photo && <Image class="photo" style={clip(h.photo)} src={h.photo.src} alt={h.photo.alt} width={720} height={720} />}
             <div><h3>{h.title}</h3><p>{h.text}</p></div>
           </li>
@@ -75,3 +75,71 @@ const clip = (photo: Photo) => `clip-path:${photo.shape === "circle" ? "circle(5
     </section>
   </main>
 </Halloween>
+
+<style>
+  .recap { background: var(--cream-page); color: var(--mole); }
+  .defs { position: absolute; width: 0; height: 0; }
+  section { padding: 0 clamp(20px, 6vw, 96px) clamp(80px, 10vw, 140px); }
+  h2 { color: var(--terra); }
+  h3 { font-family: var(--font-serif); font-weight: 700; font-size: 1.7rem; letter-spacing: -0.02em; margin: 0; }
+  p { font-size: clamp(1.05rem, 1.4vw, 1.2rem); line-height: 1.6; margin: 0; }
+  .photo { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+  figure { margin: 0; }
+  figcaption { margin-top: 18px; font-size: 1rem; text-align: center; }
+
+  .intro { padding-top: clamp(56px, 7vw, 96px); text-align: center; }
+  .intro-text { max-width: 30ch; margin: 0 auto; }
+  .intro-text :global(p) { font-family: var(--font-serif); font-style: italic; font-size: clamp(1.3rem, 2.2vw, 1.8rem); line-height: 1.4; letter-spacing: 0; }
+
+  .costumes h2 { max-width: 1100px; margin: 0 auto; }
+  .costume-grid { display: grid; grid-template-columns: 1.25fr 0.85fr; gap: clamp(32px, 6vw, 96px); align-items: start; max-width: 1100px; margin: 48px auto 0; }
+  .petal .photo { max-width: 500px; margin: 0 auto; }
+  /* The smaller circle sits lower than the petal beside it, so the pair reads as a step, not a row. */
+  .circle { margin-top: clamp(80px, 14vw, 200px); }
+  .circle .photo { max-width: 340px; margin: 0 auto; }
+
+  .contest { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(32px, 6vw, 96px); align-items: end; max-width: 1100px; margin: 0 auto; box-sizing: content-box; }
+  .contest p { margin-top: 20px; max-width: 34ch; }
+  .contest .result { margin-top: 8px; font-family: var(--font-serif); font-weight: 700; font-size: 1.3rem; letter-spacing: -0.02em; color: var(--terra); }
+  .winners { list-style: none; margin: 0; padding: 0; }
+  .winners li { display: grid; gap: 4px; padding: 20px 0; border-top: 1px solid color-mix(in srgb, var(--mole) 18%, transparent); }
+  .winners li:last-child { border-bottom: 1px solid color-mix(in srgb, var(--mole) 18%, transparent); }
+  .names { font-family: var(--font-serif); font-weight: 700; font-size: 1.7rem; letter-spacing: -0.02em; line-height: 1.1; }
+  .as { font-size: 1rem; }
+
+  .drinks > * { max-width: 1100px; margin-inline: auto; }
+  .drink-list { margin-top: 28px; font-family: var(--font-serif); font-size: 1.7rem; line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance; }
+  .drink { font-weight: 700; }
+  .amp { font-style: italic; letter-spacing: 0; }
+  .by { margin-top: 12px; font-size: 1rem; }
+
+  .new h2 { max-width: 1100px; margin: 0 auto; }
+  .new ul { list-style: none; padding: 0; margin: 40px auto 0; max-width: 1100px; display: grid; gap: clamp(48px, 7vw, 96px); }
+  .new li { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+  .new li .photo { max-width: 420px; justify-self: center; }
+  .new li.flip .photo { order: 1; }
+  .new li p { margin-top: 12px; max-width: 34ch; }
+  .new li.plain { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .photo { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .photo:hover { transform: scale(1.02) rotate(-0.6deg); }
+  }
+
+  @media (max-width: 760px) {
+    section { padding: 0 24px 72px; }
+    .intro { padding-top: 40px; }
+    h2 { text-wrap: balance; }
+    h3, .names, .drink-list { font-size: 1.5rem; }
+    .costume-grid { grid-template-columns: 1fr; margin-top: 28px; gap: 40px; }
+    .petal .photo { max-width: 300px; }
+    .circle { margin-top: 0; }
+    .circle .photo { max-width: 220px; }
+    .contest { grid-template-columns: 1fr; gap: 28px; }
+    .new li, .new li.flip { grid-template-columns: 1fr; gap: 20px; }
+    .new li.flip .photo { order: 0; }
+    .new li .photo { max-width: 280px; }
+    .new li > div { text-align: center; }
+    .new li p { margin-inline: auto; }
+  }
+</style>

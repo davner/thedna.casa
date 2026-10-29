@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import type { CheerioAPI } from "cheerio";
 import { parse } from "yaml";
-import { builtPage, readText } from "./site";
+import { builtPage, pageCss, readText } from "./site";
 
 // The party file itself is the source of truth for the recap's words.
 const partyFile = readFileSync(new URL("../src/content/halloween/2026.md", import.meta.url), "utf8");
@@ -95,5 +95,23 @@ describe("built Trick-R-Drink recap", () => {
 
   it("signs off in the footer with Con cariño and the build year", () => {
     expect(readText($, "footer")).toBe(`Con cariño · © ${new Date().getFullYear()} The DnA Casa`);
+  });
+
+  // Browsers without scroll-driven animation must show every section still, never stuck invisible.
+  it("fades sections up on scroll only where the browser supports scroll timelines", () => {
+    const reveals: string[] = [];
+    for (const root of pageCss($)) {
+      // A timeline folded into the animation shorthand is dropped as invalid by Chrome, so only the longhand counts.
+      root.walkDecls("animation-timeline", (decl) => {
+        const supports = [];
+        for (let node = decl.parent; node; node = node.parent as typeof node) {
+          if (node.type === "atrule" && (node as { name: string }).name === "supports") supports.push((node as { params: string }).params);
+        }
+        if (/view\(/.test(decl.value) && supports.some((s) => s.includes("animation-timeline"))) reveals.push(decl.parent?.toString().split("{")[0].trim() ?? "");
+      });
+    }
+    expect(reveals.length).toBeGreaterThan(0);
+    const revealed = reveals.map((selector) => $(selector.replace(/\[data-astro-cid-[^\]]+\]/g, "")).length).reduce((a, b) => a + b, 0);
+    expect(revealed).toBeGreaterThanOrEqual(5);
   });
 });

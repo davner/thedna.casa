@@ -12,4 +12,11 @@ const { title, description } = Astro.props;
 
 <style is:global>
   body { background: var(--trona); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .reveal { animation-name: rise; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
+    }
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(28px); } }
 </style>
