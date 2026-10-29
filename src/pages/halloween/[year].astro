@@ -15,7 +15,7 @@ const { party } = Astro.props;
 const p = party.data;
 const { Content } = await render(party);
 const upper = p.name.toUpperCase();
-// A hyphenated name breaks after its last hyphen, so TRICK-R- sits over DRINK; any other name stays on one line.
+// Breaking after the last hyphen leaves a visible hyphen at the line end, so the name still reads as one word.
 const titleLines = upper.split(/(?<=-)(?=[^-]*$)/);
 type Photo = NonNullable<(typeof p.ourCostumes)[number]["photo"]>;
 const petals = [...p.ourCostumes, ...p.highlights].flatMap((item) => (item.photo?.shape === "petal" ? [item.photo] : []));

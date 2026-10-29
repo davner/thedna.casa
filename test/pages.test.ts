@@ -158,7 +158,7 @@ describe("shipped pages", () => {
     }
   });
 
-  // A sparkle is a four-point star: one closed path of exactly four quadratic curves.
+  // The retired sparkle was one closed path of four quadratic curves, and no other drawing has that shape.
   it("draw no sparkle in the hero", () => {
     for (const page of shippedPages()) {
       const $ = builtPage(page);

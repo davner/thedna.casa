@@ -124,7 +124,7 @@ const catmullRom = (pts: Pt[], perSegment: number): Pt[] => {
 
 const polygon = (pts: Pt[]) => `M${pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join("L")}Z`;
 
-// A dome over a scalloped hem in a 100-unit box; the settings Dan picked in the prototype, so changing any redraws the approved ghost.
+// These numbers are the approved ghost from the prototype; changing any of them redraws it.
 export const ghost = (seed: number): string => {
   const noise = createNoise2D(mulberry32(seed));
   const dome: Pt[] = Array.from({ length: 9 }, (_, i) => {
@@ -166,7 +166,7 @@ export const menuStrokes = (seed: number): string[] => {
   return [12, 20, 28].map((y) => brush.stroke(line([6, y], [34, y + 0.5], 10), 4.5));
 };
 
-// The Beso settings Dan picked in the prototype; changing any of them redraws the approved logo.
+// These numbers are the approved Beso from the prototype; changing any of them redraws the logo.
 const roughness = 0.5;
 const petalScale = 0.72;
 const moonThinness = 0.2;
@@ -279,7 +279,7 @@ export const marigoldMark = (seed: number) => {
   };
 };
 
-// A hanging edge in a w by h box: each drip is a neck with a round bulb and flared shoulders, written as a height for every x.
+// One height per x, so neighbouring drips merge through max() instead of crossing each other.
 export const drips = (seed: number, w: number, h: number, count: number): string => {
   const rand = mulberry32(seed);
   const noise = createNoise2D(mulberry32(seed + 1));
