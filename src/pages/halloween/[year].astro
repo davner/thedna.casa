@@ -23,7 +23,7 @@ const seed = (photo: Photo) => 301 + petals.indexOf(photo);
 const petalId = (photo: Photo) => `petal-${seed(photo)}`;
 const clip = (photo: Photo) => `clip-path:${photo.shape === "circle" ? "circle(50%)" : `url(#${petalId(photo)})`}`;
 ---
-<Halloween title={`${p.name} · The DnA Casa`} description={`Our ${p.theme} Halloween, ${p.year}: costumes, the contest, the drinks and what was new.`}>
+<Halloween title={`${p.name} · The DnA Casa`} shareImage={`/halloween/${p.year}/share.png`} description={`Our ${p.theme} Halloween, ${p.year}: costumes, the contest, the drinks and what was new.`}>
   <HalloweenHero title={titleLines} subtitle={`Our ${p.theme} Halloween`} ring={`${upper} · HALLOWEEN ${p.year} · THE DnA CASA · `} />
   <main class="recap">
     <Drips />

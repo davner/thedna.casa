@@ -2,7 +2,8 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { readdirSync, readFileSync } from "node:fs";
 import type { CheerioAPI } from "cheerio";
 import { parse } from "yaml";
-import { builtPage, pageCss, readText } from "./site";
+import sharp from "sharp";
+import { builtFileExists, builtFilePath, builtPage, pageCss, readText } from "./site";
 import { drips, ghost, marigoldMark } from "../src/lib/shapes";
 import { palette } from "../src/palette";
 
@@ -110,6 +111,17 @@ describe("built Trick-R-Drink recap", () => {
   it("names the party in the title and the link preview title", () => {
     expect($("head title").text()).toBe("Trick-R-Drink · The DnA Casa");
     expect($("head meta[property='og:title']").attr("content")).toBe("Trick-R-Drink · The DnA Casa");
+  });
+
+  // A recap shared in a message should look like that party, not like the home page.
+  it("points its link preview at its own 1200x630 PNG that exists", async () => {
+    const image = $("head meta[property='og:image']").attr("content") ?? "";
+    expect(image).toMatch(/^https:\/\/thedna\.casa\/.+\.png$/);
+    expect(image).not.toBe("https://thedna.casa/share.png");
+    const path = new URL(image).pathname;
+    expect(builtFileExists(path), path).toBe(true);
+    const { width, height, format } = await sharp(builtFilePath(path)).metadata();
+    expect({ width, height, format }).toEqual({ width: 1200, height: 630, format: "png" });
   });
 
   it("rings the stamp with the party's name and year", () => {
