@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import Halloween from "../../layouts/Halloween.astro";
+import Drips from "../../components/halloween/Drips.astro";
 import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
 
 const parties = (await getCollection("halloween")).sort((a, b) => b.data.year - a.data.year);
@@ -9,6 +10,7 @@ const parties = (await getCollection("halloween")).sort((a, b) => b.data.year - 
 <Halloween title="Halloween · The DnA Casa" description="Every Halloween party at the casa, newest first.">
   <HalloweenHero title={["HALLOWEEN"]} subtitle="October at the casa" />
   <main class="list">
+    <Drips />
     <section>
       <h2 class="reveal">The parties</h2>
       <ul>
@@ -31,7 +33,7 @@ const parties = (await getCollection("halloween")).sort((a, b) => b.data.year - 
 
 <style>
   .list { background: var(--cream-page); color: var(--mole); }
-  section { padding: clamp(56px, 7vw, 96px) clamp(20px, 6vw, 96px) clamp(96px, 11vw, 150px); max-width: 900px; margin: 0 auto; box-sizing: content-box; }
+  section { padding: 200px clamp(20px, 6vw, 96px) clamp(96px, 11vw, 150px); max-width: 900px; margin: 0 auto; box-sizing: content-box; }
   h2 { color: var(--terra); }
   ul { list-style: none; margin: 36px 0 0; padding: 0; }
   li { border-top: 1px solid color-mix(in srgb, var(--mole) 18%, transparent); }
@@ -52,7 +54,7 @@ const parties = (await getCollection("halloween")).sort((a, b) => b.data.year - 
   }
 
   @media (max-width: 760px) {
-    section { padding: 40px 24px 72px; }
+    section { padding: 136px 24px 72px; }
     .year, .name { font-size: 1.5rem; }
     a { gap: 16px; }
   }

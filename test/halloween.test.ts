@@ -11,6 +11,31 @@ const partyFile = readFileSync(new URL("../src/content/halloween/2026.md", impor
 const [, frontMatter, intro] = partyFile.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/) ?? [];
 const party = parse(frontMatter);
 
+const expectDripEdge = ($: CheerioAPI) => {
+  const edge = $("header + main > svg").first();
+  expect(edge.attr("aria-hidden")).toBe("true");
+  const fill = edge.find("path");
+  expect(fill).toHaveLength(1);
+  expect(fill.attr("d")).toBe(drips(66, 2400, 160, 18));
+  expect(fill.attr("fill")).toBe(palette.trona);
+};
+
+// The drips overlap the top of the cream block, so the first content must start below the longest one.
+const clearanceBelowDrips = ($: CheerioAPI, selector: string, phone: boolean) => {
+  const value = (target: string, prop: string) => {
+    let found: string | undefined;
+    for (const root of pageCss($)) {
+      root.walkDecls(new RegExp(`^${prop}(-top)?$`), (decl) => {
+        const rule = decl.parent as { selector?: string; parent?: { type: string; params?: string } };
+        const at = rule.parent?.type === "atrule" ? (rule.parent.params ?? "").replace(/\s+/g, "") : "";
+        if ((phone ? /760px/.test(at) : at === "") && rule.selector?.replace(/\[data-astro-cid-[^\]]+\]/g, "") === target) found = decl.value.split(/\s+/)[0];
+      });
+    }
+    return parseFloat(found ?? "NaN");
+  };
+  return value(selector, "padding") - value(".drips", "height");
+};
+
 describe("built Trick-R-Drink recap", () => {
   let $: CheerioAPI;
   beforeAll(() => {
@@ -111,12 +136,7 @@ describe("built Trick-R-Drink recap", () => {
   });
 
   it("hangs the Trona drip edge into the cream under the hero, hidden from assistive tech", () => {
-    const edge = $("header + main > svg").first();
-    expect(edge.attr("aria-hidden")).toBe("true");
-    const fill = edge.find("path");
-    expect(fill).toHaveLength(1);
-    expect(fill.attr("d")).toBe(drips(66, 2400, 160, 18));
-    expect(fill.attr("fill")).toBe(palette.trona);
+    expectDripEdge($);
   });
 
   it("runs the drips down once on load, in half a second at most, only without a reduced-motion preference", () => {
@@ -145,22 +165,8 @@ describe("built Trick-R-Drink recap", () => {
     expect(guards).toContainEqual(expect.stringContaining("(prefers-reduced-motion:no-preference)"));
   });
 
-  // The drips overlap the top of the cream block, so the intro must start below the longest one.
   it.each([["desktop", false], ["phone", true]])("starts the intro below the drips on %s", (_, phone) => {
-    const value = (selector: string, prop: string) => {
-      let found: string | undefined;
-      for (const root of pageCss($)) {
-        root.walkDecls(prop, (decl) => {
-          const rule = decl.parent as { selector?: string; parent?: { type: string; params?: string } };
-          const at = rule.parent?.type === "atrule" ? (rule.parent.params ?? "").replace(/\s+/g, "") : "";
-          if ((phone ? /760px/.test(at) : at === "") && rule.selector?.replace(/\[data-astro-cid-[^\]]+\]/g, "") === selector) found = decl.value;
-        });
-      }
-      return found;
-    };
-    const dripHeight = parseFloat(value(".drips", "height") ?? "NaN");
-    const introTop = parseFloat(value(".intro", "padding-top") ?? "NaN");
-    expect(introTop - dripHeight).toBeGreaterThanOrEqual(24);
+    expect(clearanceBelowDrips($, ".intro", phone)).toBeGreaterThanOrEqual(24);
   });
 
   it("tints the phone's browser chrome Trona black", () => {
@@ -209,6 +215,14 @@ describe("built Halloween list", () => {
     expect($("h1").text().trim()).toBe("HALLOWEEN");
     expect($("header p").filter((_, p) => $(p).text().trim() === "October at the casa")).toHaveLength(1);
     expect($("header svg text, .stamp")).toHaveLength(0);
+  });
+
+  it("hangs the Trona drip edge into the cream under the hero, hidden from assistive tech", () => {
+    expectDripEdge($);
+  });
+
+  it.each([["desktop", false], ["phone", true]])("starts the parties below the drips on %s", (_, phone) => {
+    expect(clearanceBelowDrips($, "section", phone)).toBeGreaterThanOrEqual(24);
   });
 
   it("is titled Halloween in the tab and the link preview", () => {

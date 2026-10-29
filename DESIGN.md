@@ -176,7 +176,7 @@ Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), w
 
 **The Wave On Screen Rule.** At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.
 
-The Halloween list has a short hero with no stamp, then one row per party, newest first: the year, the name over the theme, and a small circle photo. Rows are links, divided by hairlines.
+The Halloween list has a short hero with no stamp, then the drips, then one row per party, newest first: the year, the name over the theme, and a small circle photo. Rows are links, divided by hairlines.
 
 One breakpoint, at 760px. Below it the page is one centered column ("Stamp first"):
 - The stamp comes first, then the wordmark and the subtitle.
