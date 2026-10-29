@@ -1,0 +1,40 @@
+import { readdirSync, readFileSync } from "node:fs";
+import { describe, expect, it } from "vitest";
+
+const src = new URL("../src/", import.meta.url);
+
+// The built CSS names a scoped rule only by a hash, so this one check reads the source.
+const filesWithStyle = () =>
+  readdirSync(src, { recursive: true, encoding: "utf8" })
+    .filter((file) => file.endsWith(".astro"))
+    .filter((file) => /<style[\s>]/.test(readFileSync(new URL(file, src), "utf8")))
+    .sort();
+
+// Masks, clip paths, keyframes and SVG geometry that utilities cannot express.
+const handMade = [
+  "components/Stamp.astro",
+  "components/halloween/Drips.astro",
+  "components/Welcome.astro",
+  "components/Nav.astro",
+  "components/halloween/Trophy.astro",
+  "layouts/Base.astro",
+];
+
+// Shrinks as each piece moves to utility classes, and is gone when the migration is done.
+const stillToMigrate = [
+  "components/Button.astro",
+  "components/Footer.astro",
+  "components/Hero.astro",
+  "components/HeroWords.astro",
+  "components/Members.astro",
+  "components/halloween/HalloweenHero.astro",
+  "layouts/Halloween.astro",
+  "pages/halloween/[year].astro",
+  "pages/halloween/index.astro",
+];
+
+describe("scoped styles", () => {
+  it("live only in the hand-made pieces and the files still to migrate", () => {
+    expect(filesWithStyle()).toEqual([...handMade, ...stillToMigrate].sort());
+  });
+});
