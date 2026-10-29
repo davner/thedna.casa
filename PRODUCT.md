@@ -37,11 +37,11 @@ The site is the household itself. Nothing on it could belong to another family: 
 - Pages:
   - Home: hero, a welcome with one photo, the four members ("Who lives here"), footer with the year.
   - `/halloween/`: a hero with the ghost stamp, then every party, one row per year, newest first: year, party name, theme and a small photo.
-  - `/halloween/<year>/`: one party's recap: hero with the party name and theme (no stamp), intro, our costumes, the costume contest, the drinks, new this year.
+  - `/halloween/<year>/`: one party's recap: hero with the party name and theme (no stamp), intro, our costumes, the costume contest, the drinks, new this year, and the invite when there is one.
 - A navbar on every page links "Casa" and "Halloween". A section joins the navbar only when it ships.
 - Nothing to sell, no sign-up, no contact link, no CMS, no analytics, no search, no RSS, no dark mode.
 - Copy and member data live in a TypeScript content module, `src/content.ts`, edited in the repo by Dan and Claude. Changing the words never means touching layout code.
-- Each party file holds its year, name, theme, intro (the Markdown body), drinks and who made them, our costumes, the contest (rule, result, winners by first names and costume) and highlights. A photo sits on the costume or highlight it shows, and is a petal unless it says `shape: circle`.
+- Each party file holds its year, name, theme, intro (the Markdown body), drinks and who made them, our costumes, the contest (rule, result, winners by first names and costume), highlights and, optionally, the invite (a screenshot of the card, shown whole). A photo sits on the costume or highlight it shows, and is a petal unless it says `shape: circle`.
 - Photos go in `src/assets/photos/` (party photos in `src/assets/photos/halloween/<year>/`) and are imported in `src/content.ts` or a party file. They must be shown through Astro's `Image` or `Picture` component, which strips EXIF and GPS. Never link a photo's raw source URL: that ships the original file with its GPS.
 - Without photos the welcome shows a pink petal shape and each member shows a solid color circle.
 - Phone layout (760px and narrower, variant 1 "Stamp first"): one centered column that opens with the turning stamp above the wordmark and "Dan & Alexis", a short hero so the wave and the cream welcome start on the first screen, the welcome words before the petal photo, and the members as rows with a small circle on the left and the name and one-liner on the right.

@@ -194,7 +194,7 @@ Two-column grids on wide screens, padded by a fluid gutter (`spacing.gutter`), w
 
 **The Wave On Screen Rule.** At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.
 
-A party recap has a short hero with no stamp: the party name, the theme and the squiggle (its top padding grows to 120 to 180px, 104px on phones). Then the drips, then its sections in one column at most 1100px wide: the intro (centered), our costumes (a large petal photo beside a smaller circle photo set lower), the costume contest (heading, rule and result beside the winners as rows), the drinks, and new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own). Section headings sit on the left.
+A party recap has a short hero with no stamp: the party name, the theme and the squiggle (its top padding grows to 120 to 180px, 104px on phones). Then the drips, then its sections in one column at most 1100px wide: the intro (centered), our costumes (a large petal photo beside a smaller circle photo set lower), the costume contest (heading, rule and result beside the winners as rows), the drinks, new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own), and, when the party file has one, the invite (the card shown whole, never masked, 420px wide, 280px on phones, tipped -2deg like a scrapbook cutting). Section headings sit on the left.
 
 The Halloween list uses the full hero, with the stamp, then the drips, then one row per party, newest first: the year, the name over the theme, and a small circle photo. Rows are links, divided by hairlines.
 

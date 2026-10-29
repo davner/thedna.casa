@@ -300,6 +300,36 @@ describe("built Trick-R-Drink recap", () => {
   });
 });
 
+describe("built recap with an invite", () => {
+  let $: CheerioAPI;
+  const invited = parse(
+    readFileSync(new URL("../src/content/halloween/2024.md", import.meta.url), "utf8").match(
+      /^---\n([\s\S]*?)\n---\n/,
+    )?.[1] ?? "",
+  );
+  beforeAll(() => {
+    $ = builtPage("halloween/2024/index.html");
+  });
+
+  it("closes with The invite, after New this year", () => {
+    const sections = $("main > section h2")
+      .map((_, h) => $(h).text().trim())
+      .get();
+    expect(sections.slice(-2)).toEqual(["New this year", "The invite"]);
+  });
+
+  // An invite is mostly words, so a petal or circle mask would cut them off.
+  it("shows the invite whole, with its alt text from the party file", () => {
+    const img = $("h2")
+      .filter((_, h) => $(h).text().trim() === "The invite")
+      .closest("section")
+      .find("img");
+    expect(img).toHaveLength(1);
+    expect(img.attr("alt")).toBe(invited.invite.alt);
+    expect(img.attr("style") ?? "").not.toMatch(/clip-path/);
+  });
+});
+
 // Every party file, read straight from disk, so the list is checked against what the collection holds.
 const partyDir = new URL("../src/content/halloween/", import.meta.url);
 const parties = readdirSync(partyDir)

@@ -35,6 +35,7 @@ const halloween = defineCollection({
         winners: z.array(z.object({ names: z.string(), costume: z.string() })),
       }),
       highlights: z.array(z.object({ title: z.string(), text: z.string(), photo: photo.optional() })),
+      invite: z.object({ src: image(), alt: z.string().min(1) }).optional(),
     });
   },
 });
