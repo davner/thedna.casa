@@ -15,13 +15,13 @@ const parties = newestFirst(await getCollection("halloween"));
     <section>
       <h2 class="reveal">The parties</h2>
       <ul>
-        {parties.map(({ data: p }) => {
-          const photo = p.ourCostumes.find((c) => c.photo)?.photo;
+        {parties.map(({ data: party }) => {
+          const photo = party.ourCostumes.find((c) => c.photo)?.photo;
           return (
             <li class="reveal">
-              <a href={`/halloween/${p.year}/`}>
-                <span class="year">{p.year}</span>{" "}
-                <span class="what"><span class="name">{p.name}</span>{" "}<span class="theme">A {p.theme} Halloween</span></span>
+              <a href={`/halloween/${party.year}/`}>
+                <span class="year">{party.year}</span>{" "}
+                <span class="what"><span class="name">{party.name}</span>{" "}<span class="theme">A {party.theme} Halloween</span></span>
                 {photo && <Image class="thumb" src={photo.src} alt="" width={240} height={240} />}
               </a>
             </li>

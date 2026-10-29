@@ -11,14 +11,14 @@ export async function getStaticPaths() {
   const parties = await getCollection("halloween");
   return parties.map((party) => ({ params: { year: String(party.data.year) }, props: { party } }));
 }
-const { party } = Astro.props;
-const p = party.data;
-const { Content } = await render(party);
-const upper = p.name.toUpperCase();
+const { party: entry } = Astro.props;
+const party = entry.data;
+const { Content } = await render(entry);
+const upper = party.name.toUpperCase();
 // Breaking after the last hyphen leaves a visible hyphen at the line end, so the name still reads as one word.
 const titleLines = upper.split(/(?<=-)(?=[^-]*$)/);
-type Photo = NonNullable<(typeof p.ourCostumes)[number]["photo"]>;
-const petals = [...p.ourCostumes, ...p.highlights].flatMap((item) => (item.photo?.shape === "petal" ? [item.photo] : []));
+type Photo = NonNullable<(typeof party.ourCostumes)[number]["photo"]>;
+const petals = [...party.ourCostumes, ...party.highlights].flatMap((item) => (item.photo?.shape === "petal" ? [item.photo] : []));
 const petalId = (photo: Photo) => `petal-${photo.seed}`;
 const shapes = {
   petal: { clip: (photo: Photo) => `url(#${petalId(photo)})`, size: 880 },
@@ -26,8 +26,8 @@ const shapes = {
 } satisfies Record<Photo["shape"], { clip: (photo: Photo) => string; size: number }>;
 const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
 ---
-<Halloween title={`${p.name} · The DnA Casa`} share={partyShare(p)} description={`Our ${p.theme} Halloween, ${p.year}: costumes, the contest, the drinks and what was new.`}>
-  <HalloweenHero title={titleLines} subtitle={`Our ${p.theme} Halloween`} ring={`${partyWords(p)} · THE DnA CASA · `} />
+<Halloween title={`${party.name} · The DnA Casa`} share={partyShare(party)} description={`Our ${party.theme} Halloween, ${party.year}: costumes, the contest, the drinks and what was new.`}>
+  <HalloweenHero title={titleLines} subtitle={`Our ${party.theme} Halloween`} ring={`${partyWords(party)} · THE DnA CASA · `} />
   <main class="recap">
     <Drips />
     <svg class="defs" aria-hidden="true">
@@ -41,7 +41,7 @@ const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
     <section class="costumes" aria-labelledby="costumes-h">
       <h2 id="costumes-h" class="reveal">Our costumes</h2>
       <div class="costume-grid">
-        {p.ourCostumes.map((c) => (
+        {party.ourCostumes.map((c) => (
           <figure class:list={[c.photo?.shape ?? "petal", "reveal"]}>
             {c.photo && <Image class="photo" style={clip(c.photo)} src={c.photo.src} alt={c.photo.alt} width={shapes[c.photo.shape].size} height={shapes[c.photo.shape].size} />}
             <figcaption>{c.who} as <span lang={c.asLang}>{c.as}</span></figcaption>
@@ -53,24 +53,24 @@ const clip = (photo: Photo) => `clip-path:${shapes[photo.shape].clip(photo)}`;
     <section class="contest" aria-labelledby="contest-h">
       <div class="reveal">
         <h2 id="contest-h">The costume contest</h2>
-        <p>{p.contest.rule}</p>
-        <p class="result">{p.contest.result}</p>
+        <p>{party.contest.rule}</p>
+        <p class="result">{party.contest.result}</p>
       </div>
       <ul class="winners reveal">
-        {p.contest.winners.map((w) => <li><span class="names">{w.names}</span>{" "}<span class="as">as {w.costume}</span></li>)}
+        {party.contest.winners.map((w) => <li><span class="names">{w.names}</span>{" "}<span class="as">as {w.costume}</span></li>)}
       </ul>
     </section>
 
     <section class="drinks reveal" aria-labelledby="drinks-h">
       <h2 id="drinks-h">The drinks</h2>
-      <p class="drink-list">{p.drinks.map((d, i) => <>{i > 0 && <span class="amp"> & </span>}<span class="drink">{d}</span></>)}</p>
-      {p.drinksBy && <p class="by">Made by {p.drinksBy}.</p>}
+      <p class="drink-list">{party.drinks.map((d, i) => <>{i > 0 && <span class="amp"> & </span>}<span class="drink">{d}</span></>)}</p>
+      {party.drinksBy && <p class="by">Made by {party.drinksBy}.</p>}
     </section>
 
     <section class="new" aria-labelledby="new-h">
       <h2 id="new-h" class="reveal">New this year</h2>
       <ul>
-        {p.highlights.map((h, i) => (
+        {party.highlights.map((h, i) => (
           <li class:list={["reveal", { flip: i % 2 === 1, plain: !h.photo }]}>
             {h.photo && <Image class="photo" style={clip(h.photo)} src={h.photo.src} alt={h.photo.alt} width={720} height={720} />}
             <div><h3>{h.title}</h3><p>{h.text}</p></div>
