@@ -136,6 +136,14 @@ export const ghost = (seed: number): string => {
   return polygon(catmullRom(pts, 6));
 };
 
+// The recap's stamp and its link preview draw the same ghost, so its seeds and face live in one place.
+export const ghostFigure = {
+  viewBox: "8 4 84 114",
+  body: ghost(41),
+  eyes: [dot(91, 39, 54, 4, 5), dot(92, 61, 54, 4, 5)],
+  cheeks: [dot(93, 30, 66, 5.5), dot(94, 70, 66, 5.5)],
+};
+
 export const polar = (cx: number, cy: number, r: number, deg: number): Pt => {
   const a = ((deg - 90) * Math.PI) / 180;
   return [+(cx + r * Math.cos(a)).toFixed(2), +(cy + r * Math.sin(a)).toFixed(2)];
