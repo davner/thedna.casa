@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import type { AtRule, Declaration, Rule } from "postcss";
 import { parse } from "yaml";
-import { builtPage, pageCss, shippedPages } from "./site";
+import { builtPage, pageCss, readText, shippedPages } from "./site";
 
 const squash = (value: string) => value.replace(/\s+/g, "");
 
@@ -114,6 +114,40 @@ describe("shipped pages", () => {
         expect(current.attr("href"), page).toBe(section[page]);
       });
     }
+  });
+
+  // Text alignment inherits, so the nearest element a desktop rule aligns decides where the heading sits.
+  it("set every section heading on the left on desktop", () => {
+    const aligned: string[] = [];
+    for (const page of shippedPages()) {
+      const $ = builtPage(page);
+      const rules: { selector: string; value: string }[] = [];
+      for (const root of pageCss($)) {
+        root.walkDecls("text-align", (decl) => {
+          for (let node = decl.parent?.parent; node; node = node.parent as typeof node) {
+            if (node.type === "atrule" && /width/.test((node as AtRule).params)) return;
+          }
+          rules.push({ selector: (decl.parent as Rule).selector, value: decl.value });
+        });
+      }
+      const matches = (el: Parameters<typeof $>[0], selector: string) => {
+        try {
+          return $(el).is(selector);
+        } catch {
+          return false;
+        }
+      };
+      $("h2").each((_, h2) => {
+        for (const el of [h2, ...$(h2).parents().get()]) {
+          const value = rules.filter((rule) => matches(el, rule.selector)).at(-1)?.value;
+          if (value) {
+            if (!["left", "start"].includes(value)) aligned.push(`${page} ${readText($, h2)}: ${value}`);
+            return;
+          }
+        }
+      });
+    }
+    expect(aligned).toEqual([]);
   });
 
   it("ship no JavaScript, so they render fully with JavaScript off", () => {
