@@ -18,10 +18,8 @@ const upper = p.name.toUpperCase();
 // A hyphenated name breaks after its last hyphen, so TRICK-R- sits over DRINK; any other name stays on one line.
 const titleLines = upper.split(/(?<=-)(?=[^-]*$)/);
 type Photo = NonNullable<(typeof p.ourCostumes)[number]["photo"]>;
-// Each petal photo gets its own fixed seed, counted in page order, so no two petals on a page match.
 const petals = [...p.ourCostumes, ...p.highlights].flatMap((item) => (item.photo?.shape === "petal" ? [item.photo] : []));
-const seed = (photo: Photo) => 301 + petals.indexOf(photo);
-const petalId = (photo: Photo) => `petal-${seed(photo)}`;
+const petalId = (photo: Photo) => `petal-${photo.seed}`;
 const clip = (photo: Photo) => `clip-path:${photo.shape === "circle" ? "circle(50%)" : `url(#${petalId(photo)})`}`;
 ---
 <Halloween title={`${p.name} · The DnA Casa`} share={partyShare(p)} description={`Our ${p.theme} Halloween, ${p.year}: costumes, the contest, the drinks and what was new.`}>
@@ -29,7 +27,7 @@ const clip = (photo: Photo) => `clip-path:${photo.shape === "circle" ? "circle(5
   <main class="recap">
     <Drips />
     <svg class="defs" aria-hidden="true">
-      {petals.map((photo) => <clipPath id={petalId(photo)} clipPathUnits="objectBoundingBox"><path d={marigoldMask(seed(photo))} /></clipPath>)}
+      {petals.map((photo) => <clipPath id={petalId(photo)} clipPathUnits="objectBoundingBox"><path d={marigoldMask(photo.seed)} /></clipPath>)}
     </svg>
 
     <section class="intro">

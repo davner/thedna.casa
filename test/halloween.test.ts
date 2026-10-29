@@ -4,7 +4,8 @@ import type { CheerioAPI } from "cheerio";
 import { parse } from "yaml";
 import sharp from "sharp";
 import { builtFileExists, builtFilePath, builtPage, pageCss, readText } from "./site";
-import { drips, ghost, marigoldMark } from "../src/lib/shapes";
+import { drips, ghost, marigoldMark, marigoldMask } from "../src/lib/shapes";
+import { petalSeed } from "../src/lib/parties";
 import { palette } from "../src/palette";
 
 // The party file itself is the source of truth for the recap's words.
@@ -106,6 +107,18 @@ describe("built Trick-R-Drink recap", () => {
     expect(alts("Our costumes")).toEqual(fromFile(party.ourCostumes));
     expect(alts("New this year")).toEqual(fromFile(party.highlights));
     expect($("img").map((_, img) => $(img).attr("alt")).get().filter((alt) => !alt?.trim())).toEqual([]);
+  });
+
+  // Keyed to the photo itself, so adding or dropping another photo never reshapes this one.
+  it("clips each petal photo with the mask seeded by its own file name", () => {
+    type Photo = { src: string; alt: string; shape?: string };
+    const petals: Photo[] = [...party.ourCostumes, ...party.highlights].flatMap((item: { photo?: Photo }) => (item.photo && item.photo.shape !== "circle" ? [item.photo] : []));
+    expect(petals.length).toBeGreaterThan(0);
+    for (const photo of petals) {
+      const img = $("img").filter((_, el) => $(el).attr("alt") === photo.alt);
+      const id = img.attr("style")?.match(/url\(#([^)]+)\)/)?.[1] ?? "";
+      expect($(`svg [id='${id}'] path`).attr("d"), photo.alt).toBe(marigoldMask(petalSeed(photo.src)));
+    }
   });
 
   it("names the party in the title and the link preview title", () => {

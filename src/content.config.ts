@@ -1,12 +1,17 @@
 import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
+import { petalSeed } from "./lib/parties";
 
 // A photo sits on the item it shows, so the page never has to guess which photo goes where.
 const halloween = defineCollection({
   loader: glob({ pattern: "*.md", base: "./src/content/halloween" }),
   schema: ({ image }) => {
-    const photo = z.object({ src: image(), alt: z.string().min(1), shape: z.enum(["petal", "circle"]).default("petal") });
+    // The seed is read from the path as written, before image() turns it into a hashed build URL.
+    const photo = z.preprocess(
+      (raw) => (raw && typeof raw === "object" && "src" in raw && typeof raw.src === "string" ? { ...raw, seed: petalSeed(raw.src) } : raw),
+      z.object({ src: image(), alt: z.string().min(1), shape: z.enum(["petal", "circle"]).default("petal"), seed: z.number().int() }),
+    );
     return z.object({
       year: z.number().int(),
       name: z.string(),
