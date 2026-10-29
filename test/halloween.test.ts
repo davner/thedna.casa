@@ -359,15 +359,15 @@ describe("built recap with an invite", () => {
 
 describe("built recap known only from its invite", () => {
   it("skips the sections it has nothing for and keeps the hero and the intro", () => {
-    const $ = builtPage("halloween/2021/index.html");
-    expect(readText($, "h1")).toBe("HALLOWEEN COSTUME PARTY");
-    expect($("header time").attr("datetime")).toBe("2021-10-23");
+    const $ = builtPage("halloween/2022/index.html");
+    expect(readText($, "h1")).toBe("HALLOWEEN BASH");
+    expect($("header time").attr("datetime")).toBe("2022-10-22");
     expect(
       $("main h2")
         .map((_, h) => $(h).text().trim())
         .get(),
     ).toEqual(["The invite"]);
-    expect(readText($, "main")).toContain("It was a potluck, everyone brought Mexican food");
+    expect(readText($, "main")).toContain("Our second annual.");
   });
 
   // A banner shrunk to a card's 420px would leave its words too small to read.
@@ -379,6 +379,35 @@ describe("built recap known only from its invite", () => {
     );
     expect(widest).toBeGreaterThanOrEqual(2200);
     expect(img.attr("sizes")).toContain("1100px");
+  });
+});
+
+describe("built recap with a highlight told in frames", () => {
+  let $: CheerioAPI;
+  const first = partyData(2021);
+  beforeAll(() => {
+    $ = builtPage("halloween/2021/index.html");
+  });
+
+  // Stills from a video only make sense in the order they happened, and a petal would cut the ball out of frame.
+  it("shows the frames in order, unmasked, each with its caption and alt text", () => {
+    const told = first.highlights.find((h: { frames?: unknown[] }) => h.frames);
+    const frames = $("h3")
+      .filter((_, h) => $(h).text().trim() === told.title)
+      .closest("li")
+      .find("ol figure");
+    expect(frames.map((_, f) => [[$(f).find("figcaption").text().trim(), $(f).find("img").attr("alt")]]).get()).toEqual(
+      told.frames.map((f: { caption: string; alt: string }) => [f.caption, f.alt]),
+    );
+    frames.each((_, f) => expect($(f).find("img").attr("style") ?? "").not.toMatch(/clip-path/));
+  });
+
+  it("states the contest result without a rule when the party file has none", () => {
+    const contest = $("h2")
+      .filter((_, h) => $(h).text().trim() === "The costume contest")
+      .closest("section");
+    expect(contest.find(".words p")).toHaveLength(1);
+    expect(readText($, contest)).toContain(first.contest.result);
   });
 });
 

@@ -31,7 +31,7 @@ const halloween = defineCollection({
         .default([]),
       contest: z
         .object({
-          rule: z.string(),
+          rule: z.string().optional(),
           result: z.string(),
           winners: z.array(z.object({ names: z.string(), costume: z.string() })),
           photo: photo.optional(),
@@ -40,7 +40,17 @@ const halloween = defineCollection({
       drinks: z
         .object({ names: z.array(z.string()).min(1), by: z.string().optional(), photo: photo.optional() })
         .optional(),
-      highlights: z.array(z.object({ title: z.string(), text: z.string(), photo: photo.optional() })).default([]),
+      // Frames tell one moment in order, like stills from a video, so they keep their own shape instead of a petal.
+      highlights: z
+        .array(
+          z.object({
+            title: z.string(),
+            text: z.string(),
+            photo: photo.optional(),
+            frames: z.array(z.object({ src: image(), alt: z.string().min(1), caption: z.string() })).optional(),
+          }),
+        )
+        .default([]),
       invite: z.object({ src: image(), alt: z.string().min(1) }).optional(),
     });
   },
