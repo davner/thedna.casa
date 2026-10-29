@@ -146,4 +146,14 @@ describe("built Halloween list", () => {
     const years = parties.map((p: { year: number }) => p.year).sort((a: number, b: number) => b - a);
     expect(rows().map((_, li) => [[$(li).find("a").length, $(li).find("a").attr("href")]]).get()).toEqual(years.map((y: number) => [1, `/halloween/${y}/`]));
   });
+
+  // The row's words already name the party, so the thumbnail is decoration and must stay silent.
+  it("shows each party's year, name and theme, with a circle thumbnail", () => {
+    const newest = [...parties].sort((a: { year: number }, b: { year: number }) => b.year - a.year);
+    expect(rows().map((_, li) => readText($, li)).get()).toEqual(newest.map((p: { year: number; name: string; theme: string }) => `${p.year} ${p.name} A ${p.theme} Halloween`));
+    rows().each((_, li) => {
+      expect($(li).find("a img")).toHaveLength(1);
+      expect($(li).find("a img").attr("alt")).toBe("");
+    });
+  });
 });

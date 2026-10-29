@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import Halloween from "../../layouts/Halloween.astro";
 import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
@@ -11,12 +12,48 @@ const parties = (await getCollection("halloween")).sort((a, b) => b.data.year - 
     <section>
       <h2 class="reveal">The parties</h2>
       <ul>
-        {parties.map(({ data: p }) => (
-          <li class="reveal">
-            <a href={`/halloween/${p.year}/`}>{p.year}</a>
-          </li>
-        ))}
+        {parties.map(({ data: p }) => {
+          const photo = p.ourCostumes.find((c) => c.photo)?.photo;
+          return (
+            <li class="reveal">
+              <a href={`/halloween/${p.year}/`}>
+                <span class="year">{p.year}</span>{" "}
+                <span class="what"><span class="name">{p.name}</span>{" "}<span class="theme">A {p.theme} Halloween</span></span>
+                {photo && <Image class="thumb" src={photo.src} alt="" width={240} height={240} />}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </section>
   </main>
 </Halloween>
+
+<style>
+  .list { background: var(--cream-page); color: var(--mole); }
+  section { padding: clamp(56px, 7vw, 96px) clamp(20px, 6vw, 96px) clamp(96px, 11vw, 150px); max-width: 900px; margin: 0 auto; box-sizing: content-box; }
+  h2 { color: var(--terra); }
+  ul { list-style: none; margin: 36px 0 0; padding: 0; }
+  li { border-top: 1px solid color-mix(in srgb, var(--mole) 18%, transparent); }
+  li:last-child { border-bottom: 1px solid color-mix(in srgb, var(--mole) 18%, transparent); }
+  a { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: clamp(20px, 4vw, 48px); padding: 22px 0; color: inherit; text-decoration: none; }
+  .year { font-family: var(--font-serif); font-weight: 700; font-size: 1.7rem; letter-spacing: -0.02em; line-height: 1; color: var(--terra); font-variant-numeric: lining-nums; }
+  .what { display: grid; gap: 4px; }
+  .name { font-family: var(--font-serif); font-weight: 700; font-size: 1.7rem; letter-spacing: -0.02em; text-decoration: underline 2px transparent; text-underline-offset: 8px; }
+  .theme { font-size: 1rem; }
+  .thumb { width: clamp(72px, 10vw, 112px); height: auto; aspect-ratio: 1; clip-path: circle(50%); object-fit: cover; }
+  a:hover .name, a:focus-visible .name { text-decoration-color: currentColor; text-underline-offset: 5px; }
+  a:focus-visible { outline: 2px solid var(--terra); outline-offset: 4px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .name { transition: text-decoration-color 0.2s, text-underline-offset 0.2s; }
+    .thumb { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    a:hover .thumb { transform: scale(1.05) rotate(-2deg); }
+  }
+
+  @media (max-width: 760px) {
+    section { padding: 40px 24px 72px; }
+    .year, .name { font-size: 1.5rem; }
+    a { gap: 16px; }
+  }
+</style>
