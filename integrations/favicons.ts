@@ -1,16 +1,19 @@
 import { readFile, writeFile } from "node:fs/promises";
+import type { AstroIntegration } from "astro";
 import sharp from "sharp";
 import { palette } from "../src/palette.ts";
 
 const { cream, mole } = palette;
 
-const sharePreview = async (svg) =>
+const sharePreview = async (svg: Buffer) =>
   sharp({ create: { width: 1200, height: 630, channels: 3, background: mole } })
     .composite([{ input: await sharp(svg, { density: 1200 }).resize(400, 400).png().toBuffer() }])
     .png()
     .toBuffer();
 
-const render = async (svg) => ({
+type File = { type: string; body: Buffer };
+
+const render = async (svg: Buffer): Promise<Record<string, File>> => ({
   "favicon.svg": { type: "image/svg+xml", body: svg },
   "favicon-32x32.png": {
     type: "image/png",
@@ -29,14 +32,14 @@ const render = async (svg) => ({
   "share.png": { type: "image/png", body: await sharePreview(svg) },
 });
 
-export default function favicons(source) {
+export default function favicons(source: URL): AstroIntegration {
   const files = () => readFile(source).then(render);
   return {
     name: "favicons",
     hooks: {
       "astro:server:setup": ({ server }) => {
         server.middlewares.use(async (req, res, next) => {
-          const file = (await files())[(req.url ?? "").split("?")[0].slice(1)];
+          const file: File | undefined = (await files())[(req.url ?? "").split("?")[0].slice(1)];
           if (!file) return next();
           res.setHeader("Content-Type", file.type);
           res.end(file.body);

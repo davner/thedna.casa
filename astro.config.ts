@@ -1,5 +1,5 @@
 import { defineConfig } from "astro/config";
-import favicons from "./integrations/favicons.mjs";
+import favicons from "./integrations/favicons.ts";
 
 export default defineConfig({
   site: "https://thedna.casa",
