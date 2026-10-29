@@ -11,6 +11,7 @@ import {
   marigoldMark,
   marigoldMask,
   menuStrokes,
+  pebble,
   polar,
   quad,
   wave,
@@ -29,6 +30,7 @@ const generators: [string, (seed: number) => string][] = [
   ["dot", (seed) => dot(seed, 208, 182, 10)],
   ["ghost", (seed) => ghost(seed)],
   ["drips", (seed) => drips(seed, 2400, 160, 18)],
+  ["pebble", (seed) => pebble(seed, 200, 80)],
   ...[0, 1, 2].map((i): [string, (seed: number) => string] => [
     `menuStrokes stroke ${i}`,
     (seed) => menuStrokes(seed)[i],
@@ -82,6 +84,26 @@ describe("dot", () => {
     [6, 4],
   ])("is a closed path (rx %i, ry %s)", (rx, ry) => {
     expect(isClosedPath(parsePathString(dot(81, 208, 182, rx, ry)))).toBe(true);
+  });
+});
+
+describe("pebble", () => {
+  it("is a closed stone that stays inside its box", () => {
+    const d = pebble(5, 200, 80);
+    expect(isClosedPath(parsePathString(d))).toBe(true);
+    const { x, y, x2, y2 } = getPathBBox(d);
+    expect([x, y]).toEqual([expect.any(Number), expect.any(Number)]);
+    expect(x).toBeGreaterThanOrEqual(0);
+    expect(y).toBeGreaterThanOrEqual(0);
+    expect(x2).toBeLessThanOrEqual(200);
+    expect(y2).toBeLessThanOrEqual(80);
+  });
+
+  // A squared-off stone fills its box like a slab; a lower power would pinch it to a lozenge.
+  it("fills most of its box, so a label always has room inside", () => {
+    const { width, height } = getPathBBox(pebble(5, 200, 80));
+    expect(width).toBeGreaterThan(180);
+    expect(height).toBeGreaterThan(64);
   });
 });
 

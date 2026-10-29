@@ -111,6 +111,20 @@ export const dot = (seed: number, cx: number, cy: number, rx: number, ry = rx): 
   return smooth(pts, true);
 };
 
+// A squircle pushed in and out by smooth noise: the hand-pressed stone behind every button.
+export const pebble = (seed: number, w: number, h: number, wobble = 0.06): string => {
+  const noise = createNoise2D(mulberry32(seed));
+  // Shrunk by the most the wobble can push out, so the stone never leaves its box.
+  const [rx, ry] = [w / 2 / (1 + wobble), h / 2 / (1 + wobble)];
+  const pts: Pt[] = Array.from({ length: 18 }, (_, i) => {
+    const a = (i / 18) * Math.PI * 2;
+    const [c, sn] = [Math.cos(a), Math.sin(a)];
+    const k = 1 + wobble * noise(c * 0.9, sn * 0.9);
+    return [w / 2 + Math.sign(c) * Math.abs(c) ** 0.55 * rx * k, h / 2 + Math.sign(sn) * Math.abs(sn) ** 0.55 * ry * k];
+  });
+  return smooth(pts, true);
+};
+
 // Sampled to points rather than d3's curve path, because the approved ghost was a polygon through these samples.
 const catmullRom = (pts: Pt[], perSegment: number): Pt[] => {
   const n = pts.length;

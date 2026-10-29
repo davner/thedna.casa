@@ -1,0 +1,103 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { petalSeed } from "../lib/parties";
+import { pebble } from "../lib/shapes";
+
+type Props = HTMLAttributes<"button"> & { label: string; seed?: number };
+const { label, seed = petalSeed(label), class: extra, type = "button", ...attrs } = Astro.props;
+const stone = pebble(seed, 200, 80);
+---
+
+<button type={type} class:list={["button", extra]} {...attrs}>
+  <svg class="edge" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true">
+    <path d={stone} />
+  </svg>
+  <svg class="face" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true">
+    <path d={stone} />
+  </svg>
+  <span class="label">{label}</span>
+</button>
+
+<style is:global>
+  /* Every color is a variable, so one line recolors a button, e.g. style="--stone: var(--gold); --stone-ink: var(--mole)". */
+  .button {
+    --stone: var(--terra);
+    --stone-edge: color-mix(in srgb, var(--stone) 60%, var(--mole));
+    --stone-ink: var(--cream-page);
+    --stone-hover: color-mix(in srgb, var(--stone) 85%, var(--gold));
+    --stone-focus: var(--mole);
+    --lift: 6px;
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: max-content;
+    min-width: 168px;
+    min-height: 64px;
+    padding: 0 34px var(--lift);
+    border: 0;
+    background: none;
+    color: var(--stone-ink);
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .button svg {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: calc(100% - var(--lift));
+    overflow: visible;
+  }
+  .button .edge {
+    top: var(--lift);
+    fill: var(--stone-edge);
+  }
+  .button .face {
+    top: 0;
+    fill: var(--stone);
+  }
+  /* Pressed into the stone: a dark lip above and a light one below read as letters cut into the face. */
+  .button .label {
+    position: relative;
+    text-shadow:
+      0 -1px 0 color-mix(in srgb, var(--stone-edge) 70%, transparent),
+      0 1px 0 color-mix(in srgb, white 25%, transparent);
+  }
+  .button:not(:disabled):hover .face {
+    fill: var(--stone-hover);
+  }
+  .button:not(:disabled):hover :is(.face, .label) {
+    transform: translateY(-2px);
+  }
+  /* A click, or a button that stays down like Spin, presses the face flat onto its edge. */
+  .button:not(:disabled):is(:active, [aria-pressed="true"], .is-down) :is(.face, .label),
+  .button:disabled :is(.face, .label) {
+    transform: translateY(calc(var(--lift) - 1px));
+  }
+  .button:focus-visible {
+    outline: 2px dashed var(--stone-focus);
+    outline-offset: 6px;
+  }
+  .button:disabled {
+    cursor: not-allowed;
+    --stone: color-mix(in srgb, var(--mole) 22%, var(--cream-page));
+    --stone-edge: color-mix(in srgb, var(--mole) 32%, var(--cream-page));
+    --stone-ink: color-mix(in srgb, var(--mole) 55%, var(--cream-page));
+    --stone-hover: var(--stone);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .button :is(.face, .label) {
+      transition-property: transform;
+      transition-duration: 0.12s;
+      transition-timing-function: ease-out;
+    }
+    .button path {
+      transition-property: fill;
+      transition-duration: 0.18s;
+      transition-timing-function: ease-out;
+    }
+  }
+</style>

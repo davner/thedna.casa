@@ -1,4 +1,5 @@
 ---
+import Button from "../Button.astro";
 import { plates, type Plate } from "../../lib/trophy";
 import { palette } from "../../palette";
 import wood from "../../assets/trophy/wood.png";
@@ -46,9 +47,7 @@ const scene = {
   <div class="stage" data-trophy data-faces={JSON.stringify(faces)} data-scene={JSON.stringify(scene)}></div>
   <div class="controls" hidden>
     <p class="hint">Drag it, or use the arrow keys, to turn it.</p>
-    <button type="button" class="pause">
-      Pause
-    </button>
+    <Button label="Pause" class="pause" seed={5} />
   </div>
   <ol class="winners">
     {all.map((p) => (
@@ -99,7 +98,12 @@ const scene = {
     const pause = section.querySelector<HTMLButtonElement>(".pause")!;
     // Reduced motion starts still; the button lets a visitor choose the slow turn anyway.
     let spinning = !still.matches;
-    const label = () => (pause.textContent = spinning ? "Pause" : "Spin");
+    const word = pause.querySelector(".label")!;
+    // Stopped, the stone stays pressed down and offers Spin.
+    const label = () => {
+      word.textContent = spinning ? "Pause" : "Spin";
+      pause.classList.toggle("is-down", !spinning);
+    };
     label();
     pause.addEventListener("click", () => {
       spinning = !spinning;
@@ -234,11 +238,9 @@ const scene = {
   }
 
   .controls {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: baseline;
-    gap: 8px 24px;
+    display: grid;
+    justify-items: center;
+    gap: 16px;
     margin-top: 16px;
   }
   .controls[hidden] {
@@ -248,27 +250,6 @@ const scene = {
     margin: 0;
     font-size: 1rem;
   }
-  /* A word, not a box, like the nav links: serif bold with a terracotta underline. */
-  .pause {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: 1.3rem;
-    letter-spacing: -0.02em;
-    color: inherit;
-    background: none;
-    border: 0;
-    padding: 4px 2px;
-    cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: var(--terra);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 6px;
-  }
-  .pause:focus-visible {
-    outline: 2px solid var(--terra);
-    outline-offset: 4px;
-  }
-
   /* Without the 3D trophy, the plates read as a plain list of winners. */
   .winners {
     list-style: none;

@@ -94,6 +94,10 @@ components:
   menu-link:
     textColor: "{colors.cream}"
     typography: "{typography.headline}"
+  button:
+    backgroundColor: "{colors.terra}"
+    textColor: "{colors.cream-page}"
+    typography: "{typography.label}"
   footer:
     backgroundColor: "{colors.mole}"
     textColor: "{colors.cream}"
@@ -227,11 +231,12 @@ Shapes are organic and drawn, never boxy. The only hard geometry is the circle: 
 - the brush squiggle under the subtitle,
 - the petal mask that clips large photos (each photo gets its own seed),
 - the hand-pressed dots for cheeks and the ghost's eyes,
+- the pebble behind every button,
 - the ghost's body,
 - the three brushed strokes of the menu button,
 - the logo strokes.
 
-The site has no rounded rectangles, boxed borders or boxed buttons. The controls are the phone menu button, drawn as three brushed strokes, and the trophy's Pause, an underlined word. The only lines are hairline dividers between rows.
+The site has no rounded rectangles or boxed borders. Its controls are the phone menu button, drawn as three brushed strokes, and the stone button (see Button). The only lines are hairline dividers between rows.
 
 **The Seeded Shape Rule.** A new organic shape comes from the shared seeded generators with a fixed seed, never from randomness at runtime or a stock icon.
 
@@ -274,9 +279,19 @@ Large photos (the welcome photo, a couple's costume photo, the contest, drinks a
 
 A small serif-bold word in terracotta above a section heading ("Bienvenidos"). It's the only place a Spanish word sits above an English heading.
 
+### Button
+
+The one button for actions on every page (links stay words): a hand-pressed pebble ("Pebble slab"), seeded from its label so no two buttons share an outline, sitting on its own darker stone edge 6px below. The label is serif bold at label size, pressed into the stone with a dark lip above and a light one below. Terracotta stone with page-cream letters by default.
+
+- **Hover:** the face lifts 2px and warms toward marigold.
+- **Pressed:** a click, or a button that stays down (`aria-pressed` or `.is-down`, like Spin), presses the face flat onto its edge.
+- **Focus:** a dashed 2px ring in mole, 6px out.
+- **Disabled:** a pale, sunk stone and faded letters.
+- **Recolor:** four variables, `--stone`, `--stone-edge`, `--stone-ink` and `--stone-hover`; setting `--stone` alone carries the edge and hover with it. The component is `src/components/Button.astro`.
+
 ### Trophy
 
-The real Best Costume trophy, rebuilt as an old PlayStation model: a walnut base and plinth, studded gold rims, a holographic orange column, a ribbed neck and a low-poly pumpkin carved with a classic jack-o'-lantern face (triangle eyes and nose, a grin with two square teeth). Its textures are 32 to 64 pixel crops of Dan's photos of the trophy, drawn in hard pixels, and it keeps the PS1's look: vertices that snap to a 320x240 grid, texture warp on big faces, 15-bit color with ordered dither, and about 24 frames a second. The front plaque reads "BEST COSTUME / DnA's Halloween Party"; the other three sides hold six plates each, Trona black with a gold edge and gold serif lettering (year, names in caps, costume in italic), drawn sharp and unwarped so every name reads. It sits on the page cream with no background, up to 820px tall (480px on phones). It turns once every 40s, and a visitor can drag or flick it, step face to face with the arrow keys (it is a slider that names the side facing them), or stop it with Pause, a serif-bold word with a terracotta underline that becomes Spin. Under reduced motion it starts still and the button reads Spin.
+The real Best Costume trophy, rebuilt as an old PlayStation model: a walnut base and plinth, studded gold rims, a holographic orange column, a ribbed neck and a low-poly pumpkin carved with a classic jack-o'-lantern face (triangle eyes and nose, a grin with two square teeth). Its textures are 32 to 64 pixel crops of Dan's photos of the trophy, drawn in hard pixels, and it keeps the PS1's look: vertices that snap to a 320x240 grid, texture warp on big faces, 15-bit color with ordered dither, and about 24 frames a second. The front plaque reads "BEST COSTUME / DnA's Halloween Party"; the other three sides hold six plates each, Trona black with a gold edge and gold serif lettering (year, names in caps, costume in italic), drawn sharp and unwarped so every name reads. It sits on the page cream with no background, up to 820px tall (480px on phones). It turns once every 40s, and a visitor can drag or flick it, step face to face with the arrow keys (it is a slider that names the side facing them), or stop it with the Pause button, on its own line under the "Drag it" hint; stopped, the stone stays pressed down and reads Spin. Under reduced motion it starts still and the button reads Spin.
 
 ### Footer
 
