@@ -265,3 +265,38 @@ export const marigoldMark = (seed: number) => {
     faceTransform: `translate(${cx} ${cy}) scale(${faceScale}) translate(${-cx} ${-cy})`,
   };
 };
+
+// A hanging edge in a w by h box: each drip is a neck with a round bulb and flared shoulders, written as a height for every x.
+export const drips = (seed: number, w: number, h: number, count: number): string => {
+  const rand = mulberry32(seed);
+  const noise = createNoise2D(mulberry32(seed + 1));
+  const base = h * 0.1;
+  const slot = w / count;
+  const ds = Array.from({ length: count }, (_, i) => ({
+    c: (i + 0.5) * slot + (rand() - 0.5) * slot * 0.7,
+    r: 5 + rand() * 7,
+    len: rand() < 0.25 ? h * (0.14 + rand() * 0.1) : h * (0.35 + rand() * 0.55),
+  }));
+  const y = (x: number) => {
+    let v = base + 4 * noise(x / 160, 0);
+    for (const { c, r, len } of ds) {
+      const dx = Math.abs(x - c);
+      const s = r * 2.4;
+      if (dx <= r) v = Math.max(v, base + len - r + Math.sqrt(r * r - dx * dx));
+      else if (dx < r + s) v = Math.max(v, base + (len - r) * (1 - (dx - r) / s) ** 3);
+    }
+    return v;
+  };
+  // Kept at even 3-unit steps along the edge, so the steep necks get as many points as the flat stretches between them.
+  const raw: Pt[] = Array.from({ length: Math.ceil(w) * 2 + 1 }, (_, i) => [i / 2, y(i / 2)]);
+  const edge: Pt[] = [raw[0]];
+  let travelled = 0;
+  for (let i = 1; i < raw.length; i++) {
+    travelled += Math.hypot(raw[i][0] - raw[i - 1][0], raw[i][1] - raw[i - 1][1]);
+    if (travelled >= 3) {
+      edge.push(raw[i]);
+      travelled = 0;
+    }
+  }
+  return `M0 0L${edge.map(([x, v]) => `${x.toFixed(1)} ${v.toFixed(1)}`).join("L")}L${w} 0Z`;
+};

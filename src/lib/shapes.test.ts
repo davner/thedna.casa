@@ -1,6 +1,6 @@
 import { getPathBBox, isClosedPath, normalizePath, parsePathString } from "svg-path-commander/util";
 import { describe, expect, it } from "vitest";
-import { brusher, brushSquiggle, dot, ghost, join, line, marigoldMark, marigoldMask, polar, quad, wave } from "./shapes";
+import { brusher, brushSquiggle, dot, drips, ghost, join, line, marigoldMark, marigoldMask, polar, quad, wave } from "./shapes";
 
 const expectWellFormed = (d: string) => {
   const segments = parsePathString(d);
@@ -14,6 +14,7 @@ const generators: [string, (seed: number) => string][] = [
   ["brushSquiggle", (seed) => brushSquiggle(seed, 200, 24, 3, 6)],
   ["dot", (seed) => dot(seed, 208, 182, 10)],
   ["ghost", (seed) => ghost(seed)],
+  ["drips", (seed) => drips(seed, 2400, 160, 18)],
 ];
 
 describe.each(generators)("%s", (_, generate) => {
@@ -66,6 +67,20 @@ describe("dot", () => {
 describe("ghost", () => {
   it.each([1, 41, 9999])("is a closed path (seed %i)", (seed) => {
     expect(isClosedPath(parsePathString(ghost(seed)))).toBe(true);
+  });
+});
+
+describe("drips", () => {
+  it("stays finite with zero drips", () => {
+    expectWellFormed(drips(66, 2400, 160, 0));
+  });
+
+  it("stays finite with zero size", () => {
+    expectWellFormed(drips(66, 0, 0, 18));
+  });
+
+  it("is a closed fill path", () => {
+    expect(isClosedPath(parsePathString(drips(66, 2400, 160, 18)))).toBe(true);
   });
 });
 
