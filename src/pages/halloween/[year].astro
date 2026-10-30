@@ -37,7 +37,6 @@ const heading = "text-terra text-balance md:text-wrap";
 const body = "text-base leading-relaxed xl:text-lg";
 const photoClass =
   "block aspect-4/5 h-auto w-full object-cover motion-safe:transition-transform motion-safe:duration-500 motion-safe:ease-out motion-safe:hover:scale-105";
-const divider = "border-t border-t-(color:--divider) last:border-b last:border-b-(color:--divider)";
 ---
 
 <Halloween
@@ -152,7 +151,7 @@ const divider = "border-t border-t-(color:--divider) last:border-b last:border-b
           ]}
         >
           {party.contest.winners.map((w) => (
-            <li class:list={["grid gap-1 py-5", divider]}>
+            <li class="divider grid gap-1 py-5">
               <span class="font-serif text-2xl leading-tight font-bold tracking-tight md:text-3xl">{w.names}</span>{" "}
               <span class="text-base leading-tight">as {w.costume}</span>
             </li>

@@ -255,7 +255,7 @@ Styles are written mobile-first: the phone layout is the base, and Tailwind's br
 - The hero is short, so the edge and the cream middle start on the first screen.
 - Side-by-side sections stack. The welcome words come before its photo; a highlight's photo comes before its words.
 - The members become rows: an 80px circle on the left, the name and one-liner on the right.
-- Rows (members, winners, parties) have hairline dividers in mole at 14 to 18%.
+- Rows (members on phones, contest winners, parties, the trophy's plates) have one hairline divider, mole at 18%, from the `divider` utility in the global stylesheet.
 - The gutter is 24px (`spacing.gutter-phone`); the hero uses 20px (`spacing.gutter-phone-hero`).
 
 **The First Screen Rule.** On a 390px-wide phone, the edge (wave or drips) and the start of the cream middle are visible without scrolling.

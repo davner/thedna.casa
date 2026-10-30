@@ -24,7 +24,7 @@ const parties = newestFirst(await getCollection("halloween"));
           const photo = party.ourCostumes.find((c) => c.photo)?.photo ?? party.invite;
           const day = partyDate(party.date);
           return (
-            <li class="reveal border-t border-t-(color:--divider) last:border-b last:border-b-(color:--divider)">
+            <li class="reveal divider">
               <a
                 class="group flex items-center gap-4 py-6 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-terra md:gap-8 lg:gap-10 xl:gap-12"
                 href={`/halloween/${party.year}/`}
