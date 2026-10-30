@@ -2,16 +2,25 @@
 import { brushSquiggle } from "../lib/shapes";
 import { heroTitleSize } from "../lib/hero-title";
 interface Props {
+  class?: string;
   lines: string[];
   subtitle: string;
   layout: "beside" | "full";
   date?: { datetime: string; long: string };
 }
-const { lines, subtitle, layout, date } = Astro.props;
+const { class: className, lines, subtitle, layout, date } = Astro.props;
+const sub = "font-serif text-xl leading-tight tracking-normal text-blush italic lg:text-2xl xl:text-3xl";
 ---
 
-<div class="words">
-  <h1 class={heroTitleSize(lines, layout)}>
+{/* Size containment keeps the title from widening its own column; the width keeps it from collapsing when centered. */}
+<div class:list={["words @container w-full", className]}>
+  {/* The lines are broken at build time to fit the real font; a wider fallback must not wrap them while it loads. */}
+  <h1
+    class:list={[
+      "font-serif leading-none font-bold tracking-tight whitespace-nowrap md:tracking-tighter",
+      heroTitleSize(lines, layout),
+    ]}
+  >
     {lines.map((line, i) => (
       <>
         {i > 0 && <br />}
@@ -19,91 +28,19 @@ const { lines, subtitle, layout, date } = Astro.props;
       </>
     ))}
   </h1>
-  <p class="sub">{subtitle}</p>
+  <p class:list={["mt-3 md:mt-5", sub]}>{subtitle}</p>
+  {/* The date reads as the subtitle's second line, not a new block. */}
   {date && (
-    <p class="sub when">
+    <p class:list={["mt-0.5 md:mt-1", sub]}>
       <time datetime={date.datetime}>{date.long}</time>
     </p>
   )}
-  <svg class="squiggle" viewBox="0 0 200 24" aria-hidden="true">
+  {/* Each hero picks its squiggle's color, so the words stay one component across the home and Halloween pages. */}
+  <svg
+    class="mx-auto mt-3.5 block h-3.5 w-28 fill-(--squiggle,var(--color-pink)) motion-safe:animate-paint md:mx-0 md:mt-5 md:h-4 md:w-32"
+    viewBox="0 0 200 24"
+    aria-hidden="true"
+  >
     <path d={brushSquiggle(231, 200, 24, 3, 6)} />
   </svg>
 </div>
-
-<style>
-  /* Size containment keeps the title from widening its own column; the width keeps it from collapsing when centered. */
-  .words {
-    container-type: inline-size;
-    width: 100%;
-  }
-  h1 {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    /* The lines are broken at build time to fit the real font; a wider fallback must not wrap them while it loads. */
-    white-space: nowrap;
-    letter-spacing: var(--tracking-tight);
-    line-height: 1;
-    margin: 0;
-  }
-  .sub {
-    font-family: var(--font-serif);
-    font-style: italic;
-    letter-spacing: var(--tracking-normal);
-    font-size: var(--text-xl);
-    margin: calc(var(--spacing) * 3) 0 0;
-    color: var(--blush);
-  }
-  /* The date reads as the subtitle's second line, not a new block. */
-  .sub.when {
-    margin-top: calc(var(--spacing) * 0.5);
-  }
-  /* Each hero picks its squiggle's color, so the words stay one component across the home and Halloween pages. */
-  .squiggle {
-    display: block;
-    width: calc(var(--spacing) * 28);
-    height: calc(var(--spacing) * 3.5);
-    margin: calc(var(--spacing) * 3.5) auto 0;
-    fill: var(--squiggle, var(--pink));
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .squiggle {
-      animation: paint 1000ms var(--ease-out) 500ms backwards;
-    }
-  }
-  @keyframes paint {
-    from {
-      clip-path: inset(0 100% 0 0);
-    }
-    to {
-      clip-path: inset(0 0 0 0);
-    }
-  }
-
-  @media (width >= 48rem) {
-    h1 {
-      letter-spacing: var(--tracking-tighter);
-    }
-    .sub {
-      margin-top: calc(var(--spacing) * 5);
-    }
-    .sub.when {
-      margin-top: var(--spacing);
-    }
-    .squiggle {
-      width: calc(var(--spacing) * 32);
-      height: calc(var(--spacing) * 4);
-      margin: calc(var(--spacing) * 5) 0 0;
-    }
-  }
-  @media (width >= 64rem) {
-    .sub {
-      font-size: var(--text-2xl);
-    }
-  }
-  @media (width >= 80rem) {
-    .sub {
-      font-size: var(--text-3xl);
-    }
-  }
-</style>

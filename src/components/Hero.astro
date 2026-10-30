@@ -4,52 +4,10 @@ import HeroWords from "./HeroWords.astro";
 import { copy } from "../content";
 ---
 
-<header class="hero">
-  <HeroWords lines={copy.wordmark} subtitle={copy.subtitle} layout="beside" />
-  <Stamp />
+{/* Short on phones, so the wave lands inside the first screen; from md a screen tall, with the next section pulled up
+  over its foot so the wave and a strip of cream show on the first screen. At 45 degrees the turning ring's box is about
+  1.41x the stamp, which reaches past the screen edge up to tablet widths, so the hero clips sideways. */}
+<header class="relative flex flex-col items-center gap-6 overflow-x-clip px-5 pt-20 pb-24 text-center text-cream md:-mb-20 md:min-h-dvh md:flex-row md:gap-12 md:px-12 md:pt-24 md:pb-36 md:text-start lg:gap-16 lg:px-16 xl:gap-20 xl:px-20">
+  <HeroWords class="md:min-w-0 md:flex-1" lines={copy.wordmark} subtitle={copy.subtitle} layout="beside" />
+  <Stamp class="-order-1 w-72 max-w-full flex-none md:order-0 md:w-17/50 md:max-w-96" />
 </header>
-
-<style>
-  /* A short hero on phones, so the wave lands inside the first screen. */
-  .hero {
-    position: relative;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--gutter);
-    padding: calc(var(--spacing) * 20) calc(var(--spacing) * 5) calc(var(--spacing) * 24);
-    color: var(--cream);
-    text-align: center;
-  }
-  /* At 45 degrees the turning ring's box is about 1.41x the stamp, which reaches past the screen edge up to tablet widths. */
-  .hero {
-    overflow-x: clip;
-  }
-  .hero :global(.stamp) {
-    order: -1;
-    flex: none;
-    width: calc(var(--spacing) * 72);
-    max-width: 100%;
-  }
-
-  /* A screen tall, with the next section pulled up over its foot so the wave and a strip of cream show on the first screen. */
-  @media (width >= 48rem) {
-    .hero {
-      min-height: 100dvh;
-      margin-bottom: calc(var(--spacing) * -20);
-      flex-direction: row;
-      padding: calc(var(--spacing) * 24) var(--gutter) calc(var(--spacing) * 36);
-      text-align: start;
-    }
-    .hero :global(.stamp) {
-      order: 0;
-      width: 34%;
-      max-width: calc(var(--spacing) * 96);
-    }
-    .hero :global(.words) {
-      flex: 1;
-      min-width: 0;
-    }
-  }
-</style>

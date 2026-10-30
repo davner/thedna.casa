@@ -32,6 +32,20 @@
   --color-trona: #201d1e;
 }
 
+/* Inline so the squiggle's utility carries its timing and curve, which the motion checks read. */
+@theme inline {
+  --animate-paint: paint 1000ms var(--ease-out) 500ms backwards;
+
+  @keyframes paint {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+}
+
 /* The site's hover styles also show after a tap, as they did before Tailwind, whose hover variant waits for (hover: hover). */
 @custom-variant hover (&:hover);
 /* The open phone menu stops the page behind it from scrolling. */

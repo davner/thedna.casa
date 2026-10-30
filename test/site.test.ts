@@ -175,42 +175,6 @@ describe("built root page", () => {
     expect(memberEntries()).toEqual(members.map((m) => [m.name, m.line]));
   });
 
-  // The stamp ring turns inside a square box, so at 45 degrees its corners reach about 1.41x the stamp's width.
-  it("clips the hero sideways at every width, so the turning ring never makes the page scroll sideways", () => {
-    const clips: string[] = [];
-    for (const root of pageCss($)) {
-      root.walkRules(/(^|[\s,])header\b|\.hero\b/, (rule) => {
-        if (rule.parent?.type !== "root") return;
-        rule.walkDecls(/^overflow(-x)?$/, (decl) => void clips.push(decl.value));
-      });
-    }
-    expect(clips).toContainEqual(expect.stringMatching(/^(clip|hidden)\b/));
-  });
-
-  // Without border-box the hero's 240px of padding stacks on its screen-tall min height and pushes the wave below a desktop screen.
-  it("counts the hero's padding inside its height", () => {
-    const sizing: string[] = [];
-    for (const root of pageCss($)) {
-      root.walkRules(/\.hero\b/, (rule) => {
-        if (rule.parent?.type !== "root") return;
-        rule.walkDecls("box-sizing", (decl) => void sizing.push(decl.value));
-      });
-    }
-    expect(sizing).toContain("border-box");
-  });
-
-  // Mobile-first, so the phone's order is the one outside any media query.
-  it("opens the phone screen with the turning stamp, above the wordmark", () => {
-    const orders: string[] = [];
-    for (const root of pageCss($)) {
-      root.walkRules(/\.stamp\b/, (rule) => {
-        if (rule.parent?.type !== "root") return;
-        rule.walkDecls("order", (decl) => void orders.push(decl.value));
-      });
-    }
-    expect(orders).toContainEqual(expect.stringMatching(/^-\d/));
-  });
-
   it("hides the hero's logo, ring and squiggle from assistive tech", () => {
     const drawings = $("header svg").filter((_, svg) => $(svg).parents("svg").length === 0);
     expect(drawings.length).toBeGreaterThan(0);

@@ -143,3 +143,36 @@ test.describe("on a 1440x900 screen", () => {
     expect(wave!.y + wave!.height, "wave bottom").toBeLessThanOrEqual(900);
   });
 });
+
+test.describe("the home hero", () => {
+  // The stamp ring turns inside a square box, so at 45 degrees its corners reach about 1.41x the stamp's width.
+  for (const viewport of [phone.viewport, { width: 768, height: 1024 }, { width: 1440, height: 900 }]) {
+    test(`clips sideways at ${viewport.width}px, so the turning ring never makes the page scroll sideways`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(viewport);
+      await page.goto("/");
+      const overflow = await page.locator("header").evaluate((hero) => getComputedStyle(hero).overflowX);
+      expect(overflow).toMatch(/^(clip|hidden)$/);
+    });
+  }
+
+  // Without border-box the hero's 240px of padding stacks on its screen-tall min height and pushes the wave below a desktop screen.
+  test("counts its padding inside its height", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    const { height, screen } = await page.locator("header").evaluate((hero) => ({
+      height: hero.getBoundingClientRect().height,
+      screen: window.innerHeight,
+    }));
+    expect(height).toBe(screen);
+  });
+
+  test("opens the phone screen with the stamp, above the wordmark", async ({ page }) => {
+    await page.setViewportSize(phone.viewport);
+    await page.goto("/");
+    const stamp = await page.locator("header .stamp").boundingBox();
+    const title = await page.locator("header h1").boundingBox();
+    expect(stamp!.y + stamp!.height, "stamp bottom").toBeLessThanOrEqual(title!.y);
+  });
+});
