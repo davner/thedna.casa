@@ -31,7 +31,7 @@ const circle = "block aspect-square h-auto w-20 flex-none rounded-full object-co
             sizes="(max-width: 767px) 80px, 208px"
           />
         ) : (
-          <span class={circle} style={`background:${m.color}`}></span>
+          <span class={circle} style={`background:var(--color-${m.color})`}></span>
         )}
         <div class="grid gap-0.5 md:gap-1.5">
           <h3>{m.name}</h3>
