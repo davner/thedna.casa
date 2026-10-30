@@ -32,8 +32,8 @@ const parties = newestFirst(await getCollection("halloween"));
                 <span class="font-serif text-2xl leading-none font-bold tracking-tight text-terra lining-nums md:text-3xl">
                   {party.year}
                 </span>{" "}
-                <span class="grid flex-1 gap-1">
-                  <span class="font-serif text-2xl leading-tight font-bold tracking-tight underline decoration-transparent decoration-2 underline-offset-8 group-hover:decoration-current group-hover:underline-offset-4 group-focus-visible:decoration-current group-focus-visible:underline-offset-4 md:text-3xl motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-in-out">
+                <span class="grid min-w-0 flex-1 grid-cols-1 gap-1">
+                  <span class="font-serif text-2xl leading-tight font-bold tracking-tight wrap-break-word underline decoration-transparent decoration-2 underline-offset-8 group-hover:decoration-current group-hover:underline-offset-4 group-focus-visible:decoration-current group-focus-visible:underline-offset-4 md:text-3xl motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-in-out">
                     {party.name}
                   </span>{" "}
                   <span class="text-base leading-tight">A {party.theme} Halloween</span>{" "}
@@ -43,7 +43,7 @@ const parties = newestFirst(await getCollection("halloween"));
                 </span>
                 {photo && (
                   <Image
-                    class="aspect-square h-auto w-20 object-cover lg:w-24 xl:w-28 motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out motion-safe:group-hover:scale-105"
+                    class="aspect-square h-auto w-20 shrink-0 object-cover lg:w-24 xl:w-28 motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out motion-safe:group-hover:scale-105"
                     style="clip-path: circle(50%)"
                     src={photo.src}
                     alt=""

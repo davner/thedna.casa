@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import sharp from "sharp";
-import { pages, phone } from "./pages";
+import { narrowPhone, pages, phone, shippedPages } from "./pages";
 
 const consoleErrors = (page: Page) => {
   const errors: string[] = [];
@@ -85,6 +85,20 @@ for (const path of pages) {
     });
   });
 }
+
+test.describe("on the narrowest phone", () => {
+  test.skip(({ browserName }) => browserName === "firefox", "Firefox has no mobile emulation");
+  test.use(narrowPhone);
+
+  for (const path of shippedPages) {
+    test(`${path} never scrolls sideways`, async ({ page }) => {
+      await page.goto(path);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+        narrowPhone.viewport.width,
+      );
+    });
+  }
+});
 
 test("the home page animates when motion is allowed", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });

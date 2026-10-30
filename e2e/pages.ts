@@ -14,3 +14,7 @@ export const shippedPages = [
 
 // Firefox has no mobile emulation, so every engine takes just the phone's viewport.
 export const phone = { viewport: devices["iPhone 13"].viewport };
+
+// The narrowest phone in use, emulated whole: a mobile browser lets the page pan sideways where a desktop one clips.
+const { viewport, userAgent, deviceScaleFactor, isMobile, hasTouch } = devices["iPhone SE"];
+export const narrowPhone = { viewport, userAgent, deviceScaleFactor, isMobile, hasTouch };
