@@ -23,18 +23,22 @@ const stepsAt = (prefix: string) =>
 const phoneSteps = stepsAt("");
 const phoneDisplay = phoneSteps.at(-1)!;
 
-// Copied from the hero's gutter classes; the e2e hero checks catch a drift.
-const gutters: Record<string, number> = { md: 48, lg: 64, xl: 80, "2xl": 80 };
+// The page gutter global.css sets from md, which is also the hero's gap; a breakpoint that sets none keeps the last.
+const gutterSteps = new Map(
+  [...globalCss.matchAll(/@variant (\w+) \{\s*--gutter: --spacing\(([\d.]+)\);/g)].map(([, prefix, steps]) => [
+    prefix,
+    Number(steps) * themePx("spacing"),
+  ]),
+);
 
 // Each breakpoint's steps and gutter, at the breakpoint's own width, narrowest first.
 const breakpoints = [...new Set(titleSizes.filter((size) => size.includes(":")).map((size) => size.split(":")[0]))]
-  .map((prefix) => ({
-    prefix,
-    width: themePx(`breakpoint-${prefix}`),
-    steps: stepsAt(prefix),
-    gutter: gutters[prefix],
-  }))
-  .sort((a, b) => a.width - b.width);
+  .map((prefix) => ({ prefix, width: themePx(`breakpoint-${prefix}`), steps: stepsAt(prefix) }))
+  .sort((a, b) => a.width - b.width)
+  .map((breakpoint, i, all) => ({
+    ...breakpoint,
+    gutter: all.slice(0, i + 1).reduce((gutter, { prefix }) => gutterSteps.get(prefix) ?? gutter, NaN),
+  }));
 
 // The narrowest phone the site is tested at, with the hero's 20px gutters.
 const phone = 360;

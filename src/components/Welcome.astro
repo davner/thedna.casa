@@ -14,7 +14,7 @@ const photo =
 ---
 
 <section
-  class="welcome relative bg-cream-page px-6 pt-6 pb-16 text-mole md:px-12 md:pt-14 md:pb-24 lg:px-16 lg:pt-16 xl:px-20 xl:pt-24 xl:pb-32"
+  class="welcome relative bg-cream-page gutter-x-6 pt-6 pb-16 text-mole md:pt-14 md:pb-24 lg:pt-16 xl:pt-24 xl:pb-32"
   aria-labelledby="welcome-heading"
 >
   {/* Sits on the section's top edge and dips one pixel into it, so no seam shows between wave and section; shallower on
@@ -27,7 +27,7 @@ const photo =
   >
     <path d={wave(232, 1440, 80, 2)} />
   </svg>
-  <div class="mx-auto grid max-w-6xl items-center gap-7 md:grid-cols-2 md:gap-12 lg:gap-16 xl:gap-20">
+  <div class="mx-auto grid max-w-6xl items-center gutter-gap-7 md:grid-cols-2">
     <div>
       {/* Bold large text, where terracotta on page cream (3.6:1) passes WCAG. */}
       <p class="mb-2 font-serif text-xl leading-tight font-bold tracking-tight text-terra md:mb-2.5" lang="es">

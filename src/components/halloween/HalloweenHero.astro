@@ -17,7 +17,7 @@ const beside = Boolean(ring) || Astro.slots.has("keepsake");
   stamp it is a screen tall from md, with the main pulled up over its foot so the drips start on the first desktop screen. */}
 <header
   class:list={[
-    "relative flex flex-col items-center gap-6 overflow-x-clip px-5 text-center text-cream md:flex-row md:gap-12 md:px-12 md:text-start lg:gap-16 lg:px-16 xl:gap-20 xl:px-20",
+    "relative flex flex-col items-center gutter-gap-6 overflow-x-clip gutter-x-5 text-center text-cream md:flex-row md:text-start",
     ring ? "pt-20 pb-12 md:-mb-20 md:min-h-dvh md:pt-24 md:pb-36" : "pt-24 pb-10 md:pt-32 md:pb-14 lg:pt-36 xl:pt-44",
   ]}
   style="--squiggle: var(--color-terra)"

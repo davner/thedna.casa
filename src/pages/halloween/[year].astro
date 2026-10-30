@@ -32,7 +32,7 @@ const sizes = { large: { shown: 512, phone: 288 }, small: { shown: 320, phone: 2
 // Every photo also ships at its phone width and twice that, so a phone never downloads the 2x desktop file.
 const beside = { width: 896, height: 1120, widths: [288, 448, 576, 896], sizes: "(max-width: 767px) 288px, 448px" };
 // Content-box, so the column caps the content inside the gutters while the cream runs edge to edge.
-const section = "mx-auto box-content max-w-6xl px-6 pb-20 md:px-12 lg:px-16 lg:pb-24 xl:px-20 xl:pb-32";
+const section = "mx-auto box-content max-w-6xl gutter-x-6 pb-20 lg:pb-24 xl:pb-32";
 const heading = "text-terra text-balance md:text-wrap";
 const body = "text-base leading-relaxed xl:text-lg";
 const photoClass =
@@ -85,7 +85,7 @@ const photoClass =
         <h2 id="costumes-h" class:list={["reveal mx-auto", heading]}>
           Our costumes
         </h2>
-        <div class="mx-auto mt-7 grid grid-cols-1 items-start gap-10 md:mt-12 md:grid-cols-5 md:gap-12 lg:gap-16 xl:gap-20">
+        <div class="mx-auto mt-7 grid grid-cols-1 items-start gutter-gap-10 md:mt-12 md:grid-cols-5">
           {party.ourCostumes.map((c, i) => {
             const small = c.photo?.size === "small";
             return (
@@ -129,7 +129,7 @@ const photoClass =
       <section
         class:list={[
           section,
-          "grid grid-cols-1 gap-7 md:grid-cols-2 md:gap-12 lg:gap-16 xl:gap-20",
+          "grid grid-cols-1 gutter-gap-7 md:grid-cols-2",
           party.contest.photo ? "items-center" : "items-end",
         ]}
         aria-labelledby="contest-h"
@@ -177,7 +177,7 @@ const photoClass =
         class:list={[
           section,
           "reveal",
-          { "grid grid-cols-1 items-center gap-7 md:grid-cols-2 md:gap-12 lg:gap-16 xl:gap-20": party.drinks.photo },
+          { "grid grid-cols-1 items-center gutter-gap-7 md:grid-cols-2": party.drinks.photo },
         ]}
         aria-labelledby="drinks-h"
       >
@@ -216,7 +216,7 @@ const photoClass =
           {party.highlights.map((h, i) => (
             <li
               class:list={[
-                "reveal grid grid-cols-1 items-center gap-5 md:gap-12 lg:gap-16 xl:gap-20",
+                "reveal grid grid-cols-1 items-center gutter-gap-5",
                 h.photo ? "md:grid-cols-2" : "justify-items-center text-center",
               ]}
             >

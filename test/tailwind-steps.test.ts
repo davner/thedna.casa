@@ -106,7 +106,7 @@ describe.each(shippedPages())("%s", (page) => {
         if (!sizing.test(decl.prop) && !custom) return;
         // The theme and Tailwind's own internals define the scale rather than use it.
         if (insideLayer(decl, ["theme", "properties"]) || decl.prop.startsWith("--tw-")) return;
-        if (custom && !/\d(px|rem|vw|vh|ch|cqi)\b/.test(decl.value)) return;
+        if (custom && !/\d(px|rem|vw|vh|ch|cqi)\b|var\(--spacing\)/.test(decl.value)) return;
         checked++;
         // Preflight's resets size against the text itself, which the type scale already covers.
         if (insideLayer(decl, ["base"]) && /^-?[\d.]+(em|lh)$/.test(decl.value)) return;

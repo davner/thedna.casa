@@ -53,6 +53,19 @@ That module reads this list as its scale: each breakpoint's largest step is the 
 @custom-variant menu-open (&:has(#site-menu:popover-open));
 
 @layer base {
+  /* The page gutter, which is also the gap between side-by-side columns. Phones set their own through the utilities' values. */
+  :root {
+    @variant md {
+      --gutter: --spacing(12);
+    }
+    @variant lg {
+      --gutter: --spacing(16);
+    }
+    @variant xl {
+      --gutter: --spacing(20);
+    }
+  }
+
   h2 {
     font-family: var(--font-serif);
     font-weight: 700;
@@ -105,6 +118,20 @@ That module reads this list as its scale: each breakpoint's largest step is the 
   &:last-child {
     border-bottom-width: 1px;
     border-bottom-color: var(--divider);
+  }
+}
+
+/* Side padding and column gaps: the value is the phone step, and from md both take the page gutter. */
+@utility gutter-x-* {
+  padding-inline: --spacing(--value(integer));
+  @variant md {
+    padding-inline: var(--gutter);
+  }
+}
+@utility gutter-gap-* {
+  gap: --spacing(--value(integer));
+  @variant md {
+    gap: var(--gutter);
   }
 }
 

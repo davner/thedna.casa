@@ -16,7 +16,7 @@ const parties = newestFirst(await getCollection("halloween"));
     <Drips />
     <Trophy parties={parties} />
     {/* Content-box, so the column caps the content inside the gutters while the cream runs edge to edge. */}
-    <section class="mx-auto box-content max-w-6xl px-6 pb-20 md:px-12 lg:px-16 lg:pb-28 xl:px-20 xl:pb-36">
+    <section class="mx-auto box-content max-w-6xl gutter-x-6 pb-20 lg:pb-28 xl:pb-36">
       <h2 class="reveal text-terra">The parties</h2>
       <ul class="mt-9">
         {parties.map(({ data: party }) => {
