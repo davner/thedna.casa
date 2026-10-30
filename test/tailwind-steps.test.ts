@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { AtRule, Declaration } from "postcss";
 import { builtPage, pageCss, shippedPages } from "./site";
-import { durationSteps, spacingSteps } from "../src/tailwind-steps";
+import { containerSizes, durationSteps, fractionStep, keywordSteps, spacingSteps } from "../src/tailwind-steps";
 
 // Every property Tailwind's spacing and sizing utilities write, plus the grid tracks a fixed column width hides in.
 const sizing =
@@ -14,7 +14,35 @@ const insideLayer = (decl: Declaration, names: string[]) => {
   return false;
 };
 
-const allowedPx = new Set<number>([1, ...spacingSteps.map((step) => step * 4)]);
+const allowedPx = new Set<number>([
+  ...(keywordSteps.includes("px") ? [1] : []),
+  ...spacingSteps.map((step) => step * 4),
+]);
+const keywords = new Set<string>(keywordSteps);
+
+// The CSS each size keyword compiles to; "px" is a length, so it is read with the spacing steps.
+const keywordFor: Record<string, string> = {
+  auto: "auto",
+  none: "none",
+  "min-content": "min",
+  "max-content": "max",
+  "fit-content": "fit",
+  "100%": "full",
+};
+const viewportKeyword: Record<string, string> = { vw: "screen", vh: "screen", dvh: "dvh", svh: "svh", lvh: "lvh" };
+
+// Lightning folds a fraction utility into its percentage, so a percentage passes when some allowed fraction makes it.
+const isFraction = (percent: number) => {
+  for (let denominator = 1; denominator <= 100; denominator++) {
+    const numerator = (percent * denominator) / 100;
+    if (
+      Math.abs(numerator - Math.round(numerator)) < 1e-3 &&
+      fractionStep.test(`${Math.round(Math.abs(numerator))}/${denominator}`)
+    )
+      return true;
+  }
+  return false;
+};
 
 // Lengths that are not a spacing step, a container size, a fraction or a full-screen keyword.
 const offStep = (value: string) => {
@@ -22,15 +50,21 @@ const offStep = (value: string) => {
   if (/\b(clamp|min|max)\(/.test(value)) problems.push("fluid function");
   for (const [, n] of value.matchAll(/var\(--spacing\)\s*\*\s*(-?[\d.]+)/g))
     if (!(spacingSteps as readonly number[]).includes(Math.abs(Number(n)))) problems.push(`${n} spacing steps`);
-  const bare = value.replace(/var\(--spacing\)\s*\*\s*-?[\d.]+|var\(--container-[\w-]+\)/g, "");
-  for (const [token, n, unit] of bare.matchAll(/(-?\d*\.?\d+)([a-z]+)\b/gi)) {
+  for (const [token, size] of value.matchAll(/var\(--container-([\w-]+)\)/g))
+    if (!(containerSizes as readonly string[]).includes(size)) problems.push(token);
+  const bare = value.replace(/var\([^)]*\)/g, "").replace(/\b(calc|repeat|minmax)\(/g, "(");
+  for (const [token, n, unit] of bare.matchAll(/(-?\d*\.?\d+)([a-z]+|%)/gi)) {
     const px = unit === "px" ? Math.abs(Number(n)) : unit === "rem" ? Math.abs(Number(n)) * 16 : NaN;
     if (unit === "px" || unit === "rem") {
       if (!allowedPx.has(px)) problems.push(token);
-    } else if (/^(vw|vh|dvh|svh|lvh)$/.test(unit)) {
-      if (Number(n) !== 100) problems.push(token);
+    } else if (unit === "%") {
+      if (!(token === "100%" ? keywords.has("full") : isFraction(Math.abs(Number(n))))) problems.push(token);
+    } else if (unit in viewportKeyword) {
+      if (Number(n) !== 100 || !keywords.has(viewportKeyword[unit])) problems.push(token);
     } else if (unit !== "fr") problems.push(token);
   }
+  for (const [word] of bare.replace(/-?\d*\.?\d+([a-z]+|%)?/gi, "").matchAll(/[a-z][\w-]*/gi))
+    if (!keywords.has(keywordFor[word])) problems.push(word);
   return problems;
 };
 

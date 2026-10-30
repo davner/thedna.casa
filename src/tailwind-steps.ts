@@ -20,7 +20,8 @@ export const containerSizes = [
   "7xl",
 ] as const;
 
-export const keywordSteps = ["px", "full", "auto", "screen", "dvh", "svh", "lvh", "min", "max", "fit"] as const;
+// `none` undoes a browser default, like the menu popover's max-width.
+export const keywordSteps = ["px", "full", "auto", "none", "screen", "dvh", "svh", "lvh", "min", "max", "fit"] as const;
 
 export const fractionStep = /^[1-9]\d*\/[1-9]\d*$/;
 
