@@ -48,25 +48,6 @@ const expectHiddenDrawings = ($: CheerioAPI, atLeast: number) => {
 };
 
 // The drips overlap the top of the cream block, so the first content must start below the longest one.
-const clearanceBelowDrips = ($: CheerioAPI, selector: string, phone: boolean) => {
-  const value = (target: string, prop: string) => {
-    let found: string | undefined;
-    for (const root of pageCss($)) {
-      root.walkDecls(new RegExp(`^${prop}(-top)?$`), (decl) => {
-        const rule = decl.parent as { selector?: string; parent?: { type: string; params?: string } };
-        const at = rule.parent?.type === "atrule" ? (rule.parent.params ?? "").replace(/\s+/g, "") : "";
-        if (
-          (phone ? /760px/.test(at) : at === "") &&
-          rule.selector?.replace(/\[data-astro-cid-[^\]]+\]/g, "") === target
-        )
-          found = decl.value.split(/\s+/)[0];
-      });
-    }
-    return parseFloat(found ?? "NaN");
-  };
-  return value(selector, "padding") - value(".drips", "height");
-};
-
 describe("built Trick-R-Drink recap", () => {
   let $: CheerioAPI;
   beforeAll(() => {
@@ -268,13 +249,6 @@ describe("built Trick-R-Drink recap", () => {
     expect(guards).toContainEqual(expect.stringContaining("(prefers-reduced-motion:no-preference)"));
   });
 
-  it.each([
-    ["desktop", false],
-    ["phone", true],
-  ])("starts the intro below the drips on %s", (_, phone) => {
-    expect(clearanceBelowDrips($, ".intro", phone)).toBeGreaterThanOrEqual(24);
-  });
-
   it("tints the phone's browser chrome Trona black", () => {
     expect($("head meta[name='theme-color']").attr("content")).toBe("#201d1e");
   });
@@ -456,12 +430,8 @@ describe("built Halloween list", () => {
     expectDripEdge($);
   });
 
-  it.each([
-    ["desktop", false],
-    ["phone", true],
-  ])("starts the trophy, the first section, below the drips on %s", (_, phone) => {
+  it("opens the main with the trophy, under the drips", () => {
     expect($("main > section").first().hasClass("trophy")).toBe(true);
-    expect(clearanceBelowDrips($, ".trophy", phone)).toBeGreaterThanOrEqual(24);
   });
 
   it("is titled Halloween in the tab and the link preview", () => {

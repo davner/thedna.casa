@@ -79,31 +79,6 @@ typography:
     fontWeight: 400
     lineHeight: "leading-tight"
     letterSpacing: "tracking-normal"
-  # The Halloween pages keep their pre-Tailwind sizes until their own snap; these go with it.
-  halloween-title:
-    fontFamily: "Averia Serif Libre, serif"
-    fontSize: "1.7rem"
-    fontWeight: 700
-  halloween-title-phone:
-    fontFamily: "Averia Serif Libre, serif"
-    fontSize: "1.5rem"
-    fontWeight: 700
-  halloween-label:
-    fontFamily: "Averia Serif Libre, serif"
-    fontSize: "1.3rem"
-    fontWeight: 700
-  halloween-subtitle:
-    fontFamily: "Averia Serif Libre, serif"
-    fontSize: "clamp(1.3rem, 2.2vw, 1.8rem)"
-    fontWeight: 400
-  halloween-body:
-    fontFamily: "Schibsted Grotesk, sans-serif"
-    fontSize: "clamp(1.05rem, 1.4vw, 1.2rem)"
-    fontWeight: 400
-  halloween-caption:
-    fontFamily: "Schibsted Grotesk, sans-serif"
-    fontSize: "1rem"
-    fontWeight: 400
 rounded:
   circle: "rounded-full"
 spacing:

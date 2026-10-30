@@ -103,16 +103,16 @@ const strokes = menuStrokes(71);
   }
   .menu-btn path {
     transform-box: view-box;
-    transform-origin: 20px 20px;
+    transform-origin: center;
   }
   .nav:has(#site-menu:popover-open) .s0 {
-    transform: rotate(45deg) translateY(8px);
+    transform: rotate(45deg) translateY(calc(var(--spacing) * 2));
   }
   .nav:has(#site-menu:popover-open) .s1 {
     opacity: 0;
   }
   .nav:has(#site-menu:popover-open) .s2 {
-    transform: rotate(-45deg) translateY(-8.25px);
+    transform: rotate(-45deg) translateY(calc(var(--spacing) * -2));
   }
   #site-menu {
     position: fixed;
@@ -151,20 +151,20 @@ const strokes = menuStrokes(71);
   @media (prefers-reduced-motion: no-preference) {
     a {
       transition:
-        text-decoration-color 0.2s,
-        text-underline-offset 0.2s;
+        text-decoration-color 200ms var(--ease-in-out),
+        text-underline-offset 200ms var(--ease-in-out);
     }
     .menu-btn path {
       transition:
-        transform 0.2s ease-out,
-        opacity 0.2s ease-out;
+        transform 200ms var(--ease-out),
+        opacity 200ms var(--ease-out);
     }
     #site-menu {
       transition:
-        opacity 0.2s ease-out,
-        transform 0.2s ease-out,
-        display 0.2s allow-discrete,
-        overlay 0.2s allow-discrete;
+        opacity 200ms var(--ease-out),
+        transform 200ms var(--ease-out),
+        display 200ms allow-discrete,
+        overlay 200ms allow-discrete;
     }
     #site-menu:not(:popover-open) {
       opacity: 0;

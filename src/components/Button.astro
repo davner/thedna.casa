@@ -70,7 +70,7 @@ const stone = pebble(seed, 200, 80);
     fill: var(--stone-hover);
   }
   .button:not(:disabled):hover :is(.face, .label) {
-    transform: translateY(-2px);
+    transform: translateY(calc(var(--spacing) * -0.5));
   }
   /* A click, or a button that stays down like Spin, presses the face flat onto its edge. */
   .button:not(:disabled):is(:active, [aria-pressed="true"], .is-down) :is(.face, .label),
@@ -91,13 +91,13 @@ const stone = pebble(seed, 200, 80);
   @media (prefers-reduced-motion: no-preference) {
     .button :is(.face, .label) {
       transition-property: transform;
-      transition-duration: 0.12s;
-      transition-timing-function: ease-out;
+      transition-duration: 100ms;
+      transition-timing-function: var(--ease-out);
     }
     .button path {
       transition-property: fill;
-      transition-duration: 0.18s;
-      transition-timing-function: ease-out;
+      transition-duration: 200ms;
+      transition-timing-function: var(--ease-out);
     }
   }
 </style>

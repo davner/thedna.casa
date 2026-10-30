@@ -23,13 +23,13 @@ const photos = [...party.ourCostumes, ...party.highlights, party.contest, party.
 );
 const softId = (photo: Photo) => `soft-${photo.seed}`;
 const clip = (photo: Photo) => `clip-path:url(#${softId(photo)})`;
-const sizes = { large: { shown: 500, phone: 300 }, small: { shown: 340, phone: 220 } } satisfies Record<
+const sizes = { large: { shown: 512, phone: 288 }, small: { shown: 320, phone: 224 } } satisfies Record<
   Photo["size"],
   { shown: number; phone: number }
 >;
 // The contest, drinks and highlight photos all share one size beside their words.
 // Every photo also ships at its phone width and twice that, so a phone never downloads the 2x desktop file.
-const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: "(max-width: 760px) 280px, 420px" };
+const beside = { width: 896, height: 1120, widths: [288, 448, 576, 896], sizes: "(max-width: 767px) 288px, 448px" };
 ---
 
 <Halloween
@@ -45,9 +45,9 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
         style={`clip-path:url(#soft-invite); --aspect: ${party.invite.src.width / party.invite.src.height}`}
         src={party.invite.src}
         alt={party.invite.alt}
-        width={760}
-        widths={[260, 380, 520, 760]}
-        sizes="(max-width: 760px) 260px, 380px"
+        width={768}
+        widths={[256, 384, 512, 768]}
+        sizes="(max-width: 767px) 256px, 384px"
         loading="eager"
       />
     )}
@@ -95,7 +95,7 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
                     2 * sizes[c.photo.size].phone,
                     2 * sizes[c.photo.size].shown,
                   ]}
-                  sizes={`(max-width: 760px) ${sizes[c.photo.size].phone}px, ${sizes[c.photo.size].shown}px`}
+                  sizes={`(max-width: 767px) ${sizes[c.photo.size].phone}px, ${sizes[c.photo.size].shown}px`}
                 />
               )}
               <figcaption>
@@ -183,7 +183,7 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
                           alt={f.alt}
                           width={480}
                           widths={[160, 240, 320, 480]}
-                          sizes="(max-width: 760px) 160px, 240px"
+                          sizes="(max-width: 767px) 160px, 240px"
                         />
                         <figcaption>{f.caption}</figcaption>
                       </figure>
@@ -209,22 +209,27 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
     width: 0;
     height: 0;
   }
+  /* Content-box, so the column caps the content inside the gutters while the cream runs edge to edge. */
   section {
-    padding: 0 var(--inline) clamp(80px, 10vw, 140px);
+    box-sizing: content-box;
+    max-width: var(--column);
+    margin-inline: auto;
+    padding: 0 var(--gutter) calc(var(--spacing) * 20);
   }
   h2 {
     color: var(--terra);
+    text-wrap: balance;
   }
   h3 {
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 1.7rem;
-    letter-spacing: -0.02em;
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
     margin: 0;
   }
   p {
-    font-size: clamp(1.05rem, 1.4vw, 1.2rem);
-    line-height: 1.6;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
     margin: 0;
   }
   .photo {
@@ -238,26 +243,26 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
     margin: 0;
   }
   figcaption {
-    margin-top: 18px;
-    font-size: 1rem;
+    margin-top: calc(var(--spacing) * 5);
+    font-size: var(--text-base);
     text-align: center;
   }
 
   .intro {
-    padding-top: 190px;
+    padding-top: calc(var(--spacing) * 32);
     text-align: center;
   }
   .intro-text {
-    max-width: 30ch;
+    max-width: var(--container-2xs);
     margin: 0 auto;
   }
   .intro-text :global(p) {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
-    line-height: 1.4;
-    letter-spacing: 0;
-    margin-block: 1em;
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-normal);
+    margin-block: calc(var(--spacing) * 5);
   }
 
   .costumes h2 {
@@ -265,47 +270,41 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
   }
   .costume-grid {
     display: grid;
-    grid-template-columns: 1.25fr 0.85fr;
-    gap: clamp(32px, 6vw, 96px);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: calc(var(--spacing) * 10);
     align-items: start;
-    margin: 48px auto 0;
+    margin: calc(var(--spacing) * 7) auto 0;
   }
   .large .photo {
-    max-width: 500px;
+    max-width: calc(var(--spacing) * 72);
     margin: 0 auto;
   }
-  /* The small photo sits lower than the large one beside it, so the pair reads as a step, not a row. */
-  .small {
-    margin-top: clamp(80px, 14vw, 200px);
-  }
   .small .photo {
-    max-width: 340px;
+    max-width: calc(var(--spacing) * 56);
     margin: 0 auto;
   }
 
   .contest {
     display: grid;
-    grid-template-columns: 1fr 1.1fr;
-    gap: clamp(32px, 6vw, 96px);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: calc(var(--spacing) * 7);
     align-items: end;
-    margin: 0 auto;
-    box-sizing: content-box;
   }
   .contest p {
-    margin-top: 20px;
-    max-width: 34ch;
+    margin-top: calc(var(--spacing) * 5);
+    max-width: var(--container-xs);
   }
   .contest .result {
-    margin-top: 8px;
+    margin-top: calc(var(--spacing) * 2);
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 1.3rem;
-    letter-spacing: -0.02em;
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-tight);
     color: var(--terra);
   }
   /* With a photo, the words and winners stack on the left and the winners' photo stands beside them. */
   .contest.shot {
-    grid-template-areas: "words photo" "winners photo";
+    grid-template-areas: "words" "photo" "winners";
     align-items: center;
   }
   .contest.shot .words {
@@ -319,7 +318,7 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
   .contest.shot .photo,
   .drinks.shot .photo {
     grid-area: photo;
-    max-width: 420px;
+    max-width: calc(var(--spacing) * 72);
     justify-self: center;
   }
   .winners {
@@ -329,8 +328,8 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
   }
   .winners li {
     display: grid;
-    gap: 4px;
-    padding: 20px 0;
+    gap: var(--spacing);
+    padding: calc(var(--spacing) * 5) 0;
     border-top: var(--divider);
   }
   .winners li:last-child {
@@ -339,12 +338,12 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
   .names {
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 1.7rem;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
   }
   .as {
-    font-size: 1rem;
+    font-size: var(--text-base);
   }
 
   .drinks > div {
@@ -352,22 +351,20 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
   }
   .drinks.shot {
     display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    grid-template-areas: "words photo";
-    gap: clamp(32px, 6vw, 96px);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    grid-template-areas: "words" "photo";
+    gap: calc(var(--spacing) * 7);
     align-items: center;
-    margin: 0 auto;
-    box-sizing: content-box;
   }
   .drinks.shot > div {
     margin: 0;
   }
   .drink-list {
-    margin-top: 28px;
+    margin-top: calc(var(--spacing) * 7);
     font-family: var(--font-serif);
-    font-size: 1.7rem;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+    font-size: var(--text-2xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
     text-wrap: balance;
   }
   .drink {
@@ -375,11 +372,11 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
   }
   .amp {
     font-style: italic;
-    letter-spacing: 0;
+    letter-spacing: var(--tracking-normal);
   }
   .by {
-    margin-top: 12px;
-    font-size: 1rem;
+    margin-top: calc(var(--spacing) * 3);
+    font-size: var(--text-base);
   }
 
   .new h2 {
@@ -388,29 +385,29 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
   .new ul {
     list-style: none;
     padding: 0;
-    margin: 40px auto 0;
+    margin: calc(var(--spacing) * 10) auto 0;
     display: grid;
-    gap: clamp(48px, 7vw, 96px);
+    gap: calc(var(--spacing) * 12);
   }
   .new > ul > li {
     display: grid;
-    grid-template-columns: 1fr 1.1fr;
-    gap: clamp(32px, 6vw, 96px);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: calc(var(--spacing) * 5);
     align-items: center;
   }
   .new > ul > li .photo {
-    max-width: 420px;
+    max-width: calc(var(--spacing) * 72);
     justify-self: center;
   }
-  .new > ul > li.flip .photo {
-    order: 1;
+  .new > ul > li > div {
+    text-align: center;
   }
   .new > ul > li p {
-    margin-top: 12px;
-    max-width: 34ch;
+    margin-top: calc(var(--spacing) * 3);
+    margin-inline: auto;
+    max-width: var(--container-xs);
   }
   .new > ul > li.plain {
-    grid-template-columns: 1fr;
     text-align: center;
     justify-items: center;
   }
@@ -419,96 +416,149 @@ const beside = { width: 840, height: 1050, widths: [280, 420, 560, 840], sizes: 
   .frames {
     list-style: none;
     padding: 0;
-    margin: 24px 0 0;
+    margin: calc(var(--spacing) * 6) 0 0;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 240px));
+    grid-template-columns: repeat(2, minmax(0, calc(var(--spacing) * 40)));
     justify-self: stretch;
-    gap: clamp(16px, 2vw, 28px);
+    gap: calc(var(--spacing) * 4);
     justify-content: center;
   }
   .frame {
     display: block;
     width: 100%;
     height: auto;
-    border-radius: 14px;
+    border-radius: var(--radius-2xl);
   }
   .frames figcaption {
-    margin-top: 12px;
+    margin-top: calc(var(--spacing) * 3);
   }
 
   @media (prefers-reduced-motion: no-preference) {
     .photo {
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 500ms var(--ease-out);
     }
     .photo:hover {
-      transform: scale(1.02);
+      transform: scale(1.05);
     }
   }
 
-  @media (max-width: 760px) {
-    section {
-      padding: 0 var(--inline) 72px;
-    }
-    .intro {
-      padding-top: 132px;
-    }
+  @media (width >= 48rem) {
     h2 {
-      text-wrap: balance;
+      text-wrap: wrap;
     }
     h3,
     .names,
     .drink-list {
-      font-size: 1.5rem;
+      font-size: var(--text-3xl);
     }
+    .intro {
+      padding-top: calc(var(--spacing) * 48);
+    }
+    /* Three fifths to two, so the large photo leads and the small one reads as its companion. */
     .costume-grid {
-      grid-template-columns: 1fr;
-      margin-top: 28px;
-      gap: 40px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--gutter);
+      margin-top: calc(var(--spacing) * 12);
+    }
+    .costume-grid > :nth-child(odd) {
+      grid-column: span 3 / span 3;
+    }
+    .costume-grid > :nth-child(even) {
+      grid-column: span 2 / span 2;
     }
     .large .photo {
-      max-width: 300px;
+      max-width: var(--container-lg);
     }
+    /* The small photo sits lower than the large one beside it, so the pair reads as a step, not a row. */
     .small {
-      margin-top: 0;
+      margin-top: calc(var(--spacing) * 28);
     }
     .small .photo {
-      max-width: 220px;
+      max-width: calc(var(--spacing) * 80);
     }
     .contest,
-    .drinks.shot {
-      grid-template-columns: 1fr;
-      gap: 28px;
+    .drinks.shot,
+    .new > ul > li {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--gutter);
     }
     .contest.shot {
-      grid-template-areas: "words" "photo" "winners";
+      grid-template-areas: "words photo" "winners photo";
     }
     .drinks.shot {
-      grid-template-areas: "words" "photo";
+      grid-template-areas: "words photo";
     }
     .contest.shot .photo,
-    .drinks.shot .photo {
-      max-width: 280px;
-    }
-    .new > ul > li,
-    .new > ul > li.flip {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-    .new > ul > li.flip .photo {
-      order: 0;
-    }
+    .drinks.shot .photo,
     .new > ul > li .photo {
-      max-width: 280px;
+      max-width: var(--container-md);
+    }
+    .new ul {
+      gap: calc(var(--spacing) * 14);
     }
     .new > ul > li > div {
-      text-align: center;
+      text-align: start;
     }
     .new > ul > li p {
+      margin-inline: 0;
+    }
+    .new > ul > li.flip .photo {
+      order: 1;
+    }
+    .new > ul > li.plain {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+    .new > ul > li.plain > div {
+      text-align: center;
+    }
+    .new > ul > li.plain p {
       margin-inline: auto;
     }
     .frames {
-      grid-template-columns: repeat(2, minmax(0, 160px));
-      gap: 16px;
+      grid-template-columns: repeat(4, minmax(0, calc(var(--spacing) * 60)));
+    }
+  }
+  @media (width >= 64rem) {
+    section {
+      padding-bottom: calc(var(--spacing) * 24);
+    }
+    .intro-text :global(p) {
+      font-size: var(--text-2xl);
+      margin-block: calc(var(--spacing) * 6);
+    }
+    .small {
+      margin-top: calc(var(--spacing) * 36);
+    }
+    .new ul {
+      gap: calc(var(--spacing) * 16);
+    }
+    .frames {
+      gap: calc(var(--spacing) * 5);
+    }
+  }
+  @media (width >= 80rem) {
+    section {
+      padding-bottom: calc(var(--spacing) * 32);
+    }
+    p {
+      font-size: var(--text-lg);
+    }
+    .intro-text :global(p) {
+      font-size: var(--text-3xl);
+      margin-block: calc(var(--spacing) * 8);
+    }
+    .contest p,
+    .new > ul > li p {
+      max-width: var(--container-sm);
+    }
+    .small {
+      margin-top: calc(var(--spacing) * 44);
+    }
+    .new ul {
+      gap: calc(var(--spacing) * 24);
+    }
+    .frames {
+      gap: calc(var(--spacing) * 6);
     }
   }
 </style>

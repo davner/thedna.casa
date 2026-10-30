@@ -30,80 +30,97 @@ const beside = Boolean(ring) || Astro.slots.has("keepsake");
 </header>
 
 <style>
+  /* The same box as the home hero, so every title starts at one edge and the size model in hero-title.ts holds. */
   .hero {
     position: relative;
     box-sizing: border-box;
-    min-height: min(92dvh, 880px);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) min(380px, 34%);
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: clamp(32px, 6vw, 96px);
-    padding: 96px var(--gutter) 150px;
+    gap: var(--gutter);
+    padding: calc(var(--spacing) * 20) calc(var(--spacing) * 5) calc(var(--spacing) * 12);
     color: var(--cream);
+    text-align: center;
     overflow-x: clip;
     --squiggle: var(--terra);
   }
   .hero.short {
-    min-height: 0;
-    grid-template-columns: 1fr;
-    padding-top: clamp(120px, 14vw, 180px);
-    padding-bottom: 56px;
+    padding-top: calc(var(--spacing) * 24);
+    padding-bottom: calc(var(--spacing) * 10);
   }
   .hero :global(.stamp) {
-    width: 100%;
-  }
-  .hero.keepsake {
-    grid-template-columns: minmax(0, 1fr) min(380px, 34%);
-  }
-  /* Above the drips, which hang from the main column into the hero's lower edge. */
-  .keepsake-slot {
-    grid-area: 1 / 2;
-    position: relative;
-    z-index: 2;
-    display: grid;
-    justify-items: center;
-  }
-  /* The width comes from the card's own aspect ratio, so its box is reserved before the file arrives and nothing shifts. */
-  .keepsake-slot :global(img) {
-    display: block;
-    width: min(100%, min(62vh, 540px) * var(--aspect, 1));
-    height: auto;
-    aspect-ratio: var(--aspect, 1);
+    order: -1;
+    flex: none;
+    width: calc(var(--spacing) * 72);
+    max-width: 100%;
   }
   .hero :global(.stamp-ghost) {
     width: 46%;
     display: block;
     position: relative;
   }
+  /* Above the drips, which hang from the main column into the hero's lower edge. */
+  .keepsake-slot {
+    position: relative;
+    z-index: 2;
+    align-self: stretch;
+    display: grid;
+    justify-items: center;
+  }
+  /* The card fits a square box on phones and the slot from md; its width comes from its own
+  aspect ratio, so its box is reserved before the file arrives and nothing shifts. */
+  .keepsake-slot :global(img) {
+    display: block;
+    width: calc(var(--spacing) * 64 * var(--aspect, 1));
+    max-width: calc(var(--spacing) * 64);
+    height: auto;
+    aspect-ratio: var(--aspect, 1);
+  }
 
-  @media (max-width: 760px) {
+  /* A screen tall, with the main pulled up over its foot so the drips start on the first desktop screen. */
+  @media (width >= 48rem) {
     .hero {
-      min-height: 0;
-      grid-template-columns: 1fr;
-      justify-items: center;
-      gap: 22px;
-      padding: 72px 20px 48px;
-      text-align: center;
+      flex-direction: row;
+      padding: calc(var(--spacing) * 24) var(--gutter) calc(var(--spacing) * 36);
+      text-align: start;
+    }
+    .hero:not(.short) {
+      min-height: 100dvh;
+      margin-bottom: calc(var(--spacing) * -20);
     }
     .hero.short {
-      padding-top: 104px;
-      padding-bottom: 40px;
+      padding-top: calc(var(--spacing) * 32);
+      padding-bottom: calc(var(--spacing) * 14);
     }
     .hero :global(.stamp) {
-      order: -1;
-      width: min(76vw, 300px);
+      order: 0;
+      width: 34%;
+      max-width: calc(var(--spacing) * 96);
     }
-    .hero.keepsake {
-      grid-template-columns: 1fr;
+    .hero :global(.words) {
+      flex: 1;
+      min-width: 0;
     }
-    /* Small enough that the drips still land on the first phone screen. */
-    /* Full width, or the centered hero would size the slot from the card and the card from the slot. */
     .keepsake-slot {
-      grid-area: auto;
-      justify-self: stretch;
+      order: 1;
+      align-self: center;
+      flex: none;
+      width: 34%;
+      max-width: calc(var(--spacing) * 96);
     }
     .keepsake-slot :global(img) {
-      width: min(100%, 260px * var(--aspect, 1));
+      width: calc(var(--container-lg) * var(--aspect, 1));
+      max-width: 100%;
+    }
+  }
+  @media (width >= 64rem) {
+    .hero.short {
+      padding-top: calc(var(--spacing) * 36);
+    }
+  }
+  @media (width >= 80rem) {
+    .hero.short {
+      padding-top: calc(var(--spacing) * 44);
     }
   }
 </style>

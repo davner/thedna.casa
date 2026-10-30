@@ -15,10 +15,10 @@ const gotoWithSerif = async (page: Page, path: string) => {
 };
 
 // The drips hang over the cream main, so cream shows between them from their top; the wave's top is where it rises out of the hero.
-const edgeTop = (page: Page) =>
+const edgeBox = (page: Page) =>
   page.evaluate(() => {
-    const edge = document.querySelector(".welcome > .edge, main > .drips");
-    return { screen: window.innerHeight, top: edge?.getBoundingClientRect().top ?? NaN };
+    const box = document.querySelector(".welcome > .edge, main > .drips")?.getBoundingClientRect();
+    return { screen: window.innerHeight, top: box?.top ?? NaN, height: box?.height ?? NaN };
   });
 
 for (const path of shippedPages) {
@@ -101,13 +101,32 @@ for (const path of shippedPages) {
       });
     }
 
+    // The drips hang over the top of the main, so its first section must start its words below their longest drip.
+    if (path !== "/")
+      for (const viewport of [phone.viewport, { width: 1440, height: 900 }]) {
+        test(`starts the first section below the drips at ${viewport.width}px`, async ({ page }) => {
+          await page.setViewportSize(viewport);
+          await page.goto(path);
+          const { drips, top } = await page.evaluate(() => {
+            const section = document.querySelector("main > section")!;
+            return {
+              drips: document.querySelector("main > .drips")!.getBoundingClientRect().bottom,
+              top: section.getBoundingClientRect().top + parseFloat(getComputedStyle(section).paddingTop),
+            };
+          });
+          expect(top - drips, "clearance under the drips").toBeGreaterThanOrEqual(24);
+        });
+      }
+
     test.describe("on a phone", () => {
       test.use(phone);
 
-      test("shows the edge and the start of the cream middle on the first screen", async ({ page }) => {
+      // A sliver of edge at the screen's foot reads as a rendering seam, not as the start of the page.
+      test("shows at least half the edge, and the cream middle, on the first screen", async ({ page }) => {
         await gotoWithSerif(page, path);
-        const { screen, top } = await edgeTop(page);
-        expect(top, "edge top").toBeLessThan(screen);
+        const { screen, top, height } = await edgeBox(page);
+        expect(height, "edge height").toBeGreaterThan(0);
+        expect(top + height / 2, "edge middle").toBeLessThanOrEqual(screen);
       });
     });
   });

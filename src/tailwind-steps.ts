@@ -23,3 +23,6 @@ export const containerSizes = [
 export const keywordSteps = ["px", "full", "auto", "screen", "dvh", "svh", "lvh", "min", "max", "fit"] as const;
 
 export const fractionStep = /^[1-9]\d*\/[1-9]\d*$/;
+
+// Tailwind's named durations, in ms; like spacing, v4 accepts any number, so the classic list is the site's.
+export const durationSteps = [0, 75, 100, 150, 200, 300, 500, 700, 1000] as const;

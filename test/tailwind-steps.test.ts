@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { AtRule, Declaration } from "postcss";
-import { builtPage, pageCss } from "./site";
-import { spacingSteps } from "../src/tailwind-steps";
+import { builtPage, pageCss, shippedPages } from "./site";
+import { durationSteps, spacingSteps } from "../src/tailwind-steps";
 
 // Every property Tailwind's spacing and sizing utilities write, plus the grid tracks a fixed column width hides in.
 const sizing =
@@ -22,7 +22,7 @@ const offStep = (value: string) => {
   if (/\b(clamp|min|max)\(/.test(value)) problems.push("fluid function");
   for (const [, n] of value.matchAll(/var\(--spacing\)\s*\*\s*(-?[\d.]+)/g))
     if (!(spacingSteps as readonly number[]).includes(Math.abs(Number(n)))) problems.push(`${n} spacing steps`);
-  const bare = value.replace(/var\(--spacing\)\s*\*\s*-?[\d.]+/g, "");
+  const bare = value.replace(/var\(--spacing\)\s*\*\s*-?[\d.]+|var\(--container-[\w-]+\)/g, "");
   for (const [token, n, unit] of bare.matchAll(/(-?\d*\.?\d+)([a-z]+)\b/gi)) {
     const px = unit === "px" ? Math.abs(Number(n)) : unit === "rem" ? Math.abs(Number(n)) * 16 : NaN;
     if (unit === "px" || unit === "rem") {
@@ -34,13 +34,37 @@ const offStep = (value: string) => {
   return problems;
 };
 
-const homeCss = () => pageCss(builtPage("index.html"));
+// Splits on the commas between a shorthand's items, not the ones inside a function.
+const items = (value: string) => value.split(/,(?![^(]*\))/).map((item) => item.trim());
 
-describe("the home page", () => {
+const motion = /^(transition|animation)(-duration|-delay|-timing-function)?$/;
+
+// Durations and easing that are not Tailwind's: off-list times, curves of the site's own, and the browser's ease keywords.
+const offMotion = (prop: string, value: string) => {
+  const problems: string[] = [];
+  for (const item of items(value)) {
+    // The ring's slow endless turn is a hand-made piece's own clock, not a transition.
+    if (/\binfinite\b/.test(item)) continue;
+    for (const [token, n, unit] of item.matchAll(/(?<![\w-])(\d*\.?\d+)(ms|s)\b/g)) {
+      const ms = Number(n) * (unit === "s" ? 1000 : 1);
+      if (!(durationSteps as readonly number[]).includes(ms)) problems.push(token);
+    }
+    if (/cubic-bezier\(|steps\(|\bease(-in|-out|-in-out)?\b/.test(item.replace(/var\(--ease-[\w-]+\)/g, "")))
+      problems.push(item);
+    // A shorthand with no curve runs on the browser's ease, which is not one of Tailwind's.
+    const shorthand = prop === "transition" || prop === "animation";
+    if (shorthand && !/allow-discrete|\blinear\b|var\(--ease-/.test(item)) problems.push(`${item} (no easing)`);
+  }
+  return problems;
+};
+
+describe.each(shippedPages())("%s", (page) => {
+  const css = () => pageCss(builtPage(page));
+
   it("sizes and spaces everything with allowed Tailwind steps", () => {
     const off: string[] = [];
     let checked = 0;
-    for (const root of homeCss())
+    for (const root of css())
       root.walkDecls((decl) => {
         const custom = decl.prop.startsWith("--");
         if (!sizing.test(decl.prop) && !custom) return;
@@ -59,10 +83,36 @@ describe("the home page", () => {
     expect(off).toEqual([]);
   });
 
+  it("leaves no custom fluid value anywhere, custom properties included", () => {
+    const fluid: string[] = [];
+    for (const root of css())
+      root.walkDecls((decl) => {
+        if (insideLayer(decl, ["theme", "properties"]) || decl.prop.startsWith("--tw-")) return;
+        if (/\b(clamp|min|max)\(|\d(cqi|cqw|vw|vh|vmin|vmax|ch)\b/.test(decl.value))
+          fluid.push(`${(decl.parent as { selector?: string }).selector} { ${decl.prop}: ${decl.value} }`);
+      });
+    expect(fluid).toEqual([]);
+  });
+
+  it("moves only on Tailwind's durations and easing curves", () => {
+    const off: string[] = [];
+    let checked = 0;
+    for (const root of css())
+      root.walkDecls(motion, (decl) => {
+        if (insideLayer(decl, ["theme", "properties"])) return;
+        checked++;
+        const problems = offMotion(decl.prop, decl.value);
+        if (problems.length)
+          off.push(`${(decl.parent as { selector?: string }).selector} { ${decl.prop}: ${decl.value} } ${problems}`);
+      });
+    expect(checked).toBeGreaterThan(0);
+    expect(off).toEqual([]);
+  });
+
   it("switches layout only at Tailwind's default breakpoints", () => {
     const breakpoint = /^\((min-width:|width>=)(40|48|64|80|96)rem\)$/;
     const queries: string[] = [];
-    for (const root of homeCss())
+    for (const root of css())
       root.walkAtRules("media", (rule) => {
         const params = rule.params.replace(/\s+/g, "");
         if (/width|height/.test(params) && !breakpoint.test(params)) queries.push(rule.params);
