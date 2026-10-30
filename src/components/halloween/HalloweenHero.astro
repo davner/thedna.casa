@@ -26,7 +26,7 @@ const beside = Boolean(ring) || Astro.slots.has("keepsake");
   markup because phones show it above the title; arriving after the title, it would push the title down mid-load. It
   sits above the drips, which hang from the main column into the hero's lower edge. */}
   {!ring && Astro.slots.has("keepsake") && (
-    <div class="relative z-2 grid justify-items-center self-stretch md:order-1 md:w-17/50 md:max-w-96 md:flex-none md:self-center">
+    <div class="relative z-10 grid justify-items-center self-stretch md:order-1 md:w-17/50 md:max-w-96 md:flex-none md:self-center">
       <slot name="keepsake" />
     </div>
   )}
