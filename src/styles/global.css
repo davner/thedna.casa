@@ -53,19 +53,7 @@
 
 @layer base {
   :root {
-    --divider: color-mix(in srgb, var(--mole) 18%, transparent);
-    --gutter: calc(var(--spacing) * 6);
-    --column: var(--container-6xl);
-
-    @variant md {
-      --gutter: calc(var(--spacing) * 12);
-    }
-    @variant lg {
-      --gutter: calc(var(--spacing) * 16);
-    }
-    @variant xl {
-      --gutter: calc(var(--spacing) * 20);
-    }
+    --divider: color-mix(in srgb, var(--color-mole) 18%, transparent);
   }
 
   h2 {

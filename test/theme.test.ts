@@ -28,4 +28,30 @@ describe("the Tailwind theme", () => {
       expect(arbitrary, page).toEqual([]);
     }
   });
+
+  // Every page inlines the same global sheet, so a variable is unused only when no page reads it. Tailwind's own --tw-*
+  // registers and the palette colors (kept whole for the check above) are left out.
+  it("declare no custom property that nothing reads", () => {
+    const declared = new Set<string>();
+    const read = new Set<string>();
+    const readsIn = (value: string) => {
+      for (const [, name] of value.matchAll(/var\(\s*(--[\w-]+)/g)) read.add(name);
+    };
+    for (const page of shippedPages()) {
+      const $ = builtPage(page);
+      for (const root of pageCss($))
+        root.walkDecls((decl) => {
+          if (decl.prop.startsWith("--")) declared.add(decl.prop);
+          readsIn(decl.value);
+        });
+      $("[style]").each((_, el) => {
+        const style = $(el).attr("style") ?? "";
+        for (const [, name] of style.matchAll(/(--[\w-]+)\s*:/g)) declared.add(name);
+        readsIn(style);
+      });
+    }
+    const kept = (name: string) => name.startsWith("--tw-") || Object.hasOwn(palette, name.replace(/^--color-/, ""));
+    expect(declared.size).toBeGreaterThan(0);
+    expect([...declared].filter((name) => !read.has(name) && !kept(name)).sort()).toEqual([]);
+  });
 });

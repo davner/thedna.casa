@@ -22,13 +22,10 @@ const {
 } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site).href;
 const shareImage = new URL(share.path, Astro.site).href;
-const colorTokens = Object.entries(palette)
-  .map(([name, hex]) => `--${name}:${hex}`)
-  .join(";");
 ---
 
 <!doctype html>
-<html lang="en" class="leading-tight" style={colorTokens}>
+<html lang="en" class="leading-tight">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

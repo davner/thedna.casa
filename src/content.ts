@@ -50,7 +50,7 @@ export const members: Member[] = [
   {
     name: "Dan",
     line: 'Builds software for telescopes, collects vinyl and chases good coffee. Concerts took some of his hearing, and Alexis thinks half his "huh?"s are on purpose.',
-    color: "var(--salamander)",
+    color: "var(--color-salamander)",
     portrait: {
       src: danPhoto,
       alt: "Dan in sunglasses and a patterned knit shirt, smiling on a sunny street lined with hedges",
@@ -59,7 +59,7 @@ export const members: Member[] = [
   {
     name: "Alexis",
     line: "Research tech at Caltech, artist at heart and the most thoughtful person you'll ever meet. Also the sleepiest, the cutest, and the one who decides where we're dropping.",
-    color: "var(--pink)",
+    color: "var(--color-pink)",
     portrait: {
       src: alexisPhoto,
       alt: "Alexis in a white embroidered blouse, smiling with her eyes down, red tile roofs behind her",
@@ -68,7 +68,7 @@ export const members: Member[] = [
   {
     name: "Milly",
     line: "Big floppy Dumbo ears, a whole lot of sass and zero fear of heights. She's sure she's invincible, and she's definitely the cutest pup around.",
-    color: "var(--sage)",
+    color: "var(--color-sage)",
     portrait: {
       src: millyPhoto,
       alt: "Milly, a brown cocker spaniel, nose to the camera on the lawn with one ear blown out sideways",
@@ -77,7 +77,7 @@ export const members: Member[] = [
   {
     name: "Penny",
     line: "A calico cuddle bug who will let you know, loudly, when dinner is late. She and Milly are Stinky and the Brainless.",
-    color: "var(--gold)",
+    color: "var(--color-gold)",
     portrait: { src: pennyPhoto, alt: "Penny, a calico cat, sitting in the sun with her eyes half closed" },
   },
 ];

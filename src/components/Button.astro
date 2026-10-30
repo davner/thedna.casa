@@ -36,13 +36,13 @@ const stone = pebble(seed, 200, 80);
 </button>
 
 <style is:global>
-  /* Every color is a variable, so one line recolors a button, e.g. style="--stone: var(--gold); --stone-ink: var(--mole)". */
+  /* Every color is a variable, so one line recolors a button, e.g. style="--stone: var(--color-gold); --stone-ink: var(--color-mole)". */
   .button {
-    --stone: var(--terra);
-    --stone-edge: color-mix(in srgb, var(--stone) 60%, var(--mole));
-    --stone-ink: var(--cream-page);
-    --stone-hover: color-mix(in srgb, var(--stone) 85%, var(--gold));
-    --stone-focus: var(--mole);
+    --stone: var(--color-terra);
+    --stone-edge: color-mix(in srgb, var(--stone) 60%, var(--color-mole));
+    --stone-ink: var(--color-cream-page);
+    --stone-hover: color-mix(in srgb, var(--stone) 85%, var(--color-gold));
+    --stone-focus: var(--color-mole);
     /* The face stands this far above its edge; the pressed face stops 1px short of it, which no utility step can say. */
     --lift: calc(var(--spacing) * 1.5);
     padding-bottom: var(--lift);
@@ -77,9 +77,9 @@ const stone = pebble(seed, 200, 80);
     transform: translateY(calc(var(--lift) - 1px));
   }
   .button:disabled {
-    --stone: color-mix(in srgb, var(--mole) 22%, var(--cream-page));
-    --stone-edge: color-mix(in srgb, var(--mole) 32%, var(--cream-page));
-    --stone-ink: color-mix(in srgb, var(--mole) 55%, var(--cream-page));
+    --stone: color-mix(in srgb, var(--color-mole) 22%, var(--color-cream-page));
+    --stone-edge: color-mix(in srgb, var(--color-mole) 32%, var(--color-cream-page));
+    --stone-ink: color-mix(in srgb, var(--color-mole) 55%, var(--color-cream-page));
     --stone-hover: var(--stone);
   }
   @media (prefers-reduced-motion: no-preference) {
