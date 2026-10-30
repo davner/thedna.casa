@@ -79,8 +79,15 @@ typography:
     fontWeight: 400
     lineHeight: "leading-tight"
     letterSpacing: "tracking-normal"
+  intro:
+    fontFamily: "Averia Serif Libre, serif"
+    fontSize: "text-xl lg:text-2xl xl:text-3xl"
+    fontWeight: 400
+    lineHeight: "leading-snug"
+    letterSpacing: "tracking-normal"
 rounded:
   circle: "rounded-full"
+  frame: "rounded-2xl"
 spacing:
   gutter: "px-6 md:px-12 lg:px-16 xl:px-20"
   column: "max-w-6xl"
@@ -112,6 +119,29 @@ components:
     backgroundColor: "{colors.mole}"
     textColor: "{colors.cream}"
     padding: "pt-12 px-5 pb-24"
+  recap-hero:
+    backgroundColor: "{colors.trona}"
+    padding: "pt-24 pb-10 md:pt-32 md:pb-14 lg:pt-36 xl:pt-44"
+  invite:
+    width: "max-w-64 md:max-w-96"
+    height: "max-h-64 md:max-h-(--container-lg)"
+  drips:
+    backgroundColor: "{colors.trona}"
+    height: "h-24 md:h-40"
+  photo-large:
+    width: "max-w-72 md:max-w-lg"
+  photo-small:
+    width: "max-w-56 md:max-w-80"
+  photo-beside:
+    width: "max-w-72 md:max-w-md"
+  frame:
+    rounded: "{rounded.frame}"
+    width: "max-w-40 md:max-w-60"
+  thumbnail:
+    rounded: "{rounded.circle}"
+    width: "w-20 lg:w-24 xl:w-28"
+  trophy-stage:
+    height: "h-(--container-lg) lg:h-(--container-2xl) xl:h-(--container-3xl)"
 ---
 
 # Design System: The DnA Casa
