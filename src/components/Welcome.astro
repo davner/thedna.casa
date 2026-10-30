@@ -14,35 +14,37 @@ const outline = softMask(233, 4 / 5);
   <svg class="edge" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
     <path d={wave(232, 1440, 80, 2)} />
   </svg>
-  <div>
-    <p class="kicker" lang="es">
-      {copy.kicker}
-    </p>
-    <h2 id="welcome-heading">{copy.hello}</h2>
-    <p class="text">{welcome.text}</p>
-  </div>
-  {welcome.photo ? (
-    <>
-      <svg class="defs" aria-hidden="true">
-        <clipPath id="soft" clipPathUnits="objectBoundingBox">
-          <path d={outline} />
-        </clipPath>
+  <div class="inner">
+    <div>
+      <p class="kicker" lang="es">
+        {copy.kicker}
+      </p>
+      <h2 id="welcome-heading">{copy.hello}</h2>
+      <p class="text">{welcome.text}</p>
+    </div>
+    {welcome.photo ? (
+      <>
+        <svg class="defs" aria-hidden="true">
+          <clipPath id="soft" clipPathUnits="objectBoundingBox">
+            <path d={outline} />
+          </clipPath>
+        </svg>
+        <Image
+          class="photo"
+          src={welcome.photo.src}
+          alt={welcome.photo.alt}
+          width={896}
+          height={1120}
+          widths={[288, 448, 576, 896]}
+          sizes="(max-width: 767px) 288px, 448px"
+        />
+      </>
+    ) : (
+      <svg class="photo" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
+        <path d={outline} />
       </svg>
-      <Image
-        class="photo"
-        src={welcome.photo.src}
-        alt={welcome.photo.alt}
-        width={880}
-        height={1100}
-        widths={[280, 440, 560, 880]}
-        sizes="(max-width: 760px) min(72vw, 280px), 440px"
-      />
-    </>
-  ) : (
-    <svg class="photo" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
-      <path d={outline} />
-    </svg>
-  )}
+    )}
+  </div>
 </section>
 
 <style>
@@ -50,19 +52,24 @@ const outline = softMask(233, 4 / 5);
     position: relative;
     background: var(--cream-page);
     color: var(--mole);
-    display: grid;
-    grid-template-columns: 1fr 1.1fr;
-    gap: clamp(32px, 6vw, 96px);
-    align-items: center;
-    padding: clamp(56px, 7vw, 96px) var(--inline) clamp(88px, 10vw, 130px);
+    padding: calc(var(--spacing) * 6) var(--gutter) calc(var(--spacing) * 16);
   }
-  /* Overlaps the hero by one pixel less than its height so no seam shows between wave and section. */
+  .inner {
+    display: grid;
+    gap: calc(var(--spacing) * 7);
+    align-items: center;
+    max-width: var(--column);
+    margin: 0 auto;
+  }
+  /* Sits on the section's top edge and dips one pixel into it, so no seam shows between wave and section. */
   .edge {
     position: absolute;
     left: 0;
-    top: -79px;
+    bottom: 100%;
+    translate: 0 1px;
     width: 100%;
-    height: 80px;
+    /* A shallower wave on phones so the cream welcome starts inside the first screen. */
+    height: calc(var(--spacing) * 12);
     display: block;
     fill: var(--cream-page);
   }
@@ -71,11 +78,10 @@ const outline = softMask(233, 4 / 5);
     width: 0;
     height: 0;
   }
-  /* The words come first in the markup for phones; wider screens put the photo back on the left. */
   .photo {
-    order: -1;
     display: block;
-    width: min(100%, 440px);
+    width: calc(var(--spacing) * 72);
+    max-width: 100%;
     height: auto;
     aspect-ratio: 4 / 5;
     justify-self: center;
@@ -85,45 +91,64 @@ const outline = softMask(233, 4 / 5);
   img.photo {
     clip-path: url(#soft);
   }
-  /* 1.3rem bold is large text, where terracotta on page cream (3.6:1) passes WCAG. */
+  /* Bold large text, where terracotta on page cream (3.6:1) passes WCAG. */
   .kicker {
     font-family: var(--font-serif);
     font-weight: 700;
     color: var(--terra);
-    font-size: 1.3rem;
-    letter-spacing: -0.02em;
-    margin: 0 0 10px;
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 calc(var(--spacing) * 2);
+  }
+  h2 {
+    text-wrap: balance;
   }
   .text {
-    font-size: clamp(1.05rem, 1.4vw, 1.2rem);
-    line-height: 1.6;
-    max-width: 38ch;
-    margin: 22px 0 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    max-width: var(--container-sm);
+    margin: calc(var(--spacing) * 4) 0 0;
   }
 
-  @media (max-width: 760px) {
+  @media (width >= 48rem) {
     .welcome {
-      grid-template-columns: 1fr;
-      gap: 28px;
-      padding: 24px var(--inline) 64px;
+      padding-block: calc(var(--spacing) * 14) calc(var(--spacing) * 24);
     }
-    /* A shallower wave so the cream welcome starts inside the first phone screen. */
+    .inner {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--gutter);
+    }
     .edge {
-      height: 48px;
-      top: -47px;
+      height: calc(var(--spacing) * 20);
     }
+    /* The words come first in the markup for phones; wider screens put the photo back on the left. */
     .photo {
-      order: 0;
-      width: min(72vw, 280px);
+      order: -1;
+      width: 100%;
+      max-width: var(--container-md);
     }
     .kicker {
-      margin-bottom: 8px;
+      margin-bottom: calc(var(--spacing) * 2.5);
     }
     h2 {
-      text-wrap: balance;
+      text-wrap: wrap;
     }
     .text {
-      margin-top: 16px;
+      margin-top: calc(var(--spacing) * 6);
+    }
+  }
+  @media (width >= 64rem) {
+    .welcome {
+      padding-top: calc(var(--spacing) * 16);
+    }
+  }
+  @media (width >= 80rem) {
+    .welcome {
+      padding-block: calc(var(--spacing) * 24) calc(var(--spacing) * 32);
+    }
+    .text {
+      font-size: var(--text-lg);
+      max-width: var(--container-md);
     }
   }
 </style>

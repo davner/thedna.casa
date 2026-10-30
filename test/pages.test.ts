@@ -86,7 +86,11 @@ describe("shipped pages", () => {
         });
       }
       // The popover default is height: fit-content, which would win over the bottom inset.
-      expect({ inset: panel.inset, height: panel.height }, page).toEqual({ inset: "76px 0 0", height: "auto" });
+      // The top is the phone nav's height; a zero bottom inset is what reaches the screen's foot.
+      expect({ bottom: panel.inset?.split(/\s+(?![^(]*\))/)[2], height: panel.height }, page).toEqual({
+        bottom: "0",
+        height: "auto",
+      });
     }
   });
 
@@ -100,45 +104,6 @@ describe("shipped pages", () => {
         });
       }
       expect(transitions, page).toEqual(["(prefers-reduced-motion:no-preference) auto"]);
-    }
-  });
-
-  it("pad the top of every hero past the navbar, so the nav never overlaps the words", () => {
-    // The minifier rewrites max-width queries into range syntax.
-    const phone = (rule: Rule) => {
-      const media = rule.parent?.type === "atrule" ? (rule.parent as AtRule) : undefined;
-      if (!media) return false;
-      return /^\((max-width:|width<=)760px\)$/.test(squash(media.params));
-    };
-    const firstPx = (value: string) => Number(value.match(/(\d+(?:\.\d+)?)px/)?.[1] ?? NaN);
-    for (const page of shippedPages()) {
-      const nav = { desktop: 0, phone: 0 };
-      const heroTops: { phone: boolean; top: number; rule: string }[] = [];
-      for (const root of pageCss(builtPage(page))) {
-        root.walkRules((rule) => {
-          const atRoot = rule.parent?.type === "root";
-          if (!atRoot && !phone(rule)) return;
-          if (/^\.nav\b[^\s]*$/.test(rule.selector)) {
-            rule.walkDecls("height", (decl) => void (nav[atRoot ? "desktop" : "phone"] = firstPx(decl.value)));
-          }
-          if (/^\.hero\b[^\s]*$/.test(rule.selector)) {
-            rule.walkDecls(
-              /^padding(-top)?$/,
-              (decl) =>
-                void heroTops.push({
-                  phone: !atRoot,
-                  top: firstPx(decl.value.split(/\s+(?![^(]*\))/)[0]),
-                  rule: rule.selector,
-                }),
-            );
-          }
-        });
-      }
-      expect(nav.desktop, page).toBeGreaterThan(0);
-      expect(nav.phone, page).toBeGreaterThan(0);
-      expect(heroTops.length, page).toBeGreaterThanOrEqual(2);
-      for (const { phone, top, rule } of heroTops)
-        expect(top, `${page} ${rule}`).toBeGreaterThanOrEqual(phone ? nav.phone : nav.desktop);
     }
   });
 

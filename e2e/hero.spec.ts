@@ -84,6 +84,23 @@ for (const path of shippedPages) {
       });
     }
 
+    // The nav sits over the hero, so a hero that starts its words above the nav's foot hides them under it.
+    for (const viewport of [phone.viewport, { width: 1440, height: 900 }]) {
+      test(`pads the hero's top past the nav at ${viewport.width}px`, async ({ page }) => {
+        await page.setViewportSize(viewport);
+        await page.goto(path);
+        const { nav, top } = await page.evaluate(() => {
+          const hero = document.querySelector("header")!;
+          return {
+            nav: document.querySelector("nav")!.getBoundingClientRect().bottom,
+            top: hero.getBoundingClientRect().top + parseFloat(getComputedStyle(hero).paddingTop),
+          };
+        });
+        expect(nav, "nav bottom").toBeGreaterThan(0);
+        expect(top, "hero content top").toBeGreaterThanOrEqual(nav);
+      });
+    }
+
     test.describe("on a phone", () => {
       test.use(phone);
 

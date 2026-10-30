@@ -26,21 +26,21 @@ const stone = pebble(seed, 200, 80);
     --stone-ink: var(--cream-page);
     --stone-hover: color-mix(in srgb, var(--stone) 85%, var(--gold));
     --stone-focus: var(--mole);
-    --lift: 6px;
+    --lift: calc(var(--spacing) * 1.5);
     position: relative;
     display: inline-grid;
     place-items: center;
     width: max-content;
-    min-width: 168px;
-    min-height: 64px;
-    padding: 0 34px var(--lift);
+    min-width: calc(var(--spacing) * 44);
+    min-height: calc(var(--spacing) * 16);
+    padding: 0 calc(var(--spacing) * 9) var(--lift);
     border: 0;
     background: none;
     color: var(--stone-ink);
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 1.3rem;
-    letter-spacing: -0.02em;
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-tight);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
   }
@@ -79,7 +79,7 @@ const stone = pebble(seed, 200, 80);
   }
   .button:focus-visible {
     outline: 2px dashed var(--stone-focus);
-    outline-offset: 6px;
+    outline-offset: 8px;
   }
   .button:disabled {
     cursor: not-allowed;

@@ -19,8 +19,9 @@ describe("built root page", () => {
       .find("li")
       .map((_, li) => [
         $(li)
-          .children()
-          .map((_, child) => $(child).text().trim())
+          .find("*")
+          .filter((_, el) => $(el).children().length === 0)
+          .map((_, el) => $(el).text().trim())
           .get()
           .filter(Boolean),
       ])
@@ -186,7 +187,7 @@ describe("built root page", () => {
     expect(clips).toContainEqual(expect.stringMatching(/^(clip|hidden)\b/));
   });
 
-  // Without border-box the hero's 214px of padding stacks on its min(92dvh, 880px) height and pushes the wave below a desktop screen.
+  // Without border-box the hero's 240px of padding stacks on its screen-tall min height and pushes the wave below a desktop screen.
   it("counts the hero's padding inside its height", () => {
     const sizing: string[] = [];
     for (const root of pageCss($)) {
@@ -198,13 +199,13 @@ describe("built root page", () => {
     expect(sizing).toContain("border-box");
   });
 
+  // Mobile-first, so the phone's order is the one outside any media query.
   it("opens the phone screen with the turning stamp, above the wordmark", () => {
     const orders: string[] = [];
     for (const root of pageCss($)) {
-      root.walkAtRules("media", (media) => {
-        // The minifier rewrites max-width queries into range syntax.
-        if (!/^\((max-width:|width<=)760px\)$/.test(media.params.replace(/\s+/g, ""))) return;
-        media.walkRules(/\.stamp\b/, (rule) => rule.walkDecls("order", (decl) => void orders.push(decl.value)));
+      root.walkRules(/\.stamp\b/, (rule) => {
+        if (rule.parent?.type !== "root") return;
+        rule.walkDecls("order", (decl) => void orders.push(decl.value));
       });
     }
     expect(orders).toContainEqual(expect.stringMatching(/^-\d/));

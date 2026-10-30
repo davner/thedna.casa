@@ -7,17 +7,17 @@ const order = Object.keys(steps) as Step[];
 
 const phoneDisplay: Step = "5xl";
 
-// The display size at each Tailwind breakpoint, at the breakpoint's own width.
+// The display size at each Tailwind breakpoint, at the breakpoint's own width, and the site gutter there.
 const breakpoints = [
-  { prefix: "md", width: 768, display: "7xl" },
-  { prefix: "lg", width: 1024, display: "8xl" },
-  { prefix: "xl", width: 1280, display: "9xl" },
-  { prefix: "2xl", width: 1536, display: "9xl" },
+  { prefix: "md", width: 768, display: "7xl", gutter: 48 },
+  { prefix: "lg", width: 1024, display: "8xl", gutter: 64 },
+  { prefix: "xl", width: 1280, display: "9xl", gutter: 80 },
+  { prefix: "2xl", width: 1536, display: "9xl", gutter: 80 },
 ] as const;
 
 // The narrowest phone the site is tested at, with the hero's tracking and 20px gutters.
 const phone = 360;
-const tracking = -0.03;
+const tracking = -0.025;
 export const phoneTitleRoom = phone - 2 * 20;
 
 const ems = (line: string) => serif.layout(line).advanceWidth / serif.unitsPerEm + tracking * [...line].length;
@@ -37,11 +37,11 @@ export const heroTitleLines = (name: string): string[] => {
   return lines;
 };
 
-// Mirrors the hero grid at a breakpoint's narrowest width: 6vw gutters and gap, and a stamp or invite slot of
-// min(380px, 34%) beside the words. The e2e hero checks catch this drifting from the CSS.
-const column = (width: number, layout: "beside" | "full") => {
-  const inner = width - 2 * 0.06 * width;
-  return layout === "full" ? inner : inner - 0.06 * width - Math.min(380, 0.34 * inner);
+// Mirrors the hero at a breakpoint's narrowest width: gutters and a gap of the site gutter, and a stamp or invite
+// slot of 34% of the inner width, capped at 384px, beside the words. The e2e hero checks catch this drifting from the CSS.
+const column = ({ width, gutter }: (typeof breakpoints)[number], layout: "beside" | "full") => {
+  const inner = width - 2 * gutter;
+  return layout === "full" ? inner : inner - gutter - Math.min(384, 0.34 * inner);
 };
 
 const below = (step: Step) => order[Math.max(0, order.indexOf(step) - 1)];
@@ -52,9 +52,10 @@ export const heroTitleSize = (lines: string[], layout: "beside" | "full") => {
   const phoneStep = widest * steps[phoneDisplay] <= phoneTitleRoom ? phoneDisplay : below(phoneDisplay);
   const classes = [`text-${phoneStep}`];
   let current: Step = phoneStep;
-  for (const { prefix, width, display } of breakpoints) {
+  for (const breakpoint of breakpoints) {
+    const { prefix, display } = breakpoint;
     let step: Step = display;
-    while (step !== order[0] && widest * steps[step] > column(width, layout)) step = below(step);
+    while (step !== order[0] && widest * steps[step] > column(breakpoint, layout)) step = below(step);
     if (step !== current) classes.push(`${prefix}:text-${step}`);
     current = step;
   }

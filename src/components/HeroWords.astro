@@ -41,28 +41,28 @@ const { lines, subtitle, layout, date } = Astro.props;
     font-weight: 700;
     /* The lines are broken at build time to fit the real font; a wider fallback must not wrap them while it loads. */
     white-space: nowrap;
-    letter-spacing: -0.03em;
-    line-height: 0.9;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1;
     margin: 0;
   }
   .sub {
     font-family: var(--font-serif);
     font-style: italic;
-    letter-spacing: 0;
-    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
-    margin: 20px 0 0;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-xl);
+    margin: calc(var(--spacing) * 3) 0 0;
     color: var(--blush);
   }
   /* The date reads as the subtitle's second line, not a new block. */
   .sub.when {
-    margin-top: 4px;
+    margin-top: calc(var(--spacing) * 0.5);
   }
   /* Each hero picks its squiggle's color, so the words stay one component across the home and Halloween pages. */
   .squiggle {
     display: block;
-    width: 130px;
-    height: 16px;
-    margin: 18px 0 0;
+    width: calc(var(--spacing) * 28);
+    height: calc(var(--spacing) * 3.5);
+    margin: calc(var(--spacing) * 3.5) auto 0;
     fill: var(--squiggle, var(--pink));
   }
 
@@ -80,20 +80,27 @@ const { lines, subtitle, layout, date } = Astro.props;
     }
   }
 
-  @media (max-width: 760px) {
-    h1 {
-      line-height: 0.88;
-    }
+  @media (width >= 48rem) {
     .sub {
-      margin-top: 12px;
+      margin-top: calc(var(--spacing) * 5);
     }
     .sub.when {
-      margin-top: 2px;
+      margin-top: var(--spacing);
     }
     .squiggle {
-      margin: 14px auto 0;
-      width: 112px;
-      height: 14px;
+      width: calc(var(--spacing) * 32);
+      height: calc(var(--spacing) * 4);
+      margin: calc(var(--spacing) * 5) 0 0;
+    }
+  }
+  @media (width >= 64rem) {
+    .sub {
+      font-size: var(--text-2xl);
+    }
+  }
+  @media (width >= 80rem) {
+    .sub {
+      font-size: var(--text-3xl);
     }
   }
 </style>

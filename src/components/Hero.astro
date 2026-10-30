@@ -10,38 +10,46 @@ import { copy } from "../content";
 </header>
 
 <style>
+  /* A short hero on phones, so the wave lands inside the first screen. */
   .hero {
     position: relative;
     box-sizing: border-box;
-    min-height: min(92dvh, 880px);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) min(380px, 34%);
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: clamp(32px, 6vw, 96px);
-    padding: 96px var(--gutter) 150px;
+    gap: var(--gutter);
+    padding: calc(var(--spacing) * 20) calc(var(--spacing) * 5) calc(var(--spacing) * 24);
     color: var(--cream);
+    text-align: center;
   }
   /* At 45 degrees the turning ring's box is about 1.41x the stamp, which reaches past the screen edge up to tablet widths. */
   .hero {
     overflow-x: clip;
   }
   .hero :global(.stamp) {
-    width: 100%;
+    order: -1;
+    flex: none;
+    width: calc(var(--spacing) * 72);
+    max-width: 100%;
   }
 
-  /* A short hero so the wave lands inside the first phone screen. */
-  @media (max-width: 760px) {
+  /* A screen tall, with the next section pulled up over its foot so the wave and a strip of cream show on the first screen. */
+  @media (width >= 48rem) {
     .hero {
-      min-height: 0;
-      grid-template-columns: 1fr;
-      justify-items: center;
-      gap: 22px;
-      padding: 72px 20px 92px;
-      text-align: center;
+      min-height: 100dvh;
+      margin-bottom: calc(var(--spacing) * -20);
+      flex-direction: row;
+      padding: calc(var(--spacing) * 24) var(--gutter) calc(var(--spacing) * 36);
+      text-align: start;
     }
     .hero :global(.stamp) {
-      order: -1;
-      width: min(76vw, 300px);
+      order: 0;
+      width: 34%;
+      max-width: calc(var(--spacing) * 96);
+    }
+    .hero :global(.words) {
+      flex: 1;
+      min-width: 0;
     }
   }
 </style>

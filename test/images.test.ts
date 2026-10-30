@@ -66,7 +66,7 @@ describe("shipped photos", () => {
   // A 2x phone picks the smallest file at least twice its shown width; without one sized for it, that is the desktop 2x file.
   it("offer a 2x phone file smaller than the 2x desktop file", () => {
     const heavy = photos().flatMap(({ page, src, srcset, sizes }) => {
-      const phone = sizes.match(/^\(max-width: 760px\)\s*([^,]+),/)?.[1] ?? "";
+      const phone = sizes.match(/^\(max-width: \d+px\)\s*([^,]+),/)?.[1] ?? "";
       const phoneWidest = Math.max(0, ...[...phone.matchAll(/(\d+)px/g)].map((m) => Number(m[1])));
       const candidates = [...srcset.matchAll(/\s(\d+)w\b/g)].map((m) => Number(m[1]));
       const picked = Math.min(...candidates.filter((w) => w >= 2 * phoneWidest));

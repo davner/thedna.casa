@@ -18,16 +18,18 @@ const { members = householdMembers } = Astro.props;
             class="circle"
             src={m.portrait.src}
             alt={m.portrait.alt}
-            width={400}
-            height={400}
-            widths={[200, 400]}
-            sizes="(max-width: 760px) 84px, 200px"
+            width={416}
+            height={416}
+            widths={[208, 416]}
+            sizes="(max-width: 767px) 80px, 208px"
           />
         ) : (
           <span class="circle" style={`background:${m.color}`}></span>
         )}
-        <h3>{m.name}</h3>
-        <span class="line">{m.line}</span>
+        <div class="who">
+          <h3>{m.name}</h3>
+          <span class="line">{m.line}</span>
+        </div>
       </li>
     ))}
   </ul>
@@ -37,83 +39,104 @@ const { members = householdMembers } = Astro.props;
   .members {
     background: var(--cream-page);
     color: var(--mole);
-    padding: 0 var(--inline) clamp(96px, 11vw, 150px);
+    padding: calc(var(--spacing) * 2) var(--gutter) calc(var(--spacing) * 20);
+  }
+  .members > * {
+    max-width: var(--column);
+    margin-inline: auto;
   }
   h2 {
     color: var(--terra);
-    margin: 0;
   }
   ul {
     list-style: none;
     padding: 0;
-    margin: 48px 0 0;
+    margin-top: calc(var(--spacing) * 7);
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: clamp(20px, 3vw, 44px);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
-  /* Rows keep their content height, so a short one-liner never stretches its circle or drops its name below the others. */
   li {
-    display: grid;
-    justify-items: center;
-    align-content: start;
-    gap: 6px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing) * 5);
+    padding: calc(var(--spacing) * 3.5) 0;
+    border-top: 1px solid color-mix(in oklab, var(--mole) 14%, transparent);
+  }
+  li:last-child {
+    border-bottom: 1px solid color-mix(in oklab, var(--mole) 14%, transparent);
   }
   .circle {
     display: block;
-    width: 100%;
-    max-width: 200px;
+    flex: none;
+    width: calc(var(--spacing) * 20);
     height: auto;
     aspect-ratio: 1;
-    border-radius: 50%;
+    border-radius: calc(infinity * 1px);
     object-fit: cover;
-    margin-bottom: 12px;
+  }
+  .who {
+    display: grid;
+    gap: calc(var(--spacing) * 0.5);
   }
   h3 {
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 1.7rem;
-    letter-spacing: -0.02em;
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
     margin: 0;
   }
   .line {
-    font-size: 1rem;
+    font-size: var(--text-base);
   }
 
-  @media (max-width: 760px) {
+  /* Columns keep their content height, so a short one-liner never stretches its circle or drops its name below the others. */
+  @media (width >= 48rem) {
     .members {
-      padding: 8px var(--inline) 72px;
+      padding-top: 0;
+      padding-bottom: calc(var(--spacing) * 24);
     }
     ul {
-      margin-top: 28px;
-      grid-template-columns: 1fr;
-      gap: 0;
+      margin-top: calc(var(--spacing) * 12);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: calc(var(--spacing) * 6);
     }
     li {
-      text-align: start;
-      grid-template-columns: 84px 1fr;
-      grid-template-rows: auto auto;
-      column-gap: 18px;
-      row-gap: 2px;
-      justify-items: start;
+      flex-direction: column;
       align-items: center;
-      padding: 14px 0;
-      border-top: 1px solid color-mix(in srgb, var(--mole) 14%, transparent);
+      gap: calc(var(--spacing) * 1.5);
+      padding: 0;
+      border: 0;
+      text-align: center;
     }
     li:last-child {
-      border-bottom: 1px solid color-mix(in srgb, var(--mole) 14%, transparent);
+      border: 0;
     }
     .circle {
-      grid-row: 1 / 3;
-      width: 84px;
-      margin: 0;
+      width: 100%;
+      max-width: calc(var(--spacing) * 52);
+      margin-bottom: calc(var(--spacing) * 3);
+    }
+    .who {
+      gap: calc(var(--spacing) * 1.5);
     }
     h3 {
-      align-self: end;
-      font-size: 1.5rem;
+      font-size: var(--text-3xl);
     }
-    .line {
-      align-self: start;
+  }
+  @media (width >= 64rem) {
+    .members {
+      padding-bottom: calc(var(--spacing) * 28);
+    }
+    ul {
+      gap: calc(var(--spacing) * 8);
+    }
+  }
+  @media (width >= 80rem) {
+    .members {
+      padding-bottom: calc(var(--spacing) * 36);
+    }
+    ul {
+      gap: calc(var(--spacing) * 10);
     }
   }
 </style>

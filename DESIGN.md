@@ -22,29 +22,29 @@ typography:
     letterSpacing: "-0.03em"
   headline:
     fontFamily: "Averia Serif Libre, serif"
-    fontSize: "clamp(2.2rem, 4.4vw, 3.8rem)"
+    fontSize: "text-4xl lg:text-5xl xl:text-6xl"
     fontWeight: 700
     lineHeight: 1
     letterSpacing: "-0.04em"
   title:
     fontFamily: "Averia Serif Libre, serif"
-    fontSize: "1.7rem"
+    fontSize: "text-3xl"
     fontWeight: 700
     letterSpacing: "-0.02em"
   subtitle:
     fontFamily: "Averia Serif Libre, serif"
-    fontSize: "clamp(1.3rem, 2.2vw, 1.8rem)"
+    fontSize: "text-xl lg:text-2xl xl:text-3xl"
     fontWeight: 400
     letterSpacing: "0"
   body:
     fontFamily: "Schibsted Grotesk, sans-serif"
-    fontSize: "clamp(1.05rem, 1.4vw, 1.2rem)"
+    fontSize: "text-base xl:text-lg"
     fontWeight: 400
     lineHeight: 1.6
     letterSpacing: "-0.03em"
   label:
     fontFamily: "Averia Serif Libre, serif"
-    fontSize: "1.3rem"
+    fontSize: "text-xl"
     fontWeight: 700
     letterSpacing: "-0.02em"
   display-phone:
@@ -54,22 +54,47 @@ typography:
     lineHeight: 0.88
   title-phone:
     fontFamily: "Averia Serif Libre, serif"
-    fontSize: "1.5rem"
+    fontSize: "text-2xl"
     fontWeight: 700
   caption:
     fontFamily: "Schibsted Grotesk, sans-serif"
-    fontSize: "1rem"
+    fontSize: "text-base"
     fontWeight: 400
   ring:
     fontFamily: "Averia Serif Libre, serif"
-    fontSize: "15px"
+    fontSize: "text-base"
     fontWeight: 700
     letterSpacing: "0.08em"
   signoff:
     fontFamily: "Averia Serif Libre, serif"
-    fontSize: "1rem"
+    fontSize: "text-base"
     fontWeight: 400
     letterSpacing: "0"
+  # The Halloween pages keep their pre-Tailwind sizes until their own snap; these go with it.
+  halloween-title:
+    fontFamily: "Averia Serif Libre, serif"
+    fontSize: "1.7rem"
+    fontWeight: 700
+  halloween-title-phone:
+    fontFamily: "Averia Serif Libre, serif"
+    fontSize: "1.5rem"
+    fontWeight: 700
+  halloween-label:
+    fontFamily: "Averia Serif Libre, serif"
+    fontSize: "1.3rem"
+    fontWeight: 700
+  halloween-subtitle:
+    fontFamily: "Averia Serif Libre, serif"
+    fontSize: "clamp(1.3rem, 2.2vw, 1.8rem)"
+    fontWeight: 400
+  halloween-body:
+    fontFamily: "Schibsted Grotesk, sans-serif"
+    fontSize: "clamp(1.05rem, 1.4vw, 1.2rem)"
+    fontWeight: 400
+  halloween-caption:
+    fontFamily: "Schibsted Grotesk, sans-serif"
+    fontSize: "1rem"
+    fontWeight: 400
 rounded:
   circle: "50%"
 spacing:

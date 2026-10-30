@@ -30,7 +30,7 @@ describe("heroTitleSize", () => {
     expect(heroTitleSize(["THE DnA", "CASA"], "beside")).toBe("text-5xl md:text-7xl lg:text-8xl xl:text-9xl");
   });
 
-  // Beside the stamp the column is 400px at md, 533px at lg, 670px at xl and 880px at 2xl; HALLOWEEN is 6.18em wide.
+  // Beside the stamp the column is 396px at md, 527px at lg, 659px at xl and 912px at 2xl; HALLOWEEN is 6.22em wide.
   it("picks the largest step at each breakpoint whose longest line fits the column", () => {
     expect(heroTitleSize(["HALLOWEEN"], "beside")).toBe("text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl");
   });

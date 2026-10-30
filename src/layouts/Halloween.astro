@@ -17,6 +17,10 @@ const { title, description, share } = Astro.props;
 </Base>
 
 <style is:global>
+  :root {
+    /* Sections pad by this, so every page's content shares one column while its background runs edge to edge. */
+    --inline: max(var(--gutter), (100% - var(--column)) / 2);
+  }
   body {
     --dark: var(--trona);
     background: var(--dark);
