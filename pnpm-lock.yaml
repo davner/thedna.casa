@@ -20,6 +20,9 @@ importers:
       astro:
         specifier: ^7.4.2
         version: 7.4.2(@types/node@26.6.5)(jiti@2.7.0)(yaml@2.9.1)
+      brace-expansion:
+        specifier: ^5.0.12
+        version: 5.0.12
       d3-shape:
         specifier: ^3.2.0
         version: 3.2.0

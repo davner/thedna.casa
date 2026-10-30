@@ -1,3 +1,5 @@
+import { expand } from "brace-expansion";
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { heroTitleLines, heroTitleSize, phoneTitleRoom, phoneTitleWidth } from "./hero-title";
 
@@ -48,5 +50,44 @@ describe("heroTitleSize", () => {
 
   it("steps a phone title down exactly one size when a word is too wide to break", () => {
     expect(heroTitleSize(["HAUNTED", "HOMECOMING"], "full").split(" ")[0]).toBe("text-4xl");
+  });
+});
+
+// Tailwind only generates the size classes global.css force-includes, so a class the model picks outside that list
+// would leave the title unsized.
+describe("the title sizes global.css force-includes", () => {
+  const css = readFileSync(new URL("../styles/global.css", import.meta.url), "utf8");
+  const listed = new Set(
+    [...css.matchAll(/@source inline\(\s*"([^"]*text-[^"]*)"\s*\)/g)].flatMap(([, list]) =>
+      list
+        .trim()
+        .split(/\s+/)
+        .flatMap((item) => expand(item)),
+    ),
+  );
+  const prefixes = ["", "md", "lg", "xl", "2xl"];
+  const order = ["4xl", "5xl", "6xl", "7xl", "8xl", "9xl"];
+  const largestListed = (prefix: string) =>
+    order.findLast((step) => listed.has(prefix ? `${prefix}:text-${step}` : `text-${step}`));
+  // A breakpoint with no class of its own keeps the size of the one below it.
+  const sizeAt = (classes: string, prefix: string) => {
+    const own = new Map(classes.split(" ").map((c) => [c.includes(":") ? c.split(":")[0] : "", c.split("text-")[1]]));
+    return prefixes
+      .slice(0, prefixes.indexOf(prefix) + 1)
+      .reduce<string | undefined>((size, p) => own.get(p) ?? size, undefined);
+  };
+
+  it("holds every size the model can pick, from a one-letter title to one far too wide", () => {
+    expect(listed.size).toBeGreaterThan(0);
+    const picked = new Set<string>();
+    for (const layout of ["beside", "full"] as const)
+      for (let letters = 1; letters <= 40; letters++)
+        for (const c of heroTitleSize(["W".repeat(letters)], layout).split(" ")) picked.add(c);
+    expect([...picked].filter((c) => !listed.has(c))).toEqual([]);
+  });
+
+  it("tops out at the size a title that fits gets at each breakpoint", () => {
+    const fits = heroTitleSize(["W"], "full");
+    for (const prefix of prefixes) expect(sizeAt(fits, prefix), prefix || "phone").toBe(largestListed(prefix));
   });
 });

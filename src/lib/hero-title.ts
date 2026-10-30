@@ -1,19 +1,40 @@
+import { expand } from "brace-expansion";
+import tailwindTheme from "tailwindcss/theme.css?raw";
+import globalCss from "../styles/global.css?raw";
 import { serif } from "./serif";
 
-// Tailwind's text steps in px, smallest first, so a title can only ever take a size from Tailwind's scale.
-const steps = { "4xl": 36, "5xl": 48, "6xl": 60, "7xl": 72, "8xl": 96, "9xl": 128 } as const;
-type Step = keyof typeof steps;
-const order = Object.keys(steps) as Step[];
+// Tailwind generates only the title sizes global.css force-includes, so that list is the model's scale: each breakpoint's
+// largest listed step is its display size, and a title too wide for it steps down through the smaller ones.
+const titleSizes = /@source inline\(\s*"([^"]*text-[^"]*)"\s*\)/
+  .exec(globalCss)![1]
+  .trim()
+  .split(/\s+/)
+  .flatMap((item) => expand(item));
 
-const phoneDisplay: Step = "5xl";
+// Sizes and breakpoints in px, read from Tailwind's own theme rather than copied.
+const themePx = (name: string) => Number(new RegExp(`--${name}:\\s*([\\d.]+)rem`).exec(tailwindTheme)![1]) * 16;
 
-// The display size at each Tailwind breakpoint, at the breakpoint's own width, and the site gutter there.
-const breakpoints = [
-  { prefix: "md", width: 768, display: "7xl", gutter: 48 },
-  { prefix: "lg", width: 1024, display: "8xl", gutter: 64 },
-  { prefix: "xl", width: 1280, display: "9xl", gutter: 80 },
-  { prefix: "2xl", width: 1536, display: "9xl", gutter: 80 },
-] as const;
+const stepsAt = (prefix: string) =>
+  titleSizes
+    .filter((size) => (prefix ? size.startsWith(`${prefix}:`) : !size.includes(":")))
+    .map((size) => size.split("text-")[1])
+    .sort((a, b) => themePx(`text-${a}`) - themePx(`text-${b}`));
+
+const phoneSteps = stepsAt("");
+const phoneDisplay = phoneSteps.at(-1)!;
+
+// Copied from the hero's gutter classes; the e2e hero checks catch a drift.
+const gutters: Record<string, number> = { md: 48, lg: 64, xl: 80, "2xl": 80 };
+
+// Each breakpoint's steps and gutter, at the breakpoint's own width, narrowest first.
+const breakpoints = [...new Set(titleSizes.filter((size) => size.includes(":")).map((size) => size.split(":")[0]))]
+  .map((prefix) => ({
+    prefix,
+    width: themePx(`breakpoint-${prefix}`),
+    steps: stepsAt(prefix),
+    gutter: gutters[prefix],
+  }))
+  .sort((a, b) => a.width - b.width);
 
 // The narrowest phone the site is tested at, with the hero's 20px gutters.
 const phone = 360;
@@ -26,7 +47,7 @@ const wideTracking = -0.05;
 const ems = (line: string, tracking: number) =>
   serif.layout(line).advanceWidth / serif.unitsPerEm + tracking * [...line].length;
 
-export const phoneTitleWidth = (line: string) => ems(line, phoneTracking) * steps[phoneDisplay];
+export const phoneTitleWidth = (line: string) => ems(line, phoneTracking) * themePx(`text-${phoneDisplay}`);
 
 // Lines are fixed at build time so every screen breaks the name in the same places.
 export const heroTitleLines = (name: string): string[] => {
@@ -48,18 +69,16 @@ const column = ({ width, gutter }: (typeof breakpoints)[number], layout: "beside
   return layout === "full" ? inner : inner - gutter - Math.min(384, 0.34 * inner);
 };
 
-const below = (step: Step) => order[Math.max(0, order.indexOf(step) - 1)];
-
 // A word too wide to break steps the phone title down one size just for that party.
 export const heroTitleSize = (lines: string[], layout: "beside" | "full") => {
-  const phoneStep = Math.max(0, ...lines.map(phoneTitleWidth)) <= phoneTitleRoom ? phoneDisplay : below(phoneDisplay);
+  const phoneStep =
+    Math.max(0, ...lines.map(phoneTitleWidth)) <= phoneTitleRoom ? phoneDisplay : (phoneSteps.at(-2) ?? phoneDisplay);
   const widest = Math.max(0, ...lines.map((line) => ems(line, wideTracking)));
   const classes = [`text-${phoneStep}`];
-  let current: Step = phoneStep;
+  let current = phoneStep;
   for (const breakpoint of breakpoints) {
-    const { prefix, display } = breakpoint;
-    let step: Step = display;
-    while (step !== order[0] && widest * steps[step] > column(breakpoint, layout)) step = below(step);
+    const { prefix, steps } = breakpoint;
+    const step = steps.findLast((step) => widest * themePx(`text-${step}`) <= column(breakpoint, layout)) ?? steps[0];
     if (step !== current) classes.push(`${prefix}:text-${step}`);
     current = step;
   }

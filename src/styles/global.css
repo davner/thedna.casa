@@ -5,7 +5,8 @@
 @source not inline("transform transition");
 /* The stamp's ring path data reads as a margin utility, and its ring prop as Tailwind's ring, which ships a white offset. */
 @source not inline("m-82 ring");
-/* The hero title's size classes are picked at build time in src/lib/hero-title.ts, so they never appear whole in markup. */
+/* The hero title's size classes are picked at build time in src/lib/hero-title.ts, so they never appear whole in markup.
+That module reads this list as its scale: each breakpoint's largest step is the display size. */
 @source inline(
   "text-{4xl,5xl} md:text-{4xl,5xl,6xl,7xl} lg:text-{4xl,5xl,6xl,7xl,8xl} {xl,2xl}:text-{4xl,5xl,6xl,7xl,8xl,9xl}"
 );
