@@ -72,6 +72,18 @@ That module reads this list as its scale: each breakpoint's largest step is the 
     }
   }
 
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    font-size: var(--text-2xl);
+    line-height: var(--leading-tight);
+
+    @variant md {
+      font-size: var(--text-3xl);
+    }
+  }
+
   ::selection {
     background: var(--color-pink);
     color: var(--color-cream-page);

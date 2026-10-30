@@ -231,7 +231,7 @@ const divider = "border-t border-t-(color:--divider) last:border-b last:border-b
                 />
               )}
               <div class:list={["text-center", { "md:text-start": h.photo }]}>
-                <h3 class="font-serif text-2xl leading-tight font-bold tracking-tight md:text-3xl">{h.title}</h3>
+                <h3>{h.title}</h3>
                 <p class:list={[body, "mx-auto mt-3 max-w-xs xl:max-w-sm", { "md:mx-0": h.photo }]}>{h.text}</p>
               </div>
               {h.frames && (
