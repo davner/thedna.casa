@@ -1,11 +1,11 @@
 ---
 import { brushSquiggle } from "../lib/shapes";
-import { heroTitleSize } from "../lib/hero-title";
+import { heroTitleSize, type HeroLayout } from "../lib/hero-title";
 interface Props {
   class?: string;
   lines: string[];
   subtitle: string;
-  layout: "beside" | "full";
+  layout: HeroLayout;
   date?: { datetime: string; long: string };
 }
 const { class: className, lines, subtitle, layout, date } = Astro.props;

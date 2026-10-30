@@ -2,13 +2,13 @@
 import MarigoldMark from "./MarigoldMark.astro";
 import { copy } from "../content";
 interface Props {
-  class?: string;
   ring?: string;
 }
-const { class: className, ring = copy.ring } = Astro.props;
+const { ring = copy.ring } = Astro.props;
 ---
 
-<div class:list={["stamp", className]}>
+{/* The stamp only ever sits in the hero's slot: above the title on phones, beside the words from md. */}
+<div class="stamp -order-1 w-72 max-w-full flex-none md:order-0 md:hero-slot">
   <svg class="ring-text" viewBox="0 0 200 200" aria-hidden="true">
     <defs>
       <path id="stamp-ring" d="M100 100 m-82 0 a82 82 0 1 1 164 0 a82 82 0 1 1 -164 0" />

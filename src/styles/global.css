@@ -135,6 +135,14 @@ That module reads this list as its scale: each breakpoint's largest step is the 
   }
 }
 
+/* The hero's side slot, where the stamp or a recap's invite sits beside the words from md. The hero title's size
+model reads its width and cap. */
+@utility hero-slot {
+  flex: none;
+  width: calc(17 / 50 * 100%);
+  max-width: --spacing(96);
+}
+
 /* No utility can set a scroll timeline. */
 @utility reveal {
   @media (prefers-reduced-motion: no-preference) {

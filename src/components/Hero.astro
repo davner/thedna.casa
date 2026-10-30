@@ -1,13 +1,13 @@
 ---
-import Stamp from "./Stamp.astro";
+import HeroBox from "./HeroBox.astro";
 import HeroWords from "./HeroWords.astro";
+import Stamp from "./Stamp.astro";
 import { copy } from "../content";
 ---
 
 {/* Short on phones, so the wave lands inside the first screen; from md a screen tall, with the next section pulled up
-  over its foot so the wave and a strip of cream show on the first screen. At 45 degrees the turning ring's box is about
-  1.41x the stamp, which reaches past the screen edge up to tablet widths, so the hero clips sideways. */}
-<header class="relative flex flex-col items-center gutter-gap-6 overflow-x-clip gutter-x-5 pt-20 pb-24 text-center text-cream md:-mb-20 md:min-h-dvh md:flex-row md:pt-24 md:pb-36 md:text-start">
+  over its foot so the wave and a strip of cream show on the first screen. */}
+<HeroBox class="pt-20 pb-24 md:-mb-20 md:min-h-dvh md:pt-24 md:pb-36">
   <HeroWords class="md:min-w-0 md:flex-1" lines={copy.wordmark} subtitle={copy.subtitle} layout="beside" />
-  <Stamp class="-order-1 w-72 max-w-full flex-none md:order-0 md:w-17/50 md:max-w-96" />
-</header>
+  <Stamp />
+</HeroBox>

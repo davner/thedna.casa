@@ -66,15 +66,26 @@ export const heroTitleLines = (name: string): string[] => {
   return lines;
 };
 
-// Mirrors the hero at a breakpoint's narrowest width: gutters and a gap of the site gutter, and a stamp or invite
-// slot of 34% of the inner width, capped at 384px, beside the words. The e2e hero checks catch this drifting from the CSS.
-const column = ({ width, gutter }: (typeof breakpoints)[number], layout: "beside" | "full") => {
+// The words share the hero with a stamp or invite beside them, or take its whole width.
+export type HeroLayout = "beside" | "full";
+
+// The side slot's share of the hero's inner width and its cap, from the hero-slot utility in global.css.
+const slot =
+  /@utility hero-slot \{[^}]*width: calc\((\d+) \/ (\d+) \* 100%\);\s*max-width: --spacing\(([\d.]+)\);/.exec(
+    globalCss,
+  )!;
+const slotShare = Number(slot[1]) / Number(slot[2]);
+const slotCap = Number(slot[3]) * themePx("spacing");
+
+// Mirrors the hero at a breakpoint's narrowest width: gutters and a gap of the page gutter, and the side slot beside the
+// words. The e2e hero checks catch this drifting from the CSS.
+const column = ({ width, gutter }: (typeof breakpoints)[number], layout: HeroLayout) => {
   const inner = width - 2 * gutter;
-  return layout === "full" ? inner : inner - gutter - Math.min(384, 0.34 * inner);
+  return layout === "full" ? inner : inner - gutter - Math.min(slotCap, slotShare * inner);
 };
 
 // A word too wide to break steps the phone title down one size just for that party.
-export const heroTitleSize = (lines: string[], layout: "beside" | "full") => {
+export const heroTitleSize = (lines: string[], layout: HeroLayout) => {
   const phoneStep =
     Math.max(0, ...lines.map(phoneTitleWidth)) <= phoneTitleRoom ? phoneDisplay : (phoneSteps.at(-2) ?? phoneDisplay);
   const widest = Math.max(0, ...lines.map((line) => ems(line, wideTracking)));

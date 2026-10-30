@@ -1,0 +1,19 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"header">;
+const { class: className, ...attrs } = Astro.props;
+---
+
+{/* Every hero has this box, so every title starts at one edge and the size model in hero-title.ts holds. At 45 degrees
+  the turning ring's box is about 1.41x the stamp, which reaches past the screen edge up to tablet widths, so the hero
+  clips sideways. */}
+<header
+  class:list={[
+    "relative flex flex-col items-center gutter-gap-6 overflow-x-clip gutter-x-5 text-center text-cream md:flex-row md:text-start",
+    className,
+  ]}
+  {...attrs}
+>
+  <slot />
+</header>

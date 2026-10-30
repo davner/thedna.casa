@@ -1,7 +1,8 @@
 ---
 import Ghost from "./Ghost.astro";
-import Stamp from "../Stamp.astro";
+import HeroBox from "../HeroBox.astro";
 import HeroWords from "../HeroWords.astro";
+import Stamp from "../Stamp.astro";
 interface Props {
   title: string[];
   subtitle: string;
@@ -13,20 +14,19 @@ const { title, subtitle, date, ring } = Astro.props;
 const beside = Boolean(ring) || Astro.slots.has("keepsake");
 ---
 
-{/* The same box as the home hero, so every title starts at one edge and the size model in hero-title.ts holds. With a
-  stamp it is a screen tall from md, with the main pulled up over its foot so the drips start on the first desktop screen. */}
-<header
-  class:list={[
-    "relative flex flex-col items-center gutter-gap-6 overflow-x-clip gutter-x-5 text-center text-cream md:flex-row md:text-start",
-    ring ? "pt-20 pb-12 md:-mb-20 md:min-h-dvh md:pt-24 md:pb-36" : "pt-24 pb-10 md:pt-32 md:pb-14 lg:pt-36 xl:pt-44",
-  ]}
+{/* With a stamp the hero is a screen tall from md, with the main pulled up over its foot so the drips start on the
+  first desktop screen. */}
+<HeroBox
+  class={
+    ring ? "pt-20 pb-12 md:-mb-20 md:min-h-dvh md:pt-24 md:pb-36" : "pt-24 pb-10 md:pt-32 md:pb-14 lg:pt-36 xl:pt-44"
+  }
   style="--squiggle: var(--color-terra)"
 >
   {/* A recap has no stamp, so its keepsake (the party's invite) takes the stamp's slot instead. It comes first in the
   markup because phones show it above the title; arriving after the title, it would push the title down mid-load. It
   sits above the drips, which hang from the main column into the hero's lower edge. */}
   {!ring && Astro.slots.has("keepsake") && (
-    <div class="relative z-10 grid justify-items-center self-stretch md:order-1 md:w-17/50 md:max-w-96 md:flex-none md:self-center">
+    <div class="relative z-10 grid justify-items-center self-stretch md:order-1 md:hero-slot md:self-center">
       <slot name="keepsake" />
     </div>
   )}
@@ -38,8 +38,8 @@ const beside = Boolean(ring) || Astro.slots.has("keepsake");
     date={date}
   />
   {ring && (
-    <Stamp class="-order-1 w-72 max-w-full flex-none md:order-0 md:w-17/50 md:max-w-96" ring={ring}>
+    <Stamp ring={ring}>
       <Ghost class="relative block w-23/50" />
     </Stamp>
   )}
-</header>
+</HeroBox>
