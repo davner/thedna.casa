@@ -12,29 +12,39 @@ const parties = newestFirst(await getCollection("halloween"));
 
 <Halloween title="Halloween · The DnA Casa" description="Every Halloween party at the casa, newest first.">
   <HalloweenHero title={["HALLOWEEN"]} subtitle="October at the casa" ring="HALLOWEEN · THE DnA CASA · CON CARIÑO · " />
-  <main class="list">
+  <main class="bg-cream-page text-mole">
     <Drips />
     <Trophy parties={parties} />
-    <section>
-      <h2 class="reveal">The parties</h2>
-      <ul>
+    {/* Content-box, so the column caps the content inside the gutters while the cream runs edge to edge. */}
+    <section class="mx-auto box-content max-w-6xl px-6 pb-20 md:px-12 lg:px-16 lg:pb-28 xl:px-20 xl:pb-36">
+      <h2 class="reveal text-terra">The parties</h2>
+      <ul class="mt-9">
         {parties.map(({ data: party }) => {
           // A party with no photos yet still gets a thumbnail, cut from its invite.
           const photo = party.ourCostumes.find((c) => c.photo)?.photo ?? party.invite;
           const day = partyDate(party.date);
           return (
-            <li class="reveal">
-              <a href={`/halloween/${party.year}/`}>
-                <span class="year">{party.year}</span>{" "}
-                <span class="what">
-                  <span class="name">{party.name}</span> <span class="theme">A {party.theme} Halloween</span>{" "}
-                  <time class="theme" datetime={day.datetime}>
+            <li class="reveal border-t border-t-(color:--divider) last:border-b last:border-b-(color:--divider)">
+              <a
+                class="group flex items-center gap-4 py-6 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-terra md:gap-8 lg:gap-10 xl:gap-12"
+                href={`/halloween/${party.year}/`}
+              >
+                <span class="font-serif text-2xl leading-none font-bold tracking-tight text-terra lining-nums md:text-3xl">
+                  {party.year}
+                </span>{" "}
+                <span class="grid flex-1 gap-1">
+                  <span class="font-serif text-2xl leading-tight font-bold tracking-tight underline decoration-transparent decoration-2 underline-offset-8 group-hover:decoration-current group-hover:underline-offset-4 group-focus-visible:decoration-current group-focus-visible:underline-offset-4 md:text-3xl motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-in-out">
+                    {party.name}
+                  </span>{" "}
+                  <span class="text-base leading-tight">A {party.theme} Halloween</span>{" "}
+                  <time class="text-base leading-tight" datetime={day.datetime}>
                     {day.short}
                   </time>
                 </span>
                 {photo && (
                   <Image
-                    class="thumb"
+                    class="aspect-square h-auto w-20 object-cover lg:w-24 xl:w-28 motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-out motion-safe:group-hover:scale-105"
+                    style="clip-path: circle(50%)"
                     src={photo.src}
                     alt=""
                     width={224}
@@ -51,126 +61,3 @@ const parties = newestFirst(await getCollection("halloween"));
     </section>
   </main>
 </Halloween>
-
-<style>
-  .list {
-    background: var(--cream-page);
-    color: var(--mole);
-  }
-  /* Content-box, so the column caps the content inside the gutters while the cream runs edge to edge. */
-  section {
-    box-sizing: content-box;
-    max-width: var(--column);
-    margin-inline: auto;
-    padding: 0 var(--gutter) calc(var(--spacing) * 20);
-  }
-  h2 {
-    color: var(--terra);
-  }
-  ul {
-    list-style: none;
-    margin: calc(var(--spacing) * 9) 0 0;
-    padding: 0;
-  }
-  li {
-    border-top: var(--divider);
-  }
-  li:last-child {
-    border-bottom: var(--divider);
-  }
-  a {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: calc(var(--spacing) * 4);
-    padding: calc(var(--spacing) * 6) 0;
-    color: inherit;
-    text-decoration: none;
-  }
-  .year {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: var(--text-2xl);
-    letter-spacing: var(--tracking-tight);
-    line-height: 1;
-    color: var(--terra);
-    font-variant-numeric: lining-nums;
-  }
-  .what {
-    display: grid;
-    gap: var(--spacing);
-  }
-  .name {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: var(--text-2xl);
-    letter-spacing: var(--tracking-tight);
-    text-decoration: underline 2px transparent;
-    text-underline-offset: 8px;
-  }
-  .theme {
-    font-size: var(--text-base);
-  }
-  .thumb {
-    width: calc(var(--spacing) * 20);
-    height: auto;
-    aspect-ratio: 1;
-    clip-path: circle(50%);
-    object-fit: cover;
-  }
-  a:hover .name,
-  a:focus-visible .name {
-    text-decoration-color: currentColor;
-    text-underline-offset: 4px;
-  }
-  a:focus-visible {
-    outline: 2px solid var(--terra);
-    outline-offset: 4px;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .name {
-      transition:
-        text-decoration-color 200ms var(--ease-in-out),
-        text-underline-offset 200ms var(--ease-in-out);
-    }
-    .thumb {
-      transition: transform 300ms var(--ease-out);
-    }
-    a:hover .thumb {
-      transform: scale(1.05);
-    }
-  }
-
-  @media (width >= 48rem) {
-    .year,
-    .name {
-      font-size: var(--text-3xl);
-    }
-    a {
-      gap: calc(var(--spacing) * 8);
-    }
-  }
-  @media (width >= 64rem) {
-    section {
-      padding-bottom: calc(var(--spacing) * 28);
-    }
-    a {
-      gap: calc(var(--spacing) * 10);
-    }
-    .thumb {
-      width: calc(var(--spacing) * 24);
-    }
-  }
-  @media (width >= 80rem) {
-    section {
-      padding-bottom: calc(var(--spacing) * 36);
-    }
-    a {
-      gap: calc(var(--spacing) * 12);
-    }
-    .thumb {
-      width: calc(var(--spacing) * 28);
-    }
-  }
-</style>

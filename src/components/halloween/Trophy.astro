@@ -39,20 +39,32 @@ const scene = {
 };
 ---
 
-<section class="trophy" aria-labelledby="trophy-h">
-  <h2 id="trophy-h" class="reveal">
+{/* The first thing under the drips, sharing one column with the parties list below. Content-box, so the column caps
+the content inside the gutters. */}
+<section
+  class="trophy mx-auto box-content max-w-6xl px-6 pt-32 pb-20 md:px-12 md:pt-52 lg:px-16 lg:pb-28 xl:px-20 xl:pb-36"
+  aria-labelledby="trophy-h"
+>
+  <h2 id="trophy-h" class="reveal text-terra">
     The trophy
   </h2>
-  <p class="lede reveal">The best costume takes it home until next Halloween and gets a plate on the base.</p>
-  <div class="stage" data-trophy data-faces={JSON.stringify(faces)} data-scene={JSON.stringify(scene)}></div>
-  <div class="controls" hidden>
-    <p class="hint">Drag it, or use the arrow keys, to turn it.</p>
+  <p class="reveal mt-5 mb-4 max-w-sm">
+    The best costume takes it home until next Halloween and gets a plate on the base.
+  </p>
+  <div
+    class="stage relative mt-6 cursor-grab touch-pan-y select-none focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-terra active:cursor-grabbing md:mt-8 lg:mt-10 xl:mt-12"
+    data-trophy
+    data-faces={JSON.stringify(faces)}
+    data-scene={JSON.stringify(scene)}
+  ></div>
+  <div class="controls mt-4 grid justify-items-center gap-4" hidden>
+    <p class="text-base leading-tight">Drag it, or use the arrow keys, to turn it.</p>
     <Button label="Pause" class="pause" seed={5} />
   </div>
-  <ol class="winners">
+  <ol class="winners mt-8">
     {all.map((p) => (
-      <li>
-        <span class="year">{p.year}</span> {p.names.toLowerCase()}, {p.costume}
+      <li class="border-t border-t-(color:--divider) py-3.5 text-base leading-tight last:border-b last:border-b-(color:--divider)">
+        <span class="font-serif font-bold">{p.year}</span> {p.names.toLowerCase()}, {p.costume}
       </li>
     ))}
   </ol>
@@ -196,40 +208,10 @@ const scene = {
 </script>
 
 <style>
-  /* The first thing under the drips, sharing one column with the parties list below. Content-box, so the column caps
-  the content inside the gutters. */
-  .trophy {
-    box-sizing: content-box;
-    max-width: var(--column);
-    margin-inline: auto;
-    padding: calc(var(--spacing) * 32) var(--gutter) calc(var(--spacing) * 20);
-  }
-  h2 {
-    color: var(--terra);
-  }
-  .lede {
-    margin-top: calc(var(--spacing) * 5);
-    margin-bottom: calc(var(--spacing) * 4);
-    max-width: var(--container-sm);
-  }
-
   .stage {
     display: none;
-    position: relative;
     /* Taller than the spacing steps go, so the heights borrow the theme's wide measures. */
     height: var(--container-lg);
-    margin-top: calc(var(--spacing) * 6);
-    touch-action: pan-y;
-    user-select: none;
-    -webkit-user-select: none;
-    cursor: grab;
-  }
-  .stage:active {
-    cursor: grabbing;
-  }
-  .stage:focus-visible {
-    outline: 2px solid var(--terra);
-    outline-offset: 8px;
   }
   .stage :global(canvas) {
     display: block;
@@ -239,38 +221,7 @@ const scene = {
   .live .stage {
     display: block;
   }
-
-  .controls {
-    display: grid;
-    justify-items: center;
-    gap: calc(var(--spacing) * 4);
-    margin-top: calc(var(--spacing) * 4);
-  }
-  .controls[hidden] {
-    display: none;
-  }
-  .hint {
-    margin: 0;
-    font-size: var(--text-base);
-  }
-  /* Without the 3D trophy, the plates read as a plain list of winners. */
-  .winners {
-    list-style: none;
-    margin: calc(var(--spacing) * 8) 0 0;
-    padding: 0;
-  }
-  .winners li {
-    padding: calc(var(--spacing) * 3.5) 0;
-    border-top: var(--divider);
-    font-size: var(--text-base);
-  }
-  .winners li:last-child {
-    border-bottom: var(--divider);
-  }
-  .year {
-    font-family: var(--font-serif);
-    font-weight: 700;
-  }
+  /* With the 3D trophy turning, the plain list of winners stays for screen readers only. */
   .live .winners {
     position: absolute;
     width: 1px;
@@ -280,30 +231,14 @@ const scene = {
     white-space: nowrap;
   }
 
-  @media (width >= 48rem) {
-    .trophy {
-      padding-top: calc(var(--spacing) * 52);
-    }
-    .stage {
-      margin-top: calc(var(--spacing) * 8);
-    }
-  }
   @media (width >= 64rem) {
-    .trophy {
-      padding-bottom: calc(var(--spacing) * 28);
-    }
     .stage {
       height: var(--container-2xl);
-      margin-top: calc(var(--spacing) * 10);
     }
   }
   @media (width >= 80rem) {
-    .trophy {
-      padding-bottom: calc(var(--spacing) * 36);
-    }
     .stage {
       height: var(--container-3xl);
-      margin-top: calc(var(--spacing) * 12);
     }
   }
 </style>
