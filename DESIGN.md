@@ -199,7 +199,7 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 **The One Orange Rule.** Terracotta is the only orange outside the logo. A page or a party never adds its own accent color (pumpkin, lime and plum were tried for Halloween and rejected).
 
-**The Large Terracotta Rule.** Terracotta is about 3.6:1 on page cream, 3.45:1 on mole and 4.26:1 on Trona. Use it for strokes and for text at label size (1.3rem bold) or larger, never for body or caption text.
+**The Large Terracotta Rule.** Terracotta is about 3.6:1 on page cream, 3.45:1 on mole and 4.26:1 on Trona. Use it for strokes and for text at label size (`text-xl`, 1.25rem, bold) or larger, never for body or caption text.
 
 **The Logo Exception.** The Beso logo's three petal oranges (#D9661A, #EC8A1E, #F5A623) are part of the fixed mark and live in its component, not the palette. They appear nowhere else.
 
@@ -214,46 +214,47 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 ### Hierarchy
 
-- **Display:** the hero title, all caps: THE DnA CASA and a party's name, broken between words or after a hyphen wherever it would overflow a 360px phone (TRICK-R- / DRINK, LET'S GET / TIKI FREAKY), the same breaks on every screen; HALLOWEEN on one line. On phones it drops to `clamp(3rem, 14vw, 4.2rem)`, small enough that HALLOWEEN fits inside the 20px hero gutters from 360px up. A party name with a word too wide to break (HOMECOMING) sets `--fit` below 1, shrinking only that page's phone title just enough to fit; every other title keeps the full size.
-- **Headline:** section headings on every page. On phones the clamp bottoms out at 2.2rem, which is also the size of the phone menu links.
-- **Title:** names and short items: member names, contest winners, the drinks, the new-this-year titles, the year and name on the Halloween list. 1.5rem on phones.
-- **Subtitle:** the hero subtitle ("Dan & Alexis", "Our tiki Halloween", "October at the casa"), a recap's date as the subtitle's second line ("Saturday, October 17, 2026"), and a party recap's intro, in italic. One fluid size at every width.
-- **Label:** the "Bienvenidos" kicker, a recap's contest result and the desktop nav links. One size at every width.
-- **Body:** running text, at most 38ch wide in the welcome. One fluid size at every width.
-- **Caption:** member one-liners, photo captions, costume lines, the party theme on the list, "Made by" lines.
-- **Ring:** the stamp ring text, 15px in the ring's 200-unit SVG, so it scales with the stamp. A longer ring tightens its spacing, never its size.
-- **Sign-off:** the footer, italic at 16px.
+- **Display:** the hero title, all caps: THE DnA CASA and a party's name, broken between words or after a hyphen wherever it would overflow a 360px phone (TRICK-R- / DRINK, LET'S GET / TIKI FREAKY), the same breaks on every screen; HALLOWEEN on one line. Its size is picked at build time from Tailwind's text steps (`src/lib/hero-title.ts`). On phones it is `text-5xl`, small enough that HALLOWEEN fits inside the 20px hero gutters from 360px up; a party name with a word too wide to break (HOMECOMING) steps down one size to `text-4xl`, on that page only. From md up, each breakpoint takes the largest step whose longest line still fits the hero's column at that breakpoint, up to `text-7xl` at md, `text-8xl` at lg and `text-9xl` from xl.
+- **Headline:** section headings on every page, sized once on `h2` in the global stylesheet's base layer. `text-4xl` on phones and tablets, which is also the size of the phone menu links, then `text-5xl` at lg and `text-6xl` from xl.
+- **Title:** names and short items: member names, contest winners, the drinks, the new-this-year titles, the year and name on the Halloween list. `text-2xl` on phones, `text-3xl` from md.
+- **Subtitle:** the hero subtitle ("Dan & Alexis", "Our tiki Halloween", "October at the casa"), and a recap's date as the subtitle's second line ("Saturday, October 17, 2026"), in italic. `text-xl`, then `text-2xl` at lg and `text-3xl` from xl.
+- **Intro:** a party recap's intro, in italic at the subtitle's sizes, with a little more line height (`leading-snug`) because it runs to several lines.
+- **Label:** the "Bienvenidos" kicker, a recap's contest result and the desktop nav links. `text-xl` at every width.
+- **Body:** running text, at most `max-w-sm` (384px) wide in the welcome, `max-w-md` (448px) from xl. `text-base`, then `text-lg` from xl.
+- **Caption:** member one-liners, photo captions, costume lines, the party theme on the list, "Made by" lines. `text-base` at every width.
+- **Ring:** the stamp ring text, `text-base` in the ring's 200-unit SVG, so it scales with the stamp. A longer ring tightens its spacing, never its size.
+- **Sign-off:** the footer, italic at `text-base`.
 
 ### Named Rules
 
-**The One Scale Rule.** Every text size on every page is one of the roles above, and a test fails the build on any `font-size` that is not in this file's front matter. A page never invents its own size; an element that feels too quiet moves up to an existing role instead. Only display and title have separate phone sizes.
+**The One Scale Rule.** Every text size on every page is one of the roles above, each a Tailwind text step per breakpoint, listed as classes in this file's front matter. A build test reads those classes and fails on any `font-size` in the built CSS, the hand-made pieces' scoped CSS included, that is not one of them. A page never invents its own size; an element that feels too quiet moves up to an existing role instead. Sizes change only at Tailwind's breakpoints, never fluidly with the screen width.
 
 **The Two Families Rule.** Averia Serif Libre and Schibsted Grotesk only. A new role picks a weight these two already ship before it adds one.
 
-**The Tight Serif Rule.** Serif headings set tight, between -0.02em and -0.04em letter spacing with line height 1.1 or less. The italic voice resets letter spacing to 0.
+**The Tight Serif Rule.** Serif headings set tight, on Tailwind's tracking steps: between `tracking-tight` (-0.025em) and `tracking-tighter` (-0.05em). Display titles are `tracking-tight` on phones, where the line breaks are decided, and `tracking-tighter` from md; section headings are `tracking-tighter`. Display titles and section headings set solid (`leading-none`), titles at `leading-tight` (1.25). The italic voice resets letter spacing to `tracking-normal`.
 
 ## Layout
 
-Every page is built the same way, like Bootstrap's `container-fluid` around a `container`:
+Every page is built the same way, from Tailwind utilities on Tailwind's scales (see `docs/adr/0001-tailwind-with-a-strict-theme.md`):
 
-- **The hero and navbar run the full width,** padded only by the fluid gutter (`spacing.gutter`). Every hero has the same box, so the title starts at the same left edge on every page, and the stamp sits in the same slot: the right-hand column, `min(380px, 34%)` wide, flush with the right gutter. The words take the rest (`minmax(0, 1fr)`); a title too wide for it, like HALLOWEEN, shrinks to fit (the display size is capped at `100cqi` divided by the title's widest line in ems) rather than pushing the stamp around.
-- **Everything below the hero sits in one column** at most `spacing.column` (1200px) wide, centered. Each section's background still runs edge to edge; its content is padded in by `max(gutter, (100% - column) / 2)`, the `--inline` token in the base layout. A section never sets its own max width, so headings, rows and photos share the same left and right edges on every page.
+- **The hero and navbar run the full width,** padded only by the gutter (`spacing.gutter`), which steps up at md, lg and xl. Every hero has the same box, so the title starts at the same left edge on every page, and the stamp sits in the same slot: the right-hand column, 34% of the hero's inner width (`md:w-17/50`) and at most 384px (`md:max-w-96`), flush with the right gutter. The words take the rest; the title's size is picked at build time so its longest line fits that room (see Display), so it never pushes the stamp around.
+- **Everything below the hero sits in one column** at most `spacing.column` (`max-w-6xl`, 1152px) wide, centered. Each section's background still runs edge to edge; its content sits in that column, inside the gutter. Sections share the one column width, so headings, rows and photos share the same left and right edges on every page.
 
-Two-column grids on wide screens use a fluid gap between columns (`spacing.column-gap`). The hero is at least `min(92dvh, 880px)` tall with its padding counted inside (96px top, 150px bottom on every page), so the edge shows at the bottom of the first desktop screen. Its top padding (72px on phones) leaves room for the navbar, which sits over it.
+Two-column grids on wide screens use the gutter's steps as the gap between columns (`spacing.column-gap`). From md the home hero and the Halloween list hero are a full screen tall (`min-h-dvh`), with 96px of padding on top and 144px at the bottom, and the section under them is pulled up 80px over the hero's foot, so the edge and a strip of cream show on the first desktop screen. The hero's top padding (80px on phones) leaves room for the navbar, which sits over it.
 
-**The Wave On Screen Rule.** At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns across the page column.
+**The Wave On Screen Rule.** At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome's photo and words take equal columns. The members sit in four equal columns across the page column.
 
-A party recap has a short hero with no stamp: the party name, the theme with the party's date under it, and the squiggle (its top padding grows to 120 to 180px, 104px on phones). When the party file has an invite, the card takes the stamp's slot on the right, at most 380px wide and `min(62vh, 540px)` tall, clipped by the soft mask shaped to the card (seeded by the year), so its corners round but its words stay whole; on phones it sits above the title like the stamp, at most 260px tall, so the drips still show on the first screen. A desktop Evite capture comes out as an unreadable banner, so invites are captured in a phone-sized view. Then the drips, then its sections in the page column: the intro (centered), our costumes (a large photo beside a small one set lower), the costume contest (heading, rule and result beside the winners as rows; with a photo of the winners and the trophy, the words and rows stack on the left and the photo stands on the right), the drinks (with a photo of the bar beside them when there is one), new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own; a highlight told in frames, like stills from a video, sits centered above a strip of its frames, four across at up to 240px and two across at 160px on phones, rounded 14px, each captioned, never masked). A section the party file has nothing for is left out, so a party known only from its invite shows the hero with its invite, and the intro. Section headings sit on the left.
+A party recap has a short hero with no stamp: the party name, the theme with the party's date under it, and the squiggle (its top padding is 96px on phones, then 128px at md, 144px at lg and 176px from xl). When the party file has an invite, the card takes the stamp's slot on the right, at most 384px wide and 512px tall, clipped by the soft mask shaped to the card (seeded by the year), so its corners round but its words stay whole; on phones it sits above the title like the stamp, fitted to a 256px square, so the drips still show on the first screen. A desktop Evite capture comes out as an unreadable banner, so invites are captured in a phone-sized view. Then the drips, then its sections in the page column: the intro (centered), our costumes (a large photo beside a small one set lower), the costume contest (heading, rule and result beside the winners as rows; with a photo of the winners and the trophy, the words and rows stack on the left and the photo stands on the right), the drinks (with a photo of the bar beside them when there is one), new this year (photo and words side by side, alternating sides; a highlight with no photo sits centered on its own; a highlight told in frames, like stills from a video, sits centered above a strip of its frames, four across at up to 240px and two across at up to 160px on phones, with 16px rounded corners (`rounded-2xl`), each captioned, never masked). A section the party file has nothing for is left out, so a party known only from its invite shows the hero with its invite, and the intro. Section headings sit on the left.
 
-The Halloween list uses the full hero, with the stamp, then the drips, then the trophy (see Trophy), then one row per party, newest first: the year, the name over the theme and the short date ("Sat, Oct 17"), and a small circle photo. Rows are links, divided by hairlines.
+The Halloween list uses the home hero's box, with the stamp, then the drips, then the trophy (see Trophy), then one row per party, newest first: the year, the name over the theme and the short date ("Sat, Oct 17"), and a small circle photo. Rows are links, divided by hairlines.
 
-One breakpoint, at 760px. Below it every page is one centered column ("Stamp first"):
+Styles are written mobile-first: the phone layout is the base, and Tailwind's breakpoints (md 768px, lg 1024px, xl 1280px, 2xl 1536px) widen it. The layout switches at md; lg and xl only step sizes and gaps up. Below md every page is one centered column ("Stamp first"):
 
 - The nav links fold into the menu button.
 - The stamp, where a hero has one, comes first, then the title and the subtitle.
 - The hero is short, so the edge and the cream middle start on the first screen.
 - Side-by-side sections stack. The welcome words come before its photo; a highlight's photo comes before its words.
-- The members become rows: an 84px circle on the left, the name and one-liner on the right.
+- The members become rows: an 80px circle on the left, the name and one-liner on the right.
 - Rows (members, winners, parties) have hairline dividers in mole at 14 to 18%.
 - The gutter is 24px (`spacing.gutter-phone`); the hero uses 20px (`spacing.gutter-phone-hero`).
 
@@ -295,11 +296,11 @@ The site has no rounded-rectangle boxes, cards or boxed borders; the one rounded
 
 ### Navbar
 
-On every page, over the top of the hero, in cream; it scrolls away with the page. Links: "Casa" (`lang="es"`) and "Halloween"; a section joins only when it ships. "Halloween" is the current page on the list and on every recap. No logo: "Casa" is the way home. On wide screens the links sit inline at label size, the current page underlined in terracotta. At 760px and below a menu button (three brushed strokes that turn into an X) opens a panel in the page's dark field that fills the screen under the bar, so no edge crosses the stamp, with the links at headline size, and the page stops scrolling while it is open. It is an HTML `popover` that follows its button, with CSS only, so it works with JavaScript off. The links are written twice, once inline and once in the panel, and CSS shows one list at each width.
+On every page, over the top of the hero, in cream; it scrolls away with the page. Links: "Casa" (`lang="es"`) and "Halloween"; a section joins only when it ships. "Halloween" is the current page on the list and on every recap. No logo: "Casa" is the way home. On wide screens the links sit inline at label size, the current page underlined in terracotta. Below md (768px) a menu button (three brushed strokes that turn into an X) opens a panel in the page's dark field that fills the screen under the bar, so no edge crosses the stamp, with the links at headline size, and the page stops scrolling while it is open. It is an HTML `popover` that follows its button, with CSS only, so it works with JavaScript off. The links are written twice, once inline and once in the panel, and CSS shows one list at each width.
 
 ### Stamp
 
-The signature piece. A circle of words set in serif 700 caps with wide 0.08em tracking, in cream on the dark field, around a center mark. On household pages the mark is the Beso sun-and-moon logo at 64%, and the ring reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO". On the Halloween list the mark is the ghost at 46%, and the ring reads "HALLOWEEN · THE DnA CASA · CON CARIÑO". The stamp belongs to Halloween as a whole: a party recap has no stamp (its invite takes the slot), and a party never gets its own mark or ring words. It is at most 380px wide on desktop and `min(76vw, 300px)` on phones.
+The signature piece. A circle of words set in serif 700 caps with wide `tracking-widest` (0.1em) spacing, in cream on the dark field, around a center mark. On household pages the mark is the Beso sun-and-moon logo at 64%, and the ring reads "THE DnA CASA · DAN & ALEXIS · CON CARIÑO". On the Halloween list the mark is the ghost at 46%, and the ring reads "HALLOWEEN · THE DnA CASA · CON CARIÑO". The stamp belongs to Halloween as a whole: a party recap has no stamp (its invite takes the slot), and a party never gets its own mark or ring words. On desktop it takes the hero's side slot, at most 384px wide; on phones it is 288px wide (`w-72`), never wider than the screen.
 
 ### Ghost
 
@@ -307,15 +308,15 @@ The Halloween mark: a cream body drawn from a seeded outline with no outline str
 
 ### Brush squiggle
 
-One brush stroke under the hero subtitle, 130px wide (112px on phones): rosa mexicano on household pages, terracotta on Halloween pages.
+One brush stroke under the hero subtitle, 128px wide (112px on phones): rosa mexicano on household pages, terracotta on Halloween pages.
 
 ### Drip edge
 
-The Trona field hanging into the cream under a Halloween hero: 18 seeded drips (seed 66), each a neck with a round bulb, with no line along them. 160px tall on desktop and 104px on phones, sliced at 1:1 so the bulbs never squash; narrow screens see the middle of the edge. The content below starts under the longest drip.
+The Trona field hanging into the cream under a Halloween hero: 18 seeded drips (seed 66), each a neck with a round bulb, with no line along them. 160px tall from md and 96px on phones, sliced at 1:1 so the bulbs never squash; narrow screens see the middle of the edge. The content below starts under the longest drip.
 
 ### Member circle
 
-- **Shape:** a full circle (`rounded.circle`), at most 200px on desktop, 84px on phones.
+- **Shape:** a full circle (`rounded.circle`), at most 208px on desktop (`max-w-52`), 80px on phones (`w-20`).
 - **Fill:** the member's color, or their portrait cropped to the circle. Each portrait has one plain line of alt text, kept on the member's data: who it is and what they are doing or wearing.
 
 ### Photos
@@ -323,8 +324,8 @@ The Trona field hanging into the cream under a Halloween hero: 18 seeded drips (
 Photos take their shape from their role, the way the reference sites do (griefgroupsla.com rounds people into circles; tronaeast.com rounds every scene photo's corners):
 
 - **People are circles:** the member portraits under "Who lives here".
-- **Scenes are soft:** the welcome photo and every photo on a recap (costumes, contest, drinks, new this year) are 4:5 portraits clipped by the seeded soft mask: a rounded rectangle whose four corners each round by their own 7 to 13% and whose edges sag inward up to 1.5%, so it reads as trimmed by hand rather than drawn by a tool. Each photo gets its own seed from its file name. A large photo is at most 500px wide (300px on phones), a photo beside words 420px (280px), and a small one, like the pets' costume photo, 340px (220px). In a party file a photo is large unless it says `size: small`.
-- **Thumbnails are circles:** the Halloween list thumbnails (72 to 112px), which show a party's first costume photo, or its invite when it has no photos yet.
+- **Scenes are soft:** the welcome photo and every photo on a recap (costumes, contest, drinks, new this year) are 4:5 portraits clipped by the seeded soft mask: a rounded rectangle whose four corners each round by their own 7 to 13% and whose edges sag inward up to 1.5%, so it reads as trimmed by hand rather than drawn by a tool. Each photo gets its own seed from its file name. A large photo is at most 512px wide (288px on phones), a photo beside words 448px (288px), and a small one, like the pets' costume photo, 320px (224px). In a party file a photo is large unless it says `size: small`.
+- **Thumbnails are circles:** the Halloween list thumbnails (80px, 96px at lg and 112px from xl), which show a party's first costume photo, or its invite when it has no photos yet.
 
 The petal (scalloped) mask was replaced; circles, plain rectangles, tilted rectangles and blobs were tried for scene photos and lost to the soft mask. With no welcome photo, the soft shape itself shows, filled in cheek pink. Every photo ships at its desktop and phone widths and at twice each, so 2x screens get a sharp file, 1x screens a small one, and a phone never downloads the 2x desktop file.
 
@@ -338,13 +339,13 @@ The one button for actions on every page (links stay words): a hand-pressed pebb
 
 - **Hover:** the face lifts 2px and warms toward marigold.
 - **Pressed:** a click, or a button that stays down (`aria-pressed` or `.is-down`, like Spin), presses the face flat onto its edge.
-- **Focus:** a dashed 2px ring in mole, 6px out.
+- **Focus:** a dashed 2px ring in mole, 8px out.
 - **Disabled:** a pale, sunk stone and faded letters.
 - **Recolor:** four variables, `--stone`, `--stone-edge`, `--stone-ink` and `--stone-hover`; setting `--stone` alone carries the edge and hover with it. The component is `src/components/Button.astro`.
 
 ### Trophy
 
-The real Best Costume trophy, rebuilt as an old PlayStation model: a walnut base and plinth, studded gold rims, a holographic orange column, a ribbed neck and a low-poly pumpkin carved with a classic jack-o'-lantern face (triangle eyes and nose, a grin with two square teeth). Its textures are 32 to 64 pixel crops of Dan's photos of the trophy, drawn in hard pixels, and it keeps the PS1's look: vertices that snap to a 320x240 grid, texture warp on big faces, 15-bit color with ordered dither, and about 24 frames a second. The front plaque reads "BEST COSTUME / DnA's Halloween Party"; the other three sides hold six plates each, Trona black with a gold edge and gold serif lettering (year, names in caps, costume in italic), drawn sharp and unwarped so every name reads. It sits on the page cream with no background, up to 820px tall (480px on phones). It turns once every 40s, and a visitor can drag or flick it, step face to face with the arrow keys (it is a slider that names the side facing them), or stop it with the Pause button, on its own line under the "Drag it" hint; stopped, the stone stays pressed down and reads Spin. Under reduced motion it starts still and the button reads Spin.
+The real Best Costume trophy, rebuilt as an old PlayStation model: a walnut base and plinth, studded gold rims, a holographic orange column, a ribbed neck and a low-poly pumpkin carved with a classic jack-o'-lantern face (triangle eyes and nose, a grin with two square teeth). Its textures are 32 to 64 pixel crops of Dan's photos of the trophy, drawn in hard pixels, and it keeps the PS1's look: vertices that snap to a 320x240 grid, texture warp on big faces, 15-bit color with ordered dither, and about 24 frames a second. The front plaque reads "BEST COSTUME / DnA's Halloween Party"; the other three sides hold six plates each, Trona black with a gold edge and gold serif lettering (year, names in caps, costume in italic), drawn sharp and unwarped so every name reads. It sits on the page cream with no background, 512px tall on phones and tablets, 672px at lg and 768px from xl (Tailwind's `container-lg`, `-2xl` and `-3xl` sizes, since the spacing steps stop at 384px). It turns once every 40s, and a visitor can drag or flick it, step face to face with the arrow keys (it is a slider that names the side facing them), or stop it with the Pause button, on its own line under the "Drag it" hint; stopped, the stone stays pressed down and reads Spin. Under reduced motion it starts still and the button reads Spin.
 
 ### Footer
 
@@ -352,13 +353,13 @@ One centered italic serif line at sign-off size in cream on the page's dark fiel
 
 ### Motion
 
-Quiet and short: under about 0.5s (other than the ring and the squiggle), no bounce, all of it only under `prefers-reduced-motion: no-preference`.
+Quiet and short: under about 0.5s (other than the ring and the squiggle), no bounce, all of it only under `prefers-reduced-motion: no-preference`. Durations are Tailwind's named steps (0 to 1000ms) and curves are Tailwind's eases (`--ease-out`, `--ease-in-out`); a build test fails on any other.
 
 - The stamp ring turns once every 40s, linear and endless.
 - The trophy turns once every 40s too, until a visitor pauses or turns it; a flick coasts and settles back.
-- The squiggle paints on left to right once on load, over 1.6s after a 0.4s delay, with `cubic-bezier(0.16, 1, 0.3, 1)`.
-- The drips run down once on load, over 0.5s after a 0.25s delay, with the same curve.
-- The menu panel fades and slides in (about 200ms), and its strokes turn into an X.
+- The squiggle paints on left to right once on load, over 1000ms after a 500ms delay, on `--ease-out`.
+- The drips run down once on load, over 500ms after a 300ms delay, on the same curve.
+- The menu panel fades and slides in (200ms), and its strokes turn into an X.
 - On Halloween pages, sections, photos and rows fade up as they scroll into view (CSS scroll-driven animation behind `@supports`; browsers without it show them still).
 - Links and Halloween photos react subtly on hover.
 - Pages crossfade into each other with CSS `@view-transition`, with no client-side router.
@@ -370,9 +371,9 @@ The drips and the scroll fade-ups set each `animation-*` property in longhand, b
 ### Do:
 
 - **Do** keep the dark field (mole, or Trona on Halloween pages) and page cream as the only large color fields.
-- **Do** take every color from the palette module, which feeds CSS, SVG fills, the theme-color meta, the favicon and the link previews. The logo's petal oranges are the one exception.
+- **Do** take every color from the palette: in CSS, from the Tailwind theme's `--color-*` variables; everywhere else (SVG fills, the theme-color meta, the favicon and the link previews), from the palette module, which a test keeps equal to the theme. The logo's petal oranges are the one exception.
 - **Do** keep accents small: a stroke, a circle, a kicker, an underline.
-- **Do** pick every text size from the type scale.
+- **Do** pick every text size from the type scale, and every space, size, radius, duration and breakpoint from Tailwind's scales and the allowed-step list in `src/tailwind-steps.ts`.
 - **Do** gate every animation behind `prefers-reduced-motion: no-preference`.
 - **Do** check the phone layout at 390px in device emulation.
 
