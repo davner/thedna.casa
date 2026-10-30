@@ -31,6 +31,13 @@ const sizes = { large: { shown: 512, phone: 288 }, small: { shown: 320, phone: 2
 // The contest, drinks and highlight photos all share one size beside their words.
 // Every photo also ships at its phone width and twice that, so a phone never downloads the 2x desktop file.
 const beside = { width: 896, height: 1120, widths: [288, 448, 576, 896], sizes: "(max-width: 767px) 288px, 448px" };
+// Content-box, so the column caps the content inside the gutters while the cream runs edge to edge.
+const section = "mx-auto box-content max-w-6xl px-6 pb-20 md:px-12 lg:px-16 lg:pb-24 xl:px-20 xl:pb-32";
+const heading = "text-terra text-balance md:text-wrap";
+const body = "text-base leading-relaxed xl:text-lg";
+const photoClass =
+  "block aspect-4/5 h-auto w-full object-cover motion-safe:transition-transform motion-safe:duration-500 motion-safe:ease-out motion-safe:hover:scale-105";
+const divider = "border-t border-t-(color:--divider) last:border-b last:border-b-(color:--divider)";
 ---
 
 <Halloween
@@ -53,9 +60,9 @@ const beside = { width: 896, height: 1120, widths: [288, 448, 576, 896], sizes: 
       />
     )}
   </HalloweenHero>
-  <main class="recap">
+  <main class="bg-cream-page text-mole">
     <Drips />
-    <svg class="defs" aria-hidden="true">
+    <svg class="absolute size-0" aria-hidden="true">
       {party.invite && (
         <clipPath id="soft-invite" clipPathUnits="objectBoundingBox">
           <path d={softMask(party.year, inviteAspect)} />
@@ -68,63 +75,95 @@ const beside = { width: 896, height: 1120, widths: [288, 448, 576, 896], sizes: 
       ))}
     </svg>
 
-    <section class="intro">
-      <div class="intro-text reveal">
+    <section class:list={[section, "pt-32 text-center md:pt-48"]}>
+      <div class="reveal mx-auto max-w-2xs *:my-5 *:font-serif *:text-xl *:leading-snug *:tracking-normal *:italic lg:*:my-6 lg:*:text-2xl xl:*:my-8 xl:*:text-3xl">
         <Content />
       </div>
     </section>
 
     {party.ourCostumes.length > 0 && (
-      <section class="costumes" aria-labelledby="costumes-h">
-        <h2 id="costumes-h" class="reveal">
+      <section class={section} aria-labelledby="costumes-h">
+        <h2 id="costumes-h" class:list={["reveal mx-auto", heading]}>
           Our costumes
         </h2>
-        <div class="costume-grid">
-          {party.ourCostumes.map((c) => (
-            <figure class:list={[c.photo?.size ?? "large", "reveal"]}>
-              {c.photo && (
-                <Image
-                  class="photo"
-                  style={clip(c.photo)}
-                  src={c.photo.src}
-                  alt={c.photo.alt}
-                  width={2 * sizes[c.photo.size].shown}
-                  height={2.5 * sizes[c.photo.size].shown}
-                  widths={[
-                    sizes[c.photo.size].phone,
-                    sizes[c.photo.size].shown,
-                    2 * sizes[c.photo.size].phone,
-                    2 * sizes[c.photo.size].shown,
-                  ]}
-                  sizes={`(max-width: 767px) ${sizes[c.photo.size].phone}px, ${sizes[c.photo.size].shown}px`}
-                />
-              )}
-              <figcaption>
-                {c.who} as <span lang={c.asLang}>{c.as}</span>
-              </figcaption>
-            </figure>
-          ))}
+        <div class="mx-auto mt-7 grid grid-cols-1 items-start gap-10 md:mt-12 md:grid-cols-5 md:gap-12 lg:gap-16 xl:gap-20">
+          {party.ourCostumes.map((c, i) => {
+            const small = c.photo?.size === "small";
+            return (
+              <figure
+                class:list={[
+                  "reveal",
+                  // Three fifths to two, so the large photo leads and the small one reads as its companion.
+                  i % 2 === 0 ? "md:col-span-3" : "md:col-span-2",
+                  // The small photo sits lower than the large one beside it, so the pair reads as a step, not a row.
+                  { "md:mt-28 lg:mt-36 xl:mt-44": small },
+                ]}
+              >
+                {c.photo && (
+                  <Image
+                    class:list={[photoClass, "mx-auto", small ? "max-w-56 md:max-w-80" : "max-w-72 md:max-w-lg"]}
+                    style={clip(c.photo)}
+                    src={c.photo.src}
+                    alt={c.photo.alt}
+                    width={2 * sizes[c.photo.size].shown}
+                    height={2.5 * sizes[c.photo.size].shown}
+                    widths={[
+                      sizes[c.photo.size].phone,
+                      sizes[c.photo.size].shown,
+                      2 * sizes[c.photo.size].phone,
+                      2 * sizes[c.photo.size].shown,
+                    ]}
+                    sizes={`(max-width: 767px) ${sizes[c.photo.size].phone}px, ${sizes[c.photo.size].shown}px`}
+                  />
+                )}
+                <figcaption class="mt-5 text-center text-base leading-tight">
+                  {c.who} as <span lang={c.asLang}>{c.as}</span>
+                </figcaption>
+              </figure>
+            );
+          })}
         </div>
       </section>
     )}
 
     {party.contest && (
-      <section class:list={["contest", { shot: party.contest.photo }]} aria-labelledby="contest-h">
-        <div class="words reveal">
-          <h2 id="contest-h">The costume contest</h2>
-          {party.contest.rule && <p>{party.contest.rule}</p>}
-          <p class="result">{party.contest.result}</p>
+      <section
+        class:list={[
+          section,
+          "grid grid-cols-1 gap-7 md:grid-cols-2 md:gap-12 lg:gap-16 xl:gap-20",
+          party.contest.photo ? "items-center" : "items-end",
+        ]}
+        aria-labelledby="contest-h"
+      >
+        {/* With a photo, the words and winners stack on the left and the winners' photo stands beside them. */}
+        <div class:list={["words reveal", { "self-end md:col-start-1 md:row-start-1": party.contest.photo }]}>
+          <h2 id="contest-h" class={heading}>
+            The costume contest
+          </h2>
+          {party.contest.rule && <p class:list={[body, "mt-5 max-w-xs xl:max-w-sm"]}>{party.contest.rule}</p>}
+          <p class="mt-2 max-w-xs font-serif text-xl leading-relaxed font-bold tracking-tight text-terra xl:max-w-sm">
+            {party.contest.result}
+          </p>
         </div>
-        <ul class="winners reveal">
+        <ul
+          class:list={[
+            "winners reveal",
+            { "order-last self-start md:order-none md:col-start-1 md:row-start-2": party.contest.photo },
+          ]}
+        >
           {party.contest.winners.map((w) => (
-            <li>
-              <span class="names">{w.names}</span> <span class="as">as {w.costume}</span>
+            <li class:list={["grid gap-1 py-5", divider]}>
+              <span class="font-serif text-2xl leading-tight font-bold tracking-tight md:text-3xl">{w.names}</span>{" "}
+              <span class="text-base leading-tight">as {w.costume}</span>
             </li>
           ))}
         </ul>
         {party.contest.photo && (
           <Image
-            class="photo reveal"
+            class:list={[
+              photoClass,
+              "reveal max-w-72 justify-self-center md:col-start-2 md:row-start-1 md:row-end-3 md:max-w-md",
+            ]}
             style={clip(party.contest.photo)}
             src={party.contest.photo.src}
             alt={party.contest.photo.alt}
@@ -135,22 +174,31 @@ const beside = { width: 896, height: 1120, widths: [288, 448, 576, 896], sizes: 
     )}
 
     {party.drinks && (
-      <section class:list={["drinks reveal", { shot: party.drinks.photo }]} aria-labelledby="drinks-h">
-        <div>
-          <h2 id="drinks-h">The drinks</h2>
-          <p class="drink-list">
+      <section
+        class:list={[
+          section,
+          "reveal",
+          { "grid grid-cols-1 items-center gap-7 md:grid-cols-2 md:gap-12 lg:gap-16 xl:gap-20": party.drinks.photo },
+        ]}
+        aria-labelledby="drinks-h"
+      >
+        <div class:list={{ "mx-auto": !party.drinks.photo }}>
+          <h2 id="drinks-h" class={heading}>
+            The drinks
+          </h2>
+          <p class="mt-7 font-serif text-2xl leading-tight tracking-tight text-balance md:text-3xl">
             {party.drinks.names.map((d, i) => (
               <>
-                {i > 0 && <span class="amp"> & </span>}
-                <span class="drink">{d}</span>
+                {i > 0 && <span class="tracking-normal italic"> & </span>}
+                <span class="font-bold">{d}</span>
               </>
             ))}
           </p>
-          {party.drinks.by && <p class="by">Made by {party.drinks.by}.</p>}
+          {party.drinks.by && <p class="mt-3 text-base leading-relaxed">Made by {party.drinks.by}.</p>}
         </div>
         {party.drinks.photo && (
           <Image
-            class="photo"
+            class:list={[photoClass, "max-w-72 justify-self-center md:max-w-md"]}
             style={clip(party.drinks.photo)}
             src={party.drinks.photo.src}
             alt={party.drinks.photo.alt}
@@ -161,32 +209,45 @@ const beside = { width: 896, height: 1120, widths: [288, 448, 576, 896], sizes: 
     )}
 
     {party.highlights.length > 0 && (
-      <section class="new" aria-labelledby="new-h">
-        <h2 id="new-h" class="reveal">
+      <section class={section} aria-labelledby="new-h">
+        <h2 id="new-h" class:list={["reveal mx-auto", heading]}>
           New this year
         </h2>
-        <ul>
+        <ul class="mx-auto mt-10 grid gap-12 md:gap-14 lg:gap-16 xl:gap-24">
           {party.highlights.map((h, i) => (
-            <li class:list={["reveal", { flip: i % 2 === 1, plain: !h.photo }]}>
-              {h.photo && <Image class="photo" style={clip(h.photo)} src={h.photo.src} alt={h.photo.alt} {...beside} />}
-              <div>
-                <h3>{h.title}</h3>
-                <p>{h.text}</p>
+            <li
+              class:list={[
+                "reveal grid grid-cols-1 items-center gap-5 md:gap-12 lg:gap-16 xl:gap-20",
+                h.photo ? "md:grid-cols-2" : "justify-items-center text-center",
+              ]}
+            >
+              {h.photo && (
+                <Image
+                  class:list={[photoClass, "max-w-72 justify-self-center md:max-w-md", { "md:order-1": i % 2 === 1 }]}
+                  style={clip(h.photo)}
+                  src={h.photo.src}
+                  alt={h.photo.alt}
+                  {...beside}
+                />
+              )}
+              <div class:list={["text-center", { "md:text-start": h.photo }]}>
+                <h3 class="font-serif text-2xl leading-tight font-bold tracking-tight md:text-3xl">{h.title}</h3>
+                <p class:list={[body, "mx-auto mt-3 max-w-xs xl:max-w-sm", { "md:mx-0": h.photo }]}>{h.text}</p>
               </div>
               {h.frames && (
-                <ol class="frames">
+                <ol class="frame-strip mt-6 grid justify-center justify-self-stretch gap-4 lg:gap-5 xl:gap-6">
                   {h.frames.map((f) => (
                     <li>
                       <figure>
                         <Image
-                          class="frame"
+                          class="block h-auto w-full rounded-2xl"
                           src={f.src}
                           alt={f.alt}
                           width={480}
                           widths={[160, 240, 320, 480]}
                           sizes="(max-width: 767px) 160px, 240px"
                         />
-                        <figcaption>{f.caption}</figcaption>
+                        <figcaption class="mt-3 text-center text-base leading-tight">{f.caption}</figcaption>
                       </figure>
                     </li>
                   ))}
@@ -199,367 +260,3 @@ const beside = { width: 896, height: 1120, widths: [288, 448, 576, 896], sizes: 
     )}
   </main>
 </Halloween>
-
-<style>
-  .recap {
-    background: var(--cream-page);
-    color: var(--mole);
-  }
-  .defs {
-    position: absolute;
-    width: 0;
-    height: 0;
-  }
-  /* Content-box, so the column caps the content inside the gutters while the cream runs edge to edge. */
-  section {
-    box-sizing: content-box;
-    max-width: var(--column);
-    margin-inline: auto;
-    padding: 0 var(--gutter) calc(var(--spacing) * 20);
-  }
-  h2 {
-    color: var(--terra);
-    text-wrap: balance;
-  }
-  h3 {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: var(--text-2xl);
-    letter-spacing: var(--tracking-tight);
-    margin: 0;
-  }
-  p {
-    font-size: var(--text-base);
-    line-height: var(--leading-relaxed);
-    margin: 0;
-  }
-  .photo {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-  }
-  figure {
-    margin: 0;
-  }
-  figcaption {
-    margin-top: calc(var(--spacing) * 5);
-    font-size: var(--text-base);
-    text-align: center;
-  }
-
-  .intro {
-    padding-top: calc(var(--spacing) * 32);
-    text-align: center;
-  }
-  .intro-text {
-    max-width: var(--container-2xs);
-    margin: 0 auto;
-  }
-  .intro-text :global(p) {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: var(--text-xl);
-    line-height: var(--leading-snug);
-    letter-spacing: var(--tracking-normal);
-    margin-block: calc(var(--spacing) * 5);
-  }
-
-  .costumes h2 {
-    margin: 0 auto;
-  }
-  .costume-grid {
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: calc(var(--spacing) * 10);
-    align-items: start;
-    margin: calc(var(--spacing) * 7) auto 0;
-  }
-  .large .photo {
-    max-width: calc(var(--spacing) * 72);
-    margin: 0 auto;
-  }
-  .small .photo {
-    max-width: calc(var(--spacing) * 56);
-    margin: 0 auto;
-  }
-
-  .contest {
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: calc(var(--spacing) * 7);
-    align-items: end;
-  }
-  .contest p {
-    margin-top: calc(var(--spacing) * 5);
-    max-width: var(--container-xs);
-  }
-  .contest .result {
-    margin-top: calc(var(--spacing) * 2);
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: var(--text-xl);
-    letter-spacing: var(--tracking-tight);
-    color: var(--terra);
-  }
-  /* With a photo, the words and winners stack on the left and the winners' photo stands beside them. */
-  .contest.shot {
-    grid-template-areas: "words" "photo" "winners";
-    align-items: center;
-  }
-  .contest.shot .words {
-    grid-area: words;
-    align-self: end;
-  }
-  .contest.shot .winners {
-    grid-area: winners;
-    align-self: start;
-  }
-  .contest.shot .photo,
-  .drinks.shot .photo {
-    grid-area: photo;
-    max-width: calc(var(--spacing) * 72);
-    justify-self: center;
-  }
-  .winners {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .winners li {
-    display: grid;
-    gap: var(--spacing);
-    padding: calc(var(--spacing) * 5) 0;
-    border-top: 1px solid var(--divider);
-  }
-  .winners li:last-child {
-    border-bottom: 1px solid var(--divider);
-  }
-  .names {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: var(--text-2xl);
-    letter-spacing: var(--tracking-tight);
-    line-height: var(--leading-tight);
-  }
-  .as {
-    font-size: var(--text-base);
-  }
-
-  .drinks > div {
-    margin-inline: auto;
-  }
-  .drinks.shot {
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    grid-template-areas: "words" "photo";
-    gap: calc(var(--spacing) * 7);
-    align-items: center;
-  }
-  .drinks.shot > div {
-    margin: 0;
-  }
-  .drink-list {
-    margin-top: calc(var(--spacing) * 7);
-    font-family: var(--font-serif);
-    font-size: var(--text-2xl);
-    line-height: var(--leading-tight);
-    letter-spacing: var(--tracking-tight);
-    text-wrap: balance;
-  }
-  .drink {
-    font-weight: 700;
-  }
-  .amp {
-    font-style: italic;
-    letter-spacing: var(--tracking-normal);
-  }
-  .by {
-    margin-top: calc(var(--spacing) * 3);
-    font-size: var(--text-base);
-  }
-
-  .new h2 {
-    margin: 0 auto;
-  }
-  .new ul {
-    list-style: none;
-    padding: 0;
-    margin: calc(var(--spacing) * 10) auto 0;
-    display: grid;
-    gap: calc(var(--spacing) * 12);
-  }
-  .new > ul > li {
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: calc(var(--spacing) * 5);
-    align-items: center;
-  }
-  .new > ul > li .photo {
-    max-width: calc(var(--spacing) * 72);
-    justify-self: center;
-  }
-  .new > ul > li > div {
-    text-align: center;
-  }
-  .new > ul > li p {
-    margin-top: calc(var(--spacing) * 3);
-    margin-inline: auto;
-    max-width: var(--container-xs);
-  }
-  .new > ul > li.plain {
-    text-align: center;
-    justify-items: center;
-  }
-
-  /* Stills from one video, laid out like a contact strip and read left to right. */
-  .frames {
-    list-style: none;
-    padding: 0;
-    margin: calc(var(--spacing) * 6) 0 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, calc(var(--spacing) * 40)));
-    justify-self: stretch;
-    gap: calc(var(--spacing) * 4);
-    justify-content: center;
-  }
-  .frame {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius-2xl);
-  }
-  .frames figcaption {
-    margin-top: calc(var(--spacing) * 3);
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .photo {
-      transition: transform 500ms var(--ease-out);
-    }
-    .photo:hover {
-      transform: scale(1.05);
-    }
-  }
-
-  @media (width >= 48rem) {
-    h2 {
-      text-wrap: wrap;
-    }
-    h3,
-    .names,
-    .drink-list {
-      font-size: var(--text-3xl);
-    }
-    .intro {
-      padding-top: calc(var(--spacing) * 48);
-    }
-    /* Three fifths to two, so the large photo leads and the small one reads as its companion. */
-    .costume-grid {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: var(--gutter);
-      margin-top: calc(var(--spacing) * 12);
-    }
-    .costume-grid > :nth-child(odd) {
-      grid-column: span 3 / span 3;
-    }
-    .costume-grid > :nth-child(even) {
-      grid-column: span 2 / span 2;
-    }
-    .large .photo {
-      max-width: var(--container-lg);
-    }
-    /* The small photo sits lower than the large one beside it, so the pair reads as a step, not a row. */
-    .small {
-      margin-top: calc(var(--spacing) * 28);
-    }
-    .small .photo {
-      max-width: calc(var(--spacing) * 80);
-    }
-    .contest,
-    .drinks.shot,
-    .new > ul > li {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--gutter);
-    }
-    .contest.shot {
-      grid-template-areas: "words photo" "winners photo";
-    }
-    .drinks.shot {
-      grid-template-areas: "words photo";
-    }
-    .contest.shot .photo,
-    .drinks.shot .photo,
-    .new > ul > li .photo {
-      max-width: var(--container-md);
-    }
-    .new ul {
-      gap: calc(var(--spacing) * 14);
-    }
-    .new > ul > li > div {
-      text-align: start;
-    }
-    .new > ul > li p {
-      margin-inline: 0;
-    }
-    .new > ul > li.flip .photo {
-      order: 1;
-    }
-    .new > ul > li.plain {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
-    .new > ul > li.plain > div {
-      text-align: center;
-    }
-    .new > ul > li.plain p {
-      margin-inline: auto;
-    }
-    .frames {
-      grid-template-columns: repeat(4, minmax(0, calc(var(--spacing) * 60)));
-    }
-  }
-  @media (width >= 64rem) {
-    section {
-      padding-bottom: calc(var(--spacing) * 24);
-    }
-    .intro-text :global(p) {
-      font-size: var(--text-2xl);
-      margin-block: calc(var(--spacing) * 6);
-    }
-    .small {
-      margin-top: calc(var(--spacing) * 36);
-    }
-    .new ul {
-      gap: calc(var(--spacing) * 16);
-    }
-    .frames {
-      gap: calc(var(--spacing) * 5);
-    }
-  }
-  @media (width >= 80rem) {
-    section {
-      padding-bottom: calc(var(--spacing) * 32);
-    }
-    p {
-      font-size: var(--text-lg);
-    }
-    .intro-text :global(p) {
-      font-size: var(--text-3xl);
-      margin-block: calc(var(--spacing) * 8);
-    }
-    .contest p,
-    .new > ul > li p {
-      max-width: var(--container-sm);
-    }
-    .small {
-      margin-top: calc(var(--spacing) * 44);
-    }
-    .new ul {
-      gap: calc(var(--spacing) * 24);
-    }
-    .frames {
-      gap: calc(var(--spacing) * 6);
-    }
-  }
-</style>
