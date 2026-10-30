@@ -32,11 +32,18 @@
   --color-trona: #201d1e;
 }
 
+/* The site's hover styles also show after a tap, as they did before Tailwind, whose hover variant waits for (hover: hover). */
+@custom-variant hover (&:hover);
+/* The open phone menu stops the page behind it from scrolling. */
+@custom-variant menu-open (&:has(#site-menu:popover-open));
+
 @layer base {
   :root {
     --divider: 1px solid color-mix(in srgb, var(--mole) 18%, transparent);
     --gutter: calc(var(--spacing) * 6);
     --column: var(--container-6xl);
+    /* The page's dark field, which the phone menu panel fills; Halloween pages set it to trona. */
+    --dark: var(--color-mole);
 
     @variant md {
       --gutter: calc(var(--spacing) * 12);

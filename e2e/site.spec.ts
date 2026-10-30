@@ -51,6 +51,25 @@ for (const path of pages) {
         await expect(button).toBeFocused();
       });
 
+      // A panel that ends after its links leaves a straight dark edge across the stamp below it.
+      test("menu panel fills the screen from under the bar to its foot", async ({ page }) => {
+        await page.emulateMedia({ reducedMotion: "reduce" });
+        await page.goto(path);
+        const nav = page.getByRole("navigation", { name: "Site" });
+        await nav.getByRole("button", { name: "Menu" }).click();
+        const edges = await page.evaluate(() => {
+          const panel = document.getElementById("site-menu")!.getBoundingClientRect();
+          return {
+            top: panel.top,
+            bottom: panel.bottom,
+            navBottom: document.querySelector("nav")!.getBoundingClientRect().bottom,
+            screenBottom: window.innerHeight,
+          };
+        });
+        expect(edges.top).toBe(edges.navBottom);
+        expect(edges.bottom).toBe(edges.screenBottom);
+      });
+
       test("menu opens on a tap", async ({ page }) => {
         await page.goto(path);
         const nav = page.getByRole("navigation", { name: "Site" });

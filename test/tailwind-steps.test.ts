@@ -42,7 +42,9 @@ const motion = /^(transition|animation)(-duration|-delay|-timing-function)?$/;
 // Durations and easing that are not Tailwind's: off-list times, curves of the site's own, and the browser's ease keywords.
 const offMotion = (prop: string, value: string) => {
   const problems: string[] = [];
-  for (const item of items(value)) {
+  // Tailwind's transition utilities fall back to its default curve, the same one as --ease-in-out.
+  const named = value.replace(/var\(--tw-ease,\s*var\(--default-transition-timing-function\)\)/g, "var(--ease-in-out)");
+  for (const item of items(named)) {
     // The ring's slow endless turn is a hand-made piece's own clock, not a transition.
     if (/\binfinite\b/.test(item)) continue;
     for (const [token, n, unit] of item.matchAll(/(?<![\w-])(\d*\.?\d+)(ms|s)\b/g)) {

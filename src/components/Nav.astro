@@ -7,32 +7,61 @@ const links = [
 ];
 const current = (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
 const strokes = menuStrokes(71);
+const focusRing =
+  "focus-visible:rounded-xs focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-terra";
+// The underline sits on an inner span so its transition never animates the focus ring on the link.
+const underline = (href: string) => [
+  "underline decoration-2 underline-offset-8 group-hover:underline-offset-4 motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-in-out",
+  current(href) ? "decoration-terra" : "decoration-transparent group-hover:decoration-current",
+];
 ---
 
-<nav class="nav" aria-label="Site">
-  <ul class="inline">
+<nav
+  class="nav absolute inset-x-0 top-0 z-10 flex h-16 items-center justify-end px-5 font-serif font-bold tracking-tight text-cream md:h-20 md:px-12 lg:px-16 xl:px-20"
+  aria-label="Site"
+>
+  <ul class="hidden gap-8 text-xl leading-tight md:flex">
     {links.map((l) => (
       <li>
-        <a href={l.href} lang={l.lang} aria-current={current(l.href) ? "page" : undefined}>
-          {l.label}
+        <a
+          href={l.href}
+          lang={l.lang}
+          aria-current={current(l.href) ? "page" : undefined}
+          class:list={["group", focusRing]}
+        >
+          <span class:list={underline(l.href)}>{l.label}</span>
         </a>
       </li>
     ))}
   </ul>
-  <button type="button" class="menu-btn" popovertarget="site-menu" aria-label="Menu">
-    <svg viewBox="0 0 40 40" aria-hidden="true">
+  <button
+    type="button"
+    class:list={["grid size-12 -mr-2 cursor-pointer place-items-center md:hidden", focusRing]}
+    popovertarget="site-menu"
+    aria-label="Menu"
+  >
+    <svg class="w-9 fill-current overflow-visible" viewBox="0 0 40 40" aria-hidden="true">
       {strokes.map((d, i) => (
         <path class={`s${i}`} d={d} />
       ))}
     </svg>
   </button>
   {/* Right after its button, so focus and reading order move straight into the panel. */}
-  <div id="site-menu" popover>
-    <ul>
+  <div
+    id="site-menu"
+    popover
+    class="fixed inset-x-0 top-16 bottom-0 m-0 h-auto w-full max-w-none border-0 bg-(--dark) px-6 pt-4 pb-12 text-cream backdrop:bg-transparent md:hidden motion-safe:transition motion-safe:transition-discrete motion-safe:duration-200 motion-safe:ease-out motion-safe:not-open:-translate-y-2 motion-safe:not-open:opacity-0 motion-safe:starting:open:-translate-y-2 motion-safe:starting:open:opacity-0"
+  >
+    <ul class="grid gap-1">
       {links.map((l) => (
         <li>
-          <a href={l.href} lang={l.lang} aria-current={current(l.href) ? "page" : undefined}>
-            {l.label}
+          <a
+            href={l.href}
+            lang={l.lang}
+            aria-current={current(l.href) ? "page" : undefined}
+            class:list={["group block py-2.5 text-4xl leading-none tracking-tighter", focusRing]}
+          >
+            <span class:list={underline(l.href)}>{l.label}</span>
           </a>
         </li>
       ))}
@@ -41,67 +70,7 @@ const strokes = menuStrokes(71);
 </nav>
 
 <style>
-  .nav {
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: calc(var(--spacing) * 16);
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 0 calc(var(--spacing) * 5);
-    color: var(--cream);
-    font-family: var(--font-serif);
-    font-weight: 700;
-    letter-spacing: var(--tracking-tight);
-  }
-  .inline {
-    display: none;
-    gap: calc(var(--spacing) * 8);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    font-size: var(--text-xl);
-  }
-  a {
-    color: inherit;
-    text-decoration: underline 2px transparent;
-    text-underline-offset: 8px;
-  }
-  a:hover {
-    text-decoration-color: currentColor;
-    text-underline-offset: 4px;
-  }
-  a[aria-current="page"] {
-    text-decoration-color: var(--terra);
-  }
-  a:focus-visible,
-  .menu-btn:focus-visible {
-    outline: 2px solid var(--terra);
-    outline-offset: 4px;
-    border-radius: var(--radius-xs);
-  }
-  .menu-btn {
-    display: grid;
-    place-items: center;
-    width: calc(var(--spacing) * 12);
-    height: calc(var(--spacing) * 12);
-    margin-right: calc(var(--spacing) * -2);
-    padding: 0;
-    border: 0;
-    background: none;
-    color: inherit;
-    cursor: pointer;
-  }
-  .menu-btn svg {
-    width: calc(var(--spacing) * 9);
-    fill: currentColor;
-    overflow: visible;
-  }
-  .menu-btn path {
+  path {
     transform-box: view-box;
     transform-origin: center;
   }
@@ -114,81 +83,11 @@ const strokes = menuStrokes(71);
   .nav:has(#site-menu:popover-open) .s2 {
     transform: rotate(-45deg) translateY(calc(var(--spacing) * -2));
   }
-  #site-menu {
-    position: fixed;
-    inset: calc(var(--spacing) * 16) 0 0;
-    width: 100%;
-    max-width: none;
-    height: auto;
-    margin: 0;
-    border: 0;
-    box-sizing: border-box;
-    padding: calc(var(--spacing) * 4) calc(var(--spacing) * 6) calc(var(--spacing) * 12);
-    background: var(--dark, var(--mole));
-    color: var(--cream);
-  }
-  #site-menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: var(--spacing);
-  }
-  #site-menu a {
-    display: block;
-    padding: calc(var(--spacing) * 2.5) 0;
-    font-size: var(--text-4xl);
-    letter-spacing: var(--tracking-tighter);
-    line-height: 1;
-  }
-  #site-menu::backdrop {
-    background: transparent;
-  }
-  :global(body:has(#site-menu:popover-open)) {
-    overflow: hidden;
-  }
-
   @media (prefers-reduced-motion: no-preference) {
-    a {
-      transition:
-        text-decoration-color 200ms var(--ease-in-out),
-        text-underline-offset 200ms var(--ease-in-out);
-    }
-    .menu-btn path {
+    path {
       transition:
         transform 200ms var(--ease-out),
         opacity 200ms var(--ease-out);
-    }
-    #site-menu {
-      transition:
-        opacity 200ms var(--ease-out),
-        transform 200ms var(--ease-out),
-        display 200ms allow-discrete,
-        overlay 200ms allow-discrete;
-    }
-    #site-menu:not(:popover-open) {
-      opacity: 0;
-      transform: translateY(-8px);
-    }
-    @starting-style {
-      #site-menu:popover-open {
-        opacity: 0;
-        transform: translateY(-8px);
-      }
-    }
-  }
-
-  @media (width >= 48rem) {
-    .nav {
-      height: calc(var(--spacing) * 20);
-      padding: 0 var(--gutter);
-    }
-    .inline {
-      display: flex;
-    }
-    .menu-btn,
-    #site-menu {
-      display: none;
     }
   }
 </style>
