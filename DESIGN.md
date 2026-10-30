@@ -16,7 +16,7 @@ colors:
 typography:
   display:
     fontFamily: "Averia Serif Libre, serif"
-    fontSize: "text-4xl text-5xl text-6xl text-7xl text-8xl text-9xl"
+    fontSize: "text-5xl md:text-7xl lg:text-8xl xl:text-9xl"
     fontWeight: 700
     lineHeight: "leading-none"
     letterSpacing: "md:tracking-tighter"
@@ -214,7 +214,17 @@ A deep, warm brown and two creams carry the page; the saturated colors are accen
 
 ### Hierarchy
 
-- **Display:** the hero title, all caps: THE DnA CASA and a party's name, broken between words or after a hyphen wherever it would overflow a 360px phone (TRICK-R- / DRINK, LET'S GET / TIKI FREAKY), the same breaks on every screen; HALLOWEEN on one line. Its size is picked at build time from Tailwind's text steps (`src/lib/hero-title.ts`). On phones it is `text-5xl`, small enough that HALLOWEEN fits inside the 20px hero gutters from 360px up; a party name with a word too wide to break (HOMECOMING) steps down one size to `text-4xl`, on that page only. From md up, each breakpoint takes the largest step whose longest line still fits the hero's column at that breakpoint, up to `text-7xl` at md, `text-8xl` at lg and `text-9xl` from xl.
+- **Display:** the hero title, all caps: THE DnA CASA and a party's name, broken between words or after a hyphen wherever it would overflow a 360px phone (TRICK-R- / DRINK, LET'S GET / TIKI FREAKY), the same breaks on every screen; HALLOWEEN on one line. Its size is picked at build time from Tailwind's text steps (`src/lib/hero-title.ts`). On phones it is `text-5xl`, small enough that HALLOWEEN fits inside the 20px hero gutters from 360px up; a party name with a word too wide to break (HOMECOMING) steps down one size to `text-4xl`, on that page only. From md up, each breakpoint takes the largest step whose longest line still fits the hero's column at that breakpoint. The display size at each breakpoint, which a title that fits gets:
+
+  | Breakpoint | Display size | A title too wide steps down to     |
+  | ---------- | ------------ | ---------------------------------- |
+  | phone      | `text-5xl`   | `text-4xl`                         |
+  | md         | `text-7xl`   | `text-6xl`, `text-5xl`, `text-4xl` |
+  | lg         | `text-8xl`   | `text-7xl` down to `text-4xl`      |
+  | xl and 2xl | `text-9xl`   | `text-8xl` down to `text-4xl`      |
+
+  The steps come from one list in the global stylesheet (the `@source inline(...)` that force-includes the size classes), which the size model reads, so the two cannot disagree.
+
 - **Headline:** section headings on every page, sized once on `h2` in the global stylesheet's base layer. `text-4xl` on phones and tablets, which is also the size of the phone menu links, then `text-5xl` at lg and `text-6xl` from xl.
 - **Title:** names and short items: member names, contest winners, the drinks, the new-this-year titles, the year and name on the Halloween list. `text-2xl` on phones, `text-3xl` from md. Member names and the new-this-year titles are `h3`s, sized once on `h3` in the base layer next to `h2`; the rest carry the classes.
 - **Subtitle:** the hero subtitle ("Dan & Alexis", "Our tiki Halloween", "October at the casa"), and a recap's date as the subtitle's second line ("Saturday, October 17, 2026"), in italic. `text-xl`, then `text-2xl` at lg and `text-3xl` from xl.
@@ -335,7 +345,7 @@ A small serif-bold word in terracotta above a section heading ("Bienvenidos"). I
 
 ### Button
 
-The one button for actions on every page (links stay words): a hand-pressed pebble ("Pebble slab"), seeded from its label so no two buttons share an outline, sitting on its own darker stone edge 6px below. The label is serif bold at label size, pressed into the stone with a dark lip above and a light one below. Terracotta stone with page-cream letters by default.
+The one button for actions on every page (links stay words): a hand-pressed pebble ("Pebble slab"), seeded from its label so no two buttons share an outline, sitting on its own darker stone edge 6px below. The label is serif bold at label size, pressed into the stone with a dark lip above and a faint page-cream one below. Terracotta stone with page-cream letters by default.
 
 - **Hover:** the face lifts 2px and warms toward marigold.
 - **Pressed:** a click, or a button that stays down (`aria-pressed` or `.is-down`, like Spin), presses the face flat onto its edge.
@@ -371,7 +381,7 @@ The drips and the scroll fade-ups set each `animation-*` property in longhand, b
 ### Do:
 
 - **Do** keep the dark field (mole, or Trona on Halloween pages) and page cream as the only large color fields.
-- **Do** take every color from the palette: in CSS, from the Tailwind theme's `--color-*` variables; everywhere else (SVG fills, the theme-color meta, the favicon and the link previews), from the palette module, which a test keeps equal to the theme. The logo's petal oranges are the one exception.
+- **Do** take every color from the palette: in CSS, from the Tailwind theme's `--color-*` variables; everywhere else (SVG fills, the theme-color meta, the favicon and the link previews), from the palette module, which a test keeps equal to the theme. A build test fails on any other color in the shipped CSS or a `style` attribute, scoped styles included: a color name, a hex, `rgb()` or `hsl()` literal outside the theme. The logo's petal oranges are the one exception.
 - **Do** keep accents small: a stroke, a circle, a kicker, an underline.
 - **Do** pick every text size from the type scale, and every space, size, radius, duration and breakpoint from Tailwind's scales and the allowed-step list in `src/tailwind-steps.ts`.
 - **Do** gate every animation behind `prefers-reduced-motion: no-preference`.
