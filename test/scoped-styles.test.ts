@@ -20,11 +20,8 @@ const handMade = [
   "components/Button.astro",
 ];
 
-// Shrinks as each piece moves to utility classes, and is gone when the migration is done.
-const stillToMigrate: string[] = [];
-
 describe("scoped styles", () => {
-  it("live only in the hand-made pieces and the files still to migrate", () => {
-    expect(filesWithStyle()).toEqual([...handMade, ...stillToMigrate].sort());
+  it("live only in the hand-made pieces", () => {
+    expect(filesWithStyle()).toEqual([...handMade].sort());
   });
 });
