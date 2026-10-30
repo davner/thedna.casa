@@ -6,16 +6,23 @@ interface Props {
   members?: Member[];
 }
 const { members = householdMembers } = Astro.props;
+const circle = "block aspect-square h-auto w-20 flex-none rounded-full object-cover md:mb-3 md:w-full md:max-w-52";
 ---
 
-<section class="members" aria-labelledby="members-heading">
-  <h2 id="members-heading">{copy.membersHeading}</h2>
-  <ul>
+<section
+  class="bg-cream-page px-6 pt-2 pb-20 text-mole md:px-12 md:pt-0 md:pb-24 lg:px-16 lg:pb-28 xl:px-20 xl:pb-36"
+  aria-labelledby="members-heading"
+>
+  <h2 id="members-heading" class="mx-auto max-w-6xl text-terra">
+    {copy.membersHeading}
+  </h2>
+  {/* Columns keep their content height, so a short one-liner never stretches its circle or drops its name below the others. */}
+  <ul class="mx-auto mt-7 grid max-w-6xl grid-cols-1 md:mt-12 md:grid-cols-4 md:gap-6 lg:gap-8 xl:gap-10">
     {members.map((m) => (
-      <li>
+      <li class="flex items-center gap-5 border-t border-mole/14 py-3.5 last:border-b md:flex-col md:items-center md:gap-1.5 md:border-none md:p-0 md:text-center">
         {m.portrait ? (
           <Image
-            class="circle"
+            class={circle}
             src={m.portrait.src}
             alt={m.portrait.alt}
             width={416}
@@ -24,119 +31,13 @@ const { members = householdMembers } = Astro.props;
             sizes="(max-width: 767px) 80px, 208px"
           />
         ) : (
-          <span class="circle" style={`background:${m.color}`}></span>
+          <span class={circle} style={`background:${m.color}`}></span>
         )}
-        <div class="who">
-          <h3>{m.name}</h3>
-          <span class="line">{m.line}</span>
+        <div class="grid gap-0.5 md:gap-1.5">
+          <h3 class="font-serif text-2xl leading-tight font-bold tracking-tight md:text-3xl">{m.name}</h3>
+          <span class="text-base leading-tight">{m.line}</span>
         </div>
       </li>
     ))}
   </ul>
 </section>
-
-<style>
-  .members {
-    background: var(--cream-page);
-    color: var(--mole);
-    padding: calc(var(--spacing) * 2) var(--gutter) calc(var(--spacing) * 20);
-  }
-  .members > * {
-    max-width: var(--column);
-    margin-inline: auto;
-  }
-  h2 {
-    color: var(--terra);
-  }
-  ul {
-    list-style: none;
-    padding: 0;
-    margin-top: calc(var(--spacing) * 7);
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
-  li {
-    display: flex;
-    align-items: center;
-    gap: calc(var(--spacing) * 5);
-    padding: calc(var(--spacing) * 3.5) 0;
-    border-top: 1px solid color-mix(in oklab, var(--mole) 14%, transparent);
-  }
-  li:last-child {
-    border-bottom: 1px solid color-mix(in oklab, var(--mole) 14%, transparent);
-  }
-  .circle {
-    display: block;
-    flex: none;
-    width: calc(var(--spacing) * 20);
-    height: auto;
-    aspect-ratio: 1;
-    border-radius: calc(infinity * 1px);
-    object-fit: cover;
-  }
-  .who {
-    display: grid;
-    gap: calc(var(--spacing) * 0.5);
-  }
-  h3 {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: var(--text-2xl);
-    letter-spacing: var(--tracking-tight);
-    margin: 0;
-  }
-  .line {
-    font-size: var(--text-base);
-  }
-
-  /* Columns keep their content height, so a short one-liner never stretches its circle or drops its name below the others. */
-  @media (width >= 48rem) {
-    .members {
-      padding-top: 0;
-      padding-bottom: calc(var(--spacing) * 24);
-    }
-    ul {
-      margin-top: calc(var(--spacing) * 12);
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: calc(var(--spacing) * 6);
-    }
-    li {
-      flex-direction: column;
-      align-items: center;
-      gap: calc(var(--spacing) * 1.5);
-      padding: 0;
-      border: 0;
-      text-align: center;
-    }
-    li:last-child {
-      border: 0;
-    }
-    .circle {
-      width: 100%;
-      max-width: calc(var(--spacing) * 52);
-      margin-bottom: calc(var(--spacing) * 3);
-    }
-    .who {
-      gap: calc(var(--spacing) * 1.5);
-    }
-    h3 {
-      font-size: var(--text-3xl);
-    }
-  }
-  @media (width >= 64rem) {
-    .members {
-      padding-bottom: calc(var(--spacing) * 28);
-    }
-    ul {
-      gap: calc(var(--spacing) * 8);
-    }
-  }
-  @media (width >= 80rem) {
-    .members {
-      padding-bottom: calc(var(--spacing) * 36);
-    }
-    ul {
-      gap: calc(var(--spacing) * 10);
-    }
-  }
-</style>
