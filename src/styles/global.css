@@ -3,8 +3,8 @@
 @source "../**/*.astro";
 /* The bare forms tilt and animate without the reduced-motion guard the site requires; CSS property names in scoped styles would otherwise generate them. */
 @source not inline("transform transition");
-/* The stamp's ring path data reads as a margin utility. */
-@source not inline("m-82");
+/* The stamp's ring path data reads as a margin utility, and its ring prop as Tailwind's ring, which ships a white offset. */
+@source not inline("m-82 ring");
 /* The hero title's size classes are picked at build time in src/lib/hero-title.ts, so they never appear whole in markup. */
 @source inline(
   "text-{4xl,5xl} md:text-{4xl,5xl,6xl,7xl} lg:text-{4xl,5xl,6xl,7xl,8xl} {xl,2xl}:text-{4xl,5xl,6xl,7xl,8xl,9xl}"
