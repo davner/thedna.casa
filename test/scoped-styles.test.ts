@@ -21,11 +21,7 @@ const handMade = [
 ];
 
 // Shrinks as each piece moves to utility classes, and is gone when the migration is done.
-const stillToMigrate = [
-  "components/halloween/HalloweenHero.astro",
-  "pages/halloween/[year].astro",
-  "pages/halloween/index.astro",
-];
+const stillToMigrate = ["pages/halloween/[year].astro", "pages/halloween/index.astro"];
 
 describe("scoped styles", () => {
   it("live only in the hand-made pieces and the files still to migrate", () => {

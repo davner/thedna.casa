@@ -21,6 +21,7 @@ type Photo = NonNullable<(typeof party.ourCostumes)[number]["photo"]>;
 const photos = [...party.ourCostumes, ...party.highlights, party.contest, party.drinks].flatMap((item) =>
   item?.photo ? [item.photo] : [],
 );
+const inviteAspect = party.invite ? party.invite.src.width / party.invite.src.height : 1;
 const softId = (photo: Photo) => `soft-${photo.seed}`;
 const clip = (photo: Photo) => `clip-path:url(#${softId(photo)})`;
 const sizes = { large: { shown: 512, phone: 288 }, small: { shown: 320, phone: 224 } } satisfies Record<
@@ -41,8 +42,8 @@ const beside = { width: 896, height: 1120, widths: [288, 448, 576, 896], sizes: 
     {party.invite && (
       <Image
         slot="keepsake"
-        class="invite"
-        style={`clip-path:url(#soft-invite); --aspect: ${party.invite.src.width / party.invite.src.height}`}
+        class="invite-width block aspect-(--aspect) h-auto max-w-64 md:max-w-full"
+        style={`clip-path:url(#soft-invite); --aspect: ${inviteAspect}`}
         src={party.invite.src}
         alt={party.invite.alt}
         width={768}
@@ -57,7 +58,7 @@ const beside = { width: 896, height: 1120, widths: [288, 448, 576, 896], sizes: 
     <svg class="defs" aria-hidden="true">
       {party.invite && (
         <clipPath id="soft-invite" clipPathUnits="objectBoundingBox">
-          <path d={softMask(party.year, party.invite.src.width / party.invite.src.height)} />
+          <path d={softMask(party.year, inviteAspect)} />
         </clipPath>
       )}
       {photos.map((photo) => (

@@ -119,6 +119,15 @@
   }
 }
 
+/* The invite card fits a square box on phones and the hero's slot from md. Its width comes from its own aspect ratio, so
+its box is reserved before the file arrives; no utility multiplies a size by a ratio. */
+@utility invite-width {
+  width: calc(var(--spacing) * 64 * var(--aspect));
+  @variant md {
+    width: calc(var(--container-lg) * var(--aspect));
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   @view-transition {
     navigation: auto;
