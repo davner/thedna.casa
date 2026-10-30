@@ -27,7 +27,7 @@ const colorTokens = Object.entries(palette)
 ---
 
 <!doctype html>
-<html lang="en" style={colorTokens}>
+<html lang="en" class="leading-tight" style={colorTokens}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -49,85 +49,9 @@ const colorTokens = Object.entries(palette)
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
-  <body>
+  <body class="overflow-x-hidden bg-mole font-sans tracking-tight text-cream antialiased">
     <Nav />
     <slot />
     <div class="grain" aria-hidden="true"></div>
   </body>
 </html>
-
-<style is:global>
-  :root {
-    --font-serif: "Averia Serif Libre", serif;
-    --divider: 1px solid color-mix(in srgb, var(--mole) 18%, transparent);
-    --gutter: calc(var(--spacing) * 6);
-    --column: var(--container-6xl);
-  }
-  @media (width >= 48rem) {
-    :root {
-      --gutter: calc(var(--spacing) * 12);
-    }
-  }
-  @media (width >= 64rem) {
-    :root {
-      --gutter: calc(var(--spacing) * 16);
-    }
-  }
-  @media (width >= 80rem) {
-    :root {
-      --gutter: calc(var(--spacing) * 20);
-    }
-  }
-  html,
-  body {
-    margin: 0;
-  }
-  /* The fonts' own normal line height is about 1.23, and tight is the nearest Tailwind step. */
-  html {
-    line-height: var(--leading-tight);
-  }
-  h2 {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    letter-spacing: var(--tracking-tighter);
-    font-size: var(--text-4xl);
-    line-height: 1;
-    margin: 0;
-  }
-  @media (width >= 64rem) {
-    h2 {
-      font-size: var(--text-5xl);
-    }
-  }
-  @media (width >= 80rem) {
-    h2 {
-      font-size: var(--text-6xl);
-    }
-  }
-  body {
-    background: var(--mole);
-    color: var(--cream);
-    font-family: "Schibsted Grotesk", sans-serif;
-    letter-spacing: var(--tracking-tight);
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    @view-transition {
-      navigation: auto;
-    }
-  }
-  ::selection {
-    background: var(--pink);
-    color: var(--cream-page);
-  }
-  .grain {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 50;
-    opacity: 0.22;
-    mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.28 0 0 0 0 0.14 0 0 0 0 0.15 0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  }
-</style>

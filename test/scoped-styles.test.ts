@@ -17,7 +17,6 @@ const handMade = [
   "components/Welcome.astro",
   "components/Nav.astro",
   "components/halloween/Trophy.astro",
-  "layouts/Base.astro",
 ];
 
 // Shrinks as each piece moves to utility classes, and is gone when the migration is done.
