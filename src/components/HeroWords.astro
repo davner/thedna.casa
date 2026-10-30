@@ -9,7 +9,7 @@ interface Props {
   date?: { datetime: string; long: string };
 }
 const { class: className, lines, subtitle, layout, date } = Astro.props;
-const sub = "font-serif text-xl leading-tight tracking-normal text-blush italic lg:text-2xl xl:text-3xl";
+const subtitleStyle = "font-serif text-xl leading-tight tracking-normal text-blush italic lg:text-2xl xl:text-3xl";
 ---
 
 {/* Size containment keeps the title from widening its own column; the width keeps it from collapsing when centered. */}
@@ -28,10 +28,10 @@ const sub = "font-serif text-xl leading-tight tracking-normal text-blush italic 
       </>
     ))}
   </h1>
-  <p class:list={["mt-3 md:mt-5", sub]}>{subtitle}</p>
+  <p class:list={["mt-3 md:mt-5", subtitleStyle]}>{subtitle}</p>
   {/* The date reads as the subtitle's second line, not a new block. */}
   {date && (
-    <p class:list={["mt-0.5 md:mt-1", sub]}>
+    <p class:list={["mt-0.5 md:mt-1", subtitleStyle]}>
       <time datetime={date.datetime}>{date.long}</time>
     </p>
   )}

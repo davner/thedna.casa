@@ -7,6 +7,7 @@ import HalloweenHero from "../../components/halloween/HalloweenHero.astro";
 import { heroTitleLines } from "../../lib/hero-title";
 import { partyDate } from "../../lib/parties";
 import { partyShare } from "../../lib/party-preview";
+import { photoBesideWords } from "../../lib/photo-sizes";
 import { softMask } from "../../lib/shapes";
 
 export async function getStaticPaths() {
@@ -28,9 +29,6 @@ const sizes = { large: { shown: 512, phone: 288 }, small: { shown: 320, phone: 2
   Photo["size"],
   { shown: number; phone: number }
 >;
-// The contest, drinks and highlight photos all share one size beside their words.
-// Every photo also ships at its phone width and twice that, so a phone never downloads the 2x desktop file.
-const beside = { width: 896, height: 1120, widths: [288, 448, 576, 896], sizes: "(max-width: 767px) 288px, 448px" };
 // Content-box, so the column caps the content inside the gutters while the cream runs edge to edge.
 const section = "mx-auto box-content max-w-6xl gutter-x-6 pb-20 lg:pb-24 xl:pb-32";
 const heading = "text-terra text-balance md:text-wrap";
@@ -88,6 +86,8 @@ const photoClass =
         <div class="mx-auto mt-7 grid grid-cols-1 items-start gutter-gap-10 md:mt-12 md:grid-cols-5">
           {party.ourCostumes.map((c, i) => {
             const small = c.photo?.size === "small";
+            // Costume photos also ship at their phone width and twice that, so a phone never downloads the 2x file.
+            const size = c.photo && sizes[c.photo.size];
             return (
               <figure
                 class:list={[
@@ -98,21 +98,16 @@ const photoClass =
                   { "md:mt-28 lg:mt-36 xl:mt-44": small },
                 ]}
               >
-                {c.photo && (
+                {c.photo && size && (
                   <Image
                     class:list={[photoClass, "mx-auto", small ? "max-w-56 md:max-w-80" : "max-w-72 md:max-w-lg"]}
                     style={clip(c.photo)}
                     src={c.photo.src}
                     alt={c.photo.alt}
-                    width={2 * sizes[c.photo.size].shown}
-                    height={2.5 * sizes[c.photo.size].shown}
-                    widths={[
-                      sizes[c.photo.size].phone,
-                      sizes[c.photo.size].shown,
-                      2 * sizes[c.photo.size].phone,
-                      2 * sizes[c.photo.size].shown,
-                    ]}
-                    sizes={`(max-width: 767px) ${sizes[c.photo.size].phone}px, ${sizes[c.photo.size].shown}px`}
+                    width={2 * size.shown}
+                    height={2.5 * size.shown}
+                    widths={[size.phone, size.shown, 2 * size.phone, 2 * size.shown]}
+                    sizes={`(max-width: 767px) ${size.phone}px, ${size.shown}px`}
                   />
                 )}
                 <figcaption class="mt-5 text-center text-base leading-tight">
@@ -166,7 +161,7 @@ const photoClass =
             style={clip(party.contest.photo)}
             src={party.contest.photo.src}
             alt={party.contest.photo.alt}
-            {...beside}
+            {...photoBesideWords}
           />
         )}
       </section>
@@ -201,7 +196,7 @@ const photoClass =
             style={clip(party.drinks.photo)}
             src={party.drinks.photo.src}
             alt={party.drinks.photo.alt}
-            {...beside}
+            {...photoBesideWords}
           />
         )}
       </section>
@@ -226,7 +221,7 @@ const photoClass =
                   style={clip(h.photo)}
                   src={h.photo.src}
                   alt={h.photo.alt}
-                  {...beside}
+                  {...photoBesideWords}
                 />
               )}
               <div class:list={["text-center", { "md:text-start": h.photo }]}>
