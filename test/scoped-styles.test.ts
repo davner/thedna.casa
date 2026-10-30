@@ -23,7 +23,6 @@ const handMade = [
 // Shrinks as each piece moves to utility classes, and is gone when the migration is done.
 const stillToMigrate = [
   "components/halloween/HalloweenHero.astro",
-  "layouts/Halloween.astro",
   "pages/halloween/[year].astro",
   "pages/halloween/index.astro",
 ];

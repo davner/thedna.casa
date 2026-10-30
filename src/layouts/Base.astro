@@ -10,13 +10,14 @@ import Nav from "../components/Nav.astro";
 interface Props {
   title?: string;
   description?: string;
-  themeColor?: string;
+  // The page's dark field, which also fills the phone menu panel and tints the browser chrome.
+  dark?: "mole" | "trona";
   share?: Share;
 }
 const {
   title = copy.title,
   description = copy.description,
-  themeColor = palette.mole,
+  dark = "mole",
   share = { path: "/share.png", alt: copy.shareImageAlt },
 } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site).href;
@@ -44,12 +45,15 @@ const colorTokens = Object.entries(palette)
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={share.alt} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content={themeColor} />
+    <meta name="theme-color" content={palette[dark]} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
-  <body class="overflow-x-hidden bg-mole font-sans tracking-tight text-cream antialiased menu-open:overflow-hidden">
+  <body
+    class="overflow-x-hidden bg-(--dark) font-sans tracking-tight text-cream antialiased menu-open:overflow-hidden"
+    style={`--dark: var(--color-${dark})`}
+  >
     <Nav />
     <slot />
     <div class="grain" aria-hidden="true"></div>
