@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-29T06:33:30.000Z",
+  "generatedAt": "2026-10-30T06:44:39.000Z",
   "title": "Design System: The DnA Casa",
   "extensions": {
     "colorMeta": {
@@ -173,168 +173,266 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The hero title: THE DnA CASA, a party's name, HALLOWEEN. A party's name breaks between words or after a hyphen wherever it would overflow a 360px phone, the same breaks on every screen."
+        "purpose": "The hero title, all caps: THE DnA CASA, a party's name, HALLOWEEN. A party's name breaks between words or after a hyphen wherever it would overflow a 360px phone, the same breaks on every screen. Its size is picked at build time from Tailwind's text steps (src/lib/hero-title.ts): text-7xl at md, text-8xl at lg, text-9xl at xl and 2xl, stepping down to text-4xl when the longest line would not fit the hero's column. tracking-tighter from md."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Section headings on every page; the phone menu links at its 2.2rem floor."
+        "purpose": "Section headings on every page, set once on h2 in the base layer: text-4xl, then text-5xl at lg and text-6xl from xl. The phone menu links use its text-4xl size."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Member names, contest winners, the drinks, new-this-year titles, the year and name on the Halloween list."
+        "purpose": "Member names, contest winners, the drinks, new-this-year titles, the year and name on the Halloween list. text-3xl from md; h3 carries it from the base layer."
       },
       "subtitle": {
         "displayName": "Subtitle",
-        "purpose": "Italic: the hero subtitle and a party recap's intro."
+        "purpose": "Italic: the hero subtitle and a recap's date as its second line. text-xl, then text-2xl at lg and text-3xl from xl."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Running text."
+        "purpose": "Running text, at most max-w-sm (384px) wide in the welcome, max-w-md (448px) from xl. text-base, then text-lg from xl."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "The Bienvenidos kicker, a recap's contest result and the desktop nav links."
+        "purpose": "The Bienvenidos kicker, a recap's contest result, the desktop nav links and the button label. text-xl at every width."
       },
       "display-phone": {
         "displayName": "Display (phone)",
-        "purpose": "The hero title at 760px and narrower. A party name with a word too wide to break sets --fit below 1, shrinking only that page's phone title just enough to fit."
+        "purpose": "The hero title below md (768px): text-5xl, small enough that HALLOWEEN fits inside the 20px hero gutters from 360px up. A party name with a word too wide to break steps down to text-4xl, on that page only. tracking-tight."
       },
       "title-phone": {
         "displayName": "Title (phone)",
-        "purpose": "Title-role text at 760px and narrower."
+        "purpose": "Title-role text below md (768px): text-2xl."
       },
       "caption": {
         "displayName": "Caption",
-        "purpose": "Member one-liners, photo captions, costume lines, the party theme, Made by lines."
+        "purpose": "Member one-liners, photo captions, costume lines, the party theme and date on the list, Made by lines. text-base at every width."
       },
       "ring": {
         "displayName": "Ring",
-        "purpose": "Stamp ring text, in SVG units."
+        "purpose": "Stamp ring text, text-base in the ring's 200-unit SVG, so it scales with the stamp; tracking-widest. A longer ring tightens its spacing, never its size."
       },
       "signoff": {
         "displayName": "Sign-off",
-        "purpose": "The footer line."
+        "purpose": "The footer line, italic at text-base."
+      },
+      "intro": {
+        "displayName": "Intro",
+        "purpose": "A party recap's intro, italic at the subtitle's sizes with leading-snug because it runs to several lines."
       }
     },
     "shadows": [],
     "motion": [
       {
-        "name": "ease-out-expo",
-        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "The one easing curve for the squiggle, the drips and photo hovers."
+        "name": "ease-out",
+        "value": "cubic-bezier(0, 0, 0.2, 1)",
+        "purpose": "Tailwind's --ease-out: the squiggle, the drips, the menu panel and strokes, the button and photo hovers."
+      },
+      {
+        "name": "ease-in-out",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Tailwind's --ease-in-out: the link underline on the nav and the Halloween list."
+      },
+      {
+        "name": "duration-steps",
+        "value": "100ms, 200ms, 300ms, 500ms, 1000ms",
+        "purpose": "Tailwind's named duration steps in use; a build test fails on any other duration or curve."
+      },
+      {
+        "name": "squiggle-paint",
+        "value": "paint 1000ms var(--ease-out) 500ms backwards",
+        "purpose": "The squiggle paints on left to right once on load (clip-path inset), through the theme's --animate-paint and motion-safe:animate-paint. Only under prefers-reduced-motion: no-preference."
       },
       {
         "name": "ring-turn",
         "value": "turn 40s linear infinite",
-        "purpose": "The stamp ring; all under prefers-reduced-motion: no-preference."
-      },
-      {
-        "name": "squiggle-paint",
-        "value": "paint 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards",
-        "purpose": "The squiggle paints on once on load; all under prefers-reduced-motion: no-preference."
+        "purpose": "The stamp ring turns once every 40s; the trophy keeps the same pace until a visitor pauses or turns it. Only under prefers-reduced-motion: no-preference."
       },
       {
         "name": "drip-run",
-        "value": "drip-run 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.25s backwards (longhands)",
-        "purpose": "The drips run down once on load; all under prefers-reduced-motion: no-preference."
+        "value": "drip-run 500ms var(--ease-out) 300ms backwards (longhands)",
+        "purpose": "The drips run down once on load. Longhands, because the minifier can fold the shorthand into a form Chrome drops. Only under prefers-reduced-motion: no-preference."
       },
       {
         "name": "menu-panel",
-        "value": "opacity and translateY(-8px), 0.2s ease-out, @starting-style",
-        "purpose": "The phone menu panel fades and slides in; the strokes turn into an X."
+        "value": "opacity and translateY(-0.5rem), 200ms ease-out, transition-behavior allow-discrete, @starting-style",
+        "purpose": "The phone menu popover fades and slides in; its three strokes turn into an X (transform and opacity, 200ms ease-out). Only under prefers-reduced-motion: no-preference."
       },
       {
-        "name": "scroll-rise",
-        "value": "rise linear both, animation-timeline: view(), animation-range: entry 0% entry 55% (longhands, behind @supports)",
-        "purpose": "Halloween sections, photos and rows fade up as they scroll into view."
+        "name": "link-underline",
+        "value": "transition all 200ms ease-in-out; underline-offset 8px to 4px, decoration transparent to currentColor",
+        "purpose": "Links react subtly on hover: the underline appears and draws up toward the word. Only under prefers-reduced-motion: no-preference."
+      },
+      {
+        "name": "button-press",
+        "value": "transform 100ms ease-out; fill 200ms ease-out",
+        "purpose": "The stone's face lifts 2px on hover and presses onto its edge on click or when it stays down. Only under prefers-reduced-motion: no-preference."
+      },
+      {
+        "name": "photo-hover",
+        "value": "scale(1.05), 500ms ease-out (recap photos); 300ms ease-out (list thumbnails)",
+        "purpose": "Halloween photos grow slightly on hover. Only under prefers-reduced-motion: no-preference."
+      },
+      {
+        "name": "scroll-reveal",
+        "value": "rise linear both, animation-timeline: view(), animation-range: entry 0% entry 55%; from opacity 0, translateY(1.75rem) (longhands, behind @supports)",
+        "purpose": "The reveal utility: Halloween sections, photos and rows fade up as they scroll into view; browsers without scroll timelines show them still. Only under prefers-reduced-motion: no-preference."
       },
       {
         "name": "view-transition",
         "value": "@view-transition { navigation: auto; }",
-        "purpose": "Pages crossfade, with no client-side router."
+        "purpose": "Pages crossfade, with no client-side router. Only under prefers-reduced-motion: no-preference."
       }
     ],
     "breakpoints": [
       {
-        "name": "phone",
-        "value": "760px",
-        "purpose": "The one breakpoint; at and below it every page is one centered column."
+        "name": "sm",
+        "value": "640px",
+        "purpose": "Tailwind default (40rem); the site sets nothing here."
+      },
+      {
+        "name": "md",
+        "value": "768px",
+        "purpose": "Tailwind default (48rem). The phone switch: below it every page is one centered column, the nav folds into the menu button, the gutter becomes --gutter (48px)."
+      },
+      {
+        "name": "lg",
+        "value": "1024px",
+        "purpose": "Tailwind default (64rem). Steps sizes and gaps up; --gutter 64px."
+      },
+      {
+        "name": "xl",
+        "value": "1280px",
+        "purpose": "Tailwind default (80rem). Steps sizes and gaps up; --gutter 80px."
+      },
+      {
+        "name": "2xl",
+        "value": "1536px",
+        "purpose": "Tailwind default (96rem). Only the hero title's size model reads it."
       }
     ],
     "grain": {
-      "value": "fractalNoise 0.65, 3 octaves, tinted mole, opacity 0.22, mix-blend-mode multiply, fixed",
-      "purpose": "The one page-wide paper texture."
-    }
+      "value": "fractalNoise baseFrequency 0.65, 3 octaves, tinted mole, opacity 0.22, mix-blend-mode multiply, position fixed, z-index 50",
+      "purpose": "The one page-wide paper texture, the .grain layer in the base layer."
+    },
+    "gutter": {
+      "value": "--gutter: 48px at md, 64px at lg, 80px from xl; phones take the utility's own step (gutter-x-6 is 24px, gutter-x-5 is 20px)",
+      "purpose": "The page's side padding, which is also the gap between side-by-side columns (gutter-x-*, gutter-gap-*). The hero title's size model reads it."
+    },
+    "utilities": [
+      {
+        "name": "divider",
+        "value": "border-top 1px color-mix(in srgb, var(--color-mole) 18%, transparent); the last row also gets a bottom border",
+        "purpose": "The hairline between rows: members on phones, winners, parties, the trophy's plates."
+      },
+      {
+        "name": "gutter-x-*",
+        "value": "padding-inline: the phone step; var(--gutter) from md",
+        "purpose": "Side padding of full-width bands."
+      },
+      {
+        "name": "gutter-gap-*",
+        "value": "gap: the phone step; var(--gutter) from md",
+        "purpose": "The gap between side-by-side columns."
+      },
+      {
+        "name": "hero-slot",
+        "value": "flex: none; width: 34%; max-width: 384px",
+        "purpose": "The hero's side slot for the stamp or a recap's invite, from md."
+      },
+      {
+        "name": "reveal",
+        "value": "the scroll-reveal motion entry",
+        "purpose": "Halloween sections, photos and rows fade up into view."
+      },
+      {
+        "name": "invite-width",
+        "value": "width: 256px x --aspect; 512px x --aspect from md",
+        "purpose": "Reserves the invite card's box from its own aspect ratio before the file arrives."
+      },
+      {
+        "name": "frame-strip",
+        "value": "grid-template-columns: repeat(2, minmax(0, 160px)); repeat(4, minmax(0, 240px)) from md",
+        "purpose": "Stills from one video laid out like a contact strip, centered."
+      }
+    ]
   },
   "components": [
     {
       "name": "Wordmark",
       "kind": "custom",
       "refersTo": "display",
-      "description": "The hero wordmark on mole with the subtitle and squiggle.",
-      "html": "<div class=\"ds-hero\"><h1 class=\"ds-wordmark\">THE DnA<br>CASA</h1><p class=\"ds-sub\">Dan &amp; Alexis</p><span class=\"ds-squiggle\"></span></div>",
-      "css": ".ds-hero{background:#43262a;color:#f6e7da;padding:40px 32px} .ds-wordmark{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:4.5rem;letter-spacing:-0.03em;line-height:0.9;margin:0} .ds-sub{font-family:\"Averia Serif Libre\", serif;font-style:italic;font-size:1.5rem;color:#f0c7b4;margin:16px 0 0} .ds-squiggle{display:block;width:130px;height:6px;margin-top:16px;background:#e4007c;border-radius:6px}"
+      "description": "The home hero on mole: the all-caps serif title, the italic blush subtitle and the pink brush squiggle that paints on once.",
+      "html": "<header class=\"ds-hero\"><h1 class=\"ds-title\">THE DnA<br>CASA</h1><p class=\"ds-sub\">Dan &amp; Alexis</p><svg class=\"ds-squiggle\" viewBox=\"0 0 200 24\" aria-hidden=\"true\"><path d=\"M 6.5 12.5 Q 6.5 12.5 8.9 12.5 11.4 12.5 14.6 13.3 17.9 14.1 20.7 14.2 23.5 14.2 26.4 13.7 29.2 13.1 31.9 11.7 34.7 10.4 36.3 9.6 37.9 8.8 39.6 8.1 41.2 7.3 44.9 6.1 48.5 5 51.7 4.7 54.9 4.4 58.6 5.4 62.3 6.3 65.4 7.7 68.5 9.1 71.6 10.5 74.8 11.9 77.6 13 80.3 14.1 83.2 14.6 86.2 15 88.7 14.1 91.3 13.3 94.4 11.8 97.6 10.3 99.3 9.5 101 8.7 103.8 7.2 106.6 5.7 108.7 5.3 110.8 4.9 114 4.5 117.2 4.1 119 4.4 120.9 4.7 122.7 5.2 124.6 5.7 126.3 6.4 128 7.1 131.2 8.9 134.5 10.8 137.4 11.7 140.2 12.6 143.2 13.3 146.3 14 149 13.6 151.8 13.3 154.4 12.2 157 11.2 158.7 10.5 160.4 9.8 163.6 8.6 166.7 7.4 169.8 6.6 172.9 5.8 176.7 5.5 180.5 5.3 183.7 5.9 187 6.4 188.7 7.3 190.4 8.1 192.3 10 194.2 11.8 194.2 11.8 194.2 11.8 194.2 11.8 194.2 11.8 190.1 11.9 186 12 183.1 11.5 180.2 10.9 177.1 11.1 174.1 11.4 171.3 12 168.5 12.7 165.6 13.8 162.6 14.9 161 15.6 159.3 16.4 156 17.6 152.7 18.8 149 19.2 145.4 19.5 142.2 18.7 139 17.9 137 17.5 135 17 133.3 16.2 131.7 15.5 128.7 13.9 125.7 12.3 122.8 11.3 119.8 10.3 117.2 10.2 114.7 10.1 112 10.3 109.3 10.5 106.3 12.1 103.3 13.7 100 15.2 96.7 16.6 95.1 17.5 93.5 18.4 91.5 19.3 89.4 20.1 87.6 20.4 85.7 20.6 82.4 20.1 79 19.6 77 19 75.1 18.5 72.2 17 69.4 15.4 67.6 14.7 65.8 14 62.9 12.7 60.1 11.5 57.5 10.7 55 9.9 52.1 10.2 49.2 10.4 46.4 11.3 43.6 12.1 41.9 12.9 40.3 13.7 37.2 15.3 34.1 16.8 32.4 17.5 30.6 18.2 27.2 18.8 23.8 19.4 21.9 19.5 20 19.6 16.6 18.7 13.3 17.8 11.4 17.1 9.5 16.3 8 14.4 6.5 12.5 6.5 12.5 Z\"/></svg></header>",
+      "css": ".ds-hero{background:var(--color-mole, #43262a);color:var(--color-cream, #f6e7da);padding:40px 48px} .ds-title{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:4.5rem;letter-spacing:-0.05em;line-height:1;white-space:nowrap;margin:0} .ds-sub{font-family:\"Averia Serif Libre\", serif;font-style:italic;font-size:1.5rem;line-height:1.25;letter-spacing:0;color:var(--color-blush, #f0c7b4);margin:20px 0 0} .ds-squiggle{display:block;width:128px;height:16px;margin-top:20px;fill:var(--color-pink, #e4007c)} @media (prefers-reduced-motion: no-preference){.ds-squiggle{animation:ds-paint 1000ms cubic-bezier(0, 0, 0.2, 1) 500ms backwards}} @keyframes ds-paint{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}"
     },
     {
       "name": "Navbar",
       "kind": "nav",
       "refersTo": "nav-link",
-      "description": "Cream links over the hero; the current page underlined in terracotta. Folds into a brushed menu button at 760px.",
-      "html": "<nav class=\"ds-nav\"><a href=\"#\" lang=\"es\" aria-current=\"page\">Casa</a><a href=\"#\">Halloween</a></nav>",
-      "css": ".ds-nav{display:flex;justify-content:flex-end;gap:32px;padding:24px 32px;background:#43262a;font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:1.3rem;letter-spacing:-0.02em} .ds-nav a{color:#f6e7da;text-decoration:underline 2px transparent;text-underline-offset:8px;transition:text-decoration-color .2s,text-underline-offset .2s} .ds-nav a:hover{text-decoration-color:currentColor;text-underline-offset:5px} .ds-nav a[aria-current=page]{text-decoration-color:#c8643c} .ds-nav a:focus-visible{outline:2px solid #c8643c;outline-offset:4px;border-radius:2px}"
+      "description": "Cream serif links over the hero, the current page underlined in terracotta. Below md they fold into a menu button of three brushed strokes.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" lang=\"es\" aria-current=\"page\"><span>Casa</span></a><a href=\"#\"><span>Halloween</span></a></nav>",
+      "css": ".ds-nav{display:flex;justify-content:flex-end;align-items:center;gap:32px;height:80px;padding-inline:48px;background:var(--color-mole, #43262a);font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:1.25rem;line-height:1.25;letter-spacing:-0.025em} .ds-nav a{color:var(--color-cream, #f6e7da);text-decoration:none} .ds-nav span{text-decoration-line:underline;text-decoration-thickness:2px;text-decoration-color:transparent;text-underline-offset:8px} .ds-nav a:hover span{text-decoration-color:currentColor;text-underline-offset:4px} .ds-nav a[aria-current=page] span{text-decoration-color:var(--color-terra, #c8643c)} .ds-nav a:focus-visible{outline:2px solid var(--color-terra, #c8643c);outline-offset:4px;border-radius:0.125rem} @media (prefers-reduced-motion: no-preference){.ds-nav span{transition:all 200ms cubic-bezier(0.4, 0, 0.2, 1)}}"
+    },
+    {
+      "name": "Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "The one action button: a seeded pebble on its own darker stone edge, serif-bold label pressed into a terracotta face. Hover lifts and warms it toward marigold; pressed sits flat.",
+      "html": "<button class=\"ds-btn\" type=\"button\"><svg class=\"ds-edge\" viewBox=\"0 0 200 80\" preserveAspectRatio=\"none\" aria-hidden=\"true\"><path d=\"M193.9,61.5C191.2,66.5,186.7,67.5,181.5,69.6C176.2,71.6,169.8,72.3,162.4,73.8C155,75.2,153.5,77.7,137,78.4C120.5,79.1,80,78.7,63.5,77.9C47,77.1,45.8,74.8,38.1,73.5C30.4,72.2,22.5,72.1,17.2,70.1C12,68,8.2,66.4,6.7,61.4C5.3,56.4,8.4,47.1,8.7,40C9.1,32.9,6.8,23.9,8.8,19.1C10.8,14.3,16.1,13.4,20.7,11.2C25.3,9,29.3,7.2,36.4,5.6C43.5,4,46.6,2.4,63.2,1.8C79.9,1.2,120,1.3,136.5,2.1C152.9,2.9,154.8,5,161.9,6.5C168.9,8.1,174.2,9.2,178.8,11.4C183.3,13.6,185.9,14.8,189.1,19.6C192.2,24.3,196.9,33,197.7,40C198.5,47,196.6,56.6,193.9,61.5Z\"/></svg><svg class=\"ds-face\" viewBox=\"0 0 200 80\" preserveAspectRatio=\"none\" aria-hidden=\"true\"><path d=\"M193.9,61.5C191.2,66.5,186.7,67.5,181.5,69.6C176.2,71.6,169.8,72.3,162.4,73.8C155,75.2,153.5,77.7,137,78.4C120.5,79.1,80,78.7,63.5,77.9C47,77.1,45.8,74.8,38.1,73.5C30.4,72.2,22.5,72.1,17.2,70.1C12,68,8.2,66.4,6.7,61.4C5.3,56.4,8.4,47.1,8.7,40C9.1,32.9,6.8,23.9,8.8,19.1C10.8,14.3,16.1,13.4,20.7,11.2C25.3,9,29.3,7.2,36.4,5.6C43.5,4,46.6,2.4,63.2,1.8C79.9,1.2,120,1.3,136.5,2.1C152.9,2.9,154.8,5,161.9,6.5C168.9,8.1,174.2,9.2,178.8,11.4C183.3,13.6,185.9,14.8,189.1,19.6C192.2,24.3,196.9,33,197.7,40C198.5,47,196.6,56.6,193.9,61.5Z\"/></svg><span class=\"ds-label\">RSVP</span></button>",
+      "css": ".ds-btn{--stone:var(--color-terra, #c8643c);--stone-edge:color-mix(in srgb,var(--stone) 60%,var(--color-mole, #43262a));--stone-ink:var(--color-cream-page, #faf4ec);--stone-hover:color-mix(in srgb,var(--stone) 85%,var(--color-gold, #f2b233));--lift:6px;position:relative;display:inline-grid;place-items:center;min-height:64px;min-width:176px;width:max-content;padding:0 36px var(--lift);border:0;background:none;cursor:pointer;color:var(--stone-ink);font-family:\"Averia Serif Libre\", serif;font-size:1.25rem;line-height:1.25;font-weight:700;letter-spacing:-0.025em} .ds-btn svg{position:absolute;left:0;width:100%;height:calc(100% - var(--lift));overflow:visible} .ds-edge{top:var(--lift);fill:var(--stone-edge)} .ds-face{top:0;fill:var(--stone)} .ds-label{position:relative;text-shadow:0 -1px 0 color-mix(in srgb,var(--stone-edge) 70%,transparent),0 1px 0 color-mix(in srgb,var(--color-cream-page, #faf4ec) 25%,transparent)} .ds-btn:hover .ds-face{fill:var(--stone-hover)} .ds-btn:hover :is(.ds-face,.ds-label){transform:translateY(-2px)} .ds-btn:active :is(.ds-face,.ds-label){transform:translateY(calc(var(--lift) - 1px))} .ds-btn:focus-visible{outline:2px dashed var(--color-mole, #43262a);outline-offset:8px} @media (prefers-reduced-motion: no-preference){.ds-btn :is(.ds-face,.ds-label){transition:transform 100ms cubic-bezier(0, 0, 0.2, 1)} .ds-btn path{transition:fill 200ms cubic-bezier(0, 0, 0.2, 1)}}"
     },
     {
       "name": "Member Circle",
       "kind": "card",
       "refersTo": "member-circle",
-      "description": "A member: color circle, serif name, one-liner.",
-      "html": "<div class=\"ds-member\"><span class=\"ds-circle\"></span><h3 class=\"ds-name\">Dan</h3><span class=\"ds-line\">One line about Dan.</span></div>",
-      "css": ".ds-member{background:#faf4ec;color:#43262a;display:grid;justify-items:center;gap:6px;padding:24px;font-family:\"Schibsted Grotesk\", sans-serif;letter-spacing:-0.03em} .ds-circle{width:160px;aspect-ratio:1;border-radius:50%;background:#2f3e3e;margin-bottom:12px} .ds-name{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:1.7rem;letter-spacing:-0.02em;margin:0}"
+      "description": "A member from md: a circle in the member's color (or their portrait), serif name, one-liner, centered.",
+      "html": "<div class=\"ds-member\"><span class=\"ds-circle\"></span><div class=\"ds-text\"><h3 class=\"ds-name\">Dan</h3><span class=\"ds-line\">One line about Dan.</span></div></div>",
+      "css": ".ds-member{background:var(--color-cream-page, #faf4ec);color:var(--color-mole, #43262a);display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:24px;font-family:\"Schibsted Grotesk\", sans-serif;letter-spacing:-0.025em} .ds-circle{display:block;width:100%;max-width:208px;aspect-ratio:1;border-radius:9999px;background:var(--color-salamander, #2f3e3e);margin-bottom:12px} .ds-text{display:grid;gap:6px} .ds-name{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:1.875rem;line-height:1.25;letter-spacing:-0.025em;margin:0} .ds-line{font-size:1rem;line-height:1.25}"
     },
     {
       "name": "Member Row (phone)",
       "kind": "card",
       "refersTo": "member-circle-phone",
-      "description": "The phone layout of a member.",
-      "html": "<div class=\"ds-row\"><span class=\"ds-dot\"></span><h3 class=\"ds-rname\">Alexis</h3><span class=\"ds-rline\">One line about Alexis.</span></div>",
-      "css": ".ds-row{background:#faf4ec;color:#43262a;display:grid;grid-template-columns:84px 1fr;column-gap:18px;row-gap:2px;align-items:center;padding:14px 24px;border-block:1px solid color-mix(in srgb,#43262a 14%,transparent);font-family:\"Schibsted Grotesk\", sans-serif;letter-spacing:-0.03em} .ds-dot{grid-row:1/3;width:84px;aspect-ratio:1;border-radius:50%;background:#e4007c} .ds-rname{align-self:end;font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:1.5rem;letter-spacing:-0.02em;margin:0} .ds-rline{align-self:start}"
+      "description": "A member below md: an 80px circle on the left, name over one-liner on the right, hairline dividers from the divider utility.",
+      "html": "<ul class=\"ds-rows\"><li class=\"ds-row\"><span class=\"ds-dot\"></span><div class=\"ds-rtext\"><h3 class=\"ds-rname\">Alexis</h3><span class=\"ds-rline\">One line about Alexis.</span></div></li></ul>",
+      "css": ".ds-rows{list-style:none;margin:0;padding:0 24px;background:var(--color-cream-page, #faf4ec);color:var(--color-mole, #43262a);font-family:\"Schibsted Grotesk\", sans-serif;letter-spacing:-0.025em} .ds-row{display:flex;align-items:center;gap:20px;padding:14px 0;border-top:1px solid color-mix(in srgb, var(--color-mole, #43262a) 18%, transparent)} .ds-row:last-child{border-bottom:1px solid color-mix(in srgb, var(--color-mole, #43262a) 18%, transparent)} .ds-dot{flex:none;width:80px;aspect-ratio:1;border-radius:9999px;background:var(--color-pink, #e4007c)} .ds-rtext{display:grid;gap:2px} .ds-rname{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:1.5rem;line-height:1.25;letter-spacing:-0.025em;margin:0} .ds-rline{font-size:1rem;line-height:1.25}"
     },
     {
-      "name": "Kicker and Heading",
+      "name": "Section Heading",
       "kind": "custom",
-      "refersTo": "kicker",
-      "description": "Terracotta kicker over a mole serif heading on page cream.",
-      "html": "<div class=\"ds-welcome\"><p class=\"ds-kicker\">Bienvenidos</p><h2 class=\"ds-h2\">Hola, we&#39;re Dan &amp; Alexis.</h2><p class=\"ds-text\">A few warm sentences go here.</p></div>",
-      "css": ".ds-welcome{background:#faf4ec;color:#43262a;padding:32px;font-family:\"Schibsted Grotesk\", sans-serif;letter-spacing:-0.03em} .ds-kicker{font-family:\"Averia Serif Libre\", serif;font-weight:700;color:#c8643c;font-size:1.3rem;letter-spacing:-0.02em;margin:0 0 10px} .ds-h2{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:2.6rem;letter-spacing:-0.04em;line-height:1;margin:0} .ds-text{font-size:1.1rem;line-height:1.6;max-width:38ch;margin:18px 0 0}"
+      "refersTo": "headline",
+      "description": "A terracotta serif h2 on page cream over running text, as in Who lives here and every Halloween section.",
+      "html": "<section class=\"ds-section\"><h2 class=\"ds-h2\">Who lives here</h2><p class=\"ds-body\">A few warm sentences go here.</p></section>",
+      "css": ".ds-section{background:var(--color-cream-page, #faf4ec);color:var(--color-mole, #43262a);padding:32px 48px;font-family:\"Schibsted Grotesk\", sans-serif;letter-spacing:-0.025em} .ds-h2{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:3rem;line-height:1;letter-spacing:-0.05em;color:var(--color-terra, #c8643c);margin:0} .ds-body{font-size:1rem;line-height:1.625;max-width:24rem;margin:24px 0 0}"
     },
     {
       "name": "Halloween Hero",
       "kind": "custom",
-      "refersTo": "display",
-      "description": "The Halloween hero on Trona with the terracotta squiggle.",
-      "html": "<div class=\"ds-hhero\"><h1 class=\"ds-htitle\">TRICK-R-<br>DRINK</h1><p class=\"ds-hsub\">Our tiki Halloween</p><span class=\"ds-hsquiggle\"></span></div>",
-      "css": ".ds-hhero{background:#201d1e;color:#f6e7da;padding:40px 32px} .ds-htitle{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:4.5rem;letter-spacing:-0.03em;line-height:0.9;margin:0} .ds-hsub{font-family:\"Averia Serif Libre\", serif;font-style:italic;font-size:1.5rem;color:#f0c7b4;margin:16px 0 0} .ds-hsquiggle{display:block;width:130px;height:6px;margin-top:16px;background:#c8643c;border-radius:6px}"
+      "refersTo": "recap-hero",
+      "description": "The Halloween hero on Trona: same title and subtitle, the squiggle in terracotta.",
+      "html": "<header class=\"ds-hhero\"><h1 class=\"ds-title\">TRICK-R-<br>DRINK</h1><p class=\"ds-sub\">Our tiki Halloween</p><svg class=\"ds-squiggle\" viewBox=\"0 0 200 24\" aria-hidden=\"true\"><path d=\"M 6.5 12.5 Q 6.5 12.5 8.9 12.5 11.4 12.5 14.6 13.3 17.9 14.1 20.7 14.2 23.5 14.2 26.4 13.7 29.2 13.1 31.9 11.7 34.7 10.4 36.3 9.6 37.9 8.8 39.6 8.1 41.2 7.3 44.9 6.1 48.5 5 51.7 4.7 54.9 4.4 58.6 5.4 62.3 6.3 65.4 7.7 68.5 9.1 71.6 10.5 74.8 11.9 77.6 13 80.3 14.1 83.2 14.6 86.2 15 88.7 14.1 91.3 13.3 94.4 11.8 97.6 10.3 99.3 9.5 101 8.7 103.8 7.2 106.6 5.7 108.7 5.3 110.8 4.9 114 4.5 117.2 4.1 119 4.4 120.9 4.7 122.7 5.2 124.6 5.7 126.3 6.4 128 7.1 131.2 8.9 134.5 10.8 137.4 11.7 140.2 12.6 143.2 13.3 146.3 14 149 13.6 151.8 13.3 154.4 12.2 157 11.2 158.7 10.5 160.4 9.8 163.6 8.6 166.7 7.4 169.8 6.6 172.9 5.8 176.7 5.5 180.5 5.3 183.7 5.9 187 6.4 188.7 7.3 190.4 8.1 192.3 10 194.2 11.8 194.2 11.8 194.2 11.8 194.2 11.8 194.2 11.8 190.1 11.9 186 12 183.1 11.5 180.2 10.9 177.1 11.1 174.1 11.4 171.3 12 168.5 12.7 165.6 13.8 162.6 14.9 161 15.6 159.3 16.4 156 17.6 152.7 18.8 149 19.2 145.4 19.5 142.2 18.7 139 17.9 137 17.5 135 17 133.3 16.2 131.7 15.5 128.7 13.9 125.7 12.3 122.8 11.3 119.8 10.3 117.2 10.2 114.7 10.1 112 10.3 109.3 10.5 106.3 12.1 103.3 13.7 100 15.2 96.7 16.6 95.1 17.5 93.5 18.4 91.5 19.3 89.4 20.1 87.6 20.4 85.7 20.6 82.4 20.1 79 19.6 77 19 75.1 18.5 72.2 17 69.4 15.4 67.6 14.7 65.8 14 62.9 12.7 60.1 11.5 57.5 10.7 55 9.9 52.1 10.2 49.2 10.4 46.4 11.3 43.6 12.1 41.9 12.9 40.3 13.7 37.2 15.3 34.1 16.8 32.4 17.5 30.6 18.2 27.2 18.8 23.8 19.4 21.9 19.5 20 19.6 16.6 18.7 13.3 17.8 11.4 17.1 9.5 16.3 8 14.4 6.5 12.5 6.5 12.5 Z\"/></svg></header>",
+      "css": ".ds-hhero{background:var(--color-trona, #201d1e);color:var(--color-cream, #f6e7da);padding:128px 48px 56px} .ds-title{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:4.5rem;letter-spacing:-0.05em;line-height:1;white-space:nowrap;margin:0} .ds-sub{font-family:\"Averia Serif Libre\", serif;font-style:italic;font-size:1.5rem;line-height:1.25;letter-spacing:0;color:var(--color-blush, #f0c7b4);margin:20px 0 0} .ds-squiggle{display:block;width:128px;height:16px;margin-top:20px;fill:var(--color-terra, #c8643c)} @media (prefers-reduced-motion: no-preference){.ds-squiggle{animation:ds-paint 1000ms cubic-bezier(0, 0, 0.2, 1) 500ms backwards}} @keyframes ds-paint{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}"
     },
     {
       "name": "Party Row",
       "kind": "custom",
-      "refersTo": "title",
-      "description": "One row on the Halloween list: terracotta year, name over theme, small circle photo, hairline dividers.",
-      "html": "<a class=\"ds-party\" href=\"#\"><span class=\"ds-year\">2026</span><span class=\"ds-what\"><span class=\"ds-name\">Trick-R-Drink</span><span class=\"ds-theme\">A tiki Halloween</span></span><span class=\"ds-thumb\"></span></a>",
-      "css": ".ds-party{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:32px;padding:22px 0;border-top:1px solid color-mix(in srgb,#43262a 18%,transparent);border-bottom:1px solid color-mix(in srgb,#43262a 18%,transparent);background:#faf4ec;color:#43262a;text-decoration:none} .ds-year,.ds-name{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:1.7rem;letter-spacing:-0.02em;line-height:1} .ds-year{color:#c8643c} .ds-what{display:grid;gap:4px} .ds-name{text-decoration:underline 2px transparent;text-underline-offset:8px;transition:text-decoration-color .2s} .ds-party:hover .ds-name{text-decoration-color:currentColor} .ds-party:focus-visible{outline:2px solid #c8643c;outline-offset:4px} .ds-theme{font-family:\"Schibsted Grotesk\", sans-serif;font-size:1rem} .ds-thumb{width:96px;aspect-ratio:1;border-radius:50%;background:#f7c6d9}"
+      "refersTo": "thumbnail",
+      "description": "One link row on the Halloween list: terracotta year, name over theme and short date, a circle thumbnail, hairline dividers.",
+      "html": "<ul class=\"ds-parties\"><li class=\"ds-li\"><a class=\"ds-party\" href=\"#\"><span class=\"ds-year\">2026</span><span class=\"ds-what\"><span class=\"ds-pname\">Trick-R-Drink</span><span class=\"ds-theme\">A tiki Halloween <time>Sat, Oct 17</time></span></span><span class=\"ds-thumb\"></span></a></li></ul>",
+      "css": ".ds-parties{list-style:none;margin:0;padding:0;background:var(--color-cream-page, #faf4ec);color:var(--color-mole, #43262a);font-family:\"Schibsted Grotesk\", sans-serif;letter-spacing:-0.025em} .ds-li{border-top:1px solid color-mix(in srgb, var(--color-mole, #43262a) 18%, transparent)} .ds-li:last-child{border-bottom:1px solid color-mix(in srgb, var(--color-mole, #43262a) 18%, transparent)} .ds-party{display:flex;align-items:center;gap:32px;padding:24px 0;color:inherit;text-decoration:none} .ds-party:focus-visible{outline:2px solid var(--color-terra, #c8643c);outline-offset:4px} .ds-year,.ds-pname{font-family:\"Averia Serif Libre\", serif;font-weight:700;font-size:1.875rem;letter-spacing:-0.025em} .ds-year{line-height:1;color:var(--color-terra, #c8643c);font-variant-numeric:lining-nums} .ds-what{display:grid;gap:4px;flex:1;min-width:0} .ds-pname{line-height:1.25;text-decoration-line:underline;text-decoration-thickness:2px;text-decoration-color:transparent;text-underline-offset:8px} .ds-party:is(:hover,:focus-visible) .ds-pname{text-decoration-color:currentColor;text-underline-offset:4px} .ds-theme{font-size:1rem;line-height:1.25} .ds-thumb{flex:none;width:96px;aspect-ratio:1;clip-path:circle(50%);background:var(--color-cheek, #f7c6d9)} .ds-party:hover .ds-thumb{transform:scale(1.05)} @media (prefers-reduced-motion: no-preference){.ds-pname{transition:all 200ms cubic-bezier(0.4, 0, 0.2, 1)} .ds-thumb{transition:transform 300ms cubic-bezier(0, 0, 0.2, 1)}}"
     },
     {
       "name": "Footer",
       "kind": "custom",
       "refersTo": "footer",
-      "description": "One italic serif sign-off on the page's dark field (mole, or Trona on Halloween pages).",
+      "description": "One centered italic serif sign-off on the page's dark field (mole, or Trona on Halloween pages).",
       "html": "<footer class=\"ds-footer\"><span lang=\"es\">Con cariño</span> · © 2026 The DnA Casa</footer>",
-      "css": ".ds-footer{background:#43262a;color:#f6e7da;text-align:center;padding:48px 20px 90px;font-family:\"Averia Serif Libre\", serif;font-style:italic;font-size:1rem}"
+      "css": ".ds-footer{background:var(--color-mole, #43262a);color:var(--color-cream, #f6e7da);text-align:center;padding:48px 20px 96px;font-family:\"Averia Serif Libre\", serif;font-style:italic;font-size:1rem;line-height:1.25;letter-spacing:0}"
     }
   ],
   "narrative": {
     "northStar": "Mole and Marigold",
-    "overview": "The page is two colors holding a household between them: a deep mole brown above and below, a cream middle, and a marigold sun at the top. Everything else is a small accent on those two fields. It should feel warm, restrained and hand-made: a person made it, and they stopped before it got busy.\n\nDensity is low. Each section does one thing: the hero names the page, the middle tells the story, and the footer signs off. The hand shows in a few seeded, drawn shapes (one squiggle, one edge between hero and middle, a petal mask, hand-pressed dots, the logo strokes), never in ornament spread across the page. One page-wide grain layer gives both fields a paper feel.\n\nHalloween pages keep the same system and swap one thing: Trona black stands in for mole as the dark field, and drips stand in for the wave. Same fonts, same sizes, same accents.\n\nRejected and settled: a literal house, many arches, leaf or dappled shadows, squiggles everywhere, heavy hand-drawn ornament, a scrolling word strip, sparkles.",
+    "overview": "The page is two colors holding a household between them: a deep mole brown above and below, a cream middle, and a marigold sun at the top. Everything else is a small accent on those two fields. It should feel warm, restrained and hand-made: a person made it, and they stopped before it got busy.\n\nDensity is low. Each section does one thing: the hero names the page, the middle tells the story, and the footer signs off. The hand shows in a few seeded, drawn shapes (one squiggle, one edge between hero and middle, the soft photo mask, hand-pressed dots, the logo strokes), never in ornament spread across the page. One page-wide grain layer gives both fields a paper feel.\n\nHalloween pages keep the same system and swap one thing: Trona black stands in for mole as the dark field, and drips stand in for the wave. Same fonts, same sizes, same accents.\n\nRejected and settled: a literal house, many arches, leaf or dappled shadows, squiggles everywhere, heavy hand-drawn ornament, a scrolling word strip, sparkles.",
     "keyCharacteristics": [
       "Two big color fields, a dark one and cream, joined by one drawn edge.",
       "Big, tight, all-caps serif wordmark; italic serif for the soft voice.",
@@ -355,7 +453,12 @@
       },
       {
         "name": "The Large Terracotta Rule",
-        "body": "Terracotta is about 3.6:1 on page cream, 3.45:1 on mole and 4.26:1 on Trona. Use it for strokes and for text at label size (1.3rem bold) or larger, never for body or caption text.",
+        "body": "Terracotta is about 3.6:1 on page cream, 3.45:1 on mole and 4.26:1 on Trona. Use it for strokes and for text at label size (`text-xl`, 1.25rem, bold) or larger, never for body or caption text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Logo Exception",
+        "body": "The Beso logo's three petal oranges (#D9661A, #EC8A1E, #F5A623) are part of the fixed mark and live in its component, not the palette. They appear nowhere else.",
         "section": "colors"
       },
       {
@@ -365,7 +468,7 @@
       },
       {
         "name": "The One Scale Rule",
-        "body": "Every text size on every page is one of the roles above, and a test fails the build on any `font-size` that is not in this file's front matter. A page never invents its own size; an element that feels too quiet moves up to an existing role instead. Only display and title have separate phone sizes.",
+        "body": "Every text size on every page is one of the roles above, each a Tailwind text step per breakpoint, listed as classes in this file's front matter. A build test reads those classes and fails on any `font-size` in the built CSS, the hand-made pieces' scoped CSS included, that is not one of them. A page never invents its own size; an element that feels too quiet moves up to an existing role instead. Sizes change only at Tailwind's breakpoints, never fluidly with the screen width.",
         "section": "typography"
       },
       {
@@ -375,12 +478,12 @@
       },
       {
         "name": "The Tight Serif Rule",
-        "body": "Serif headings set tight, between -0.02em and -0.04em letter spacing with line height 1.1 or less. The italic voice resets letter spacing to 0.",
+        "body": "Serif headings set tight, on Tailwind's tracking steps: between `tracking-tight` (-0.025em) and `tracking-tighter` (-0.05em). Display titles are `tracking-tight` on phones, where the line breaks are decided, and `tracking-tighter` from md; section headings are `tracking-tighter`. Display titles and section headings set solid (`leading-none`), titles at `leading-tight` (1.25). The italic voice resets letter spacing to `tracking-normal`.",
         "section": "typography"
       },
       {
         "name": "The Wave On Screen Rule",
-        "body": "At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome is 1fr photo to 1.1fr words. The members sit in four equal columns, at most 1000px wide and centered.",
+        "body": "At 1440x900 the wave between hero and welcome is visible without scrolling. The welcome's photo and words take equal columns. The members sit in four equal columns across the page column.",
         "section": "layout"
       },
       {
@@ -404,6 +507,11 @@
         "section": "shapes"
       },
       {
+        "name": "The No Tilt Rule",
+        "body": "Photos and cards sit straight. Tilted photos were tried, as scrapbook cuttings and as drama, and dropped everywhere; the only things that turn are the stamp's ring and the menu strokes becoming an X.",
+        "section": "shapes"
+      },
+      {
         "name": "The Hand-Pressed Dot Rule",
         "body": "Cheeks (the Beso's three and the ghost's two) and the ghost's eyes are seeded dots whose edge wobbles about 7%: never perfect circles, never obviously lumpy. The Beso's closed eyes stay brushed strokes.",
         "section": "shapes"
@@ -416,9 +524,9 @@
     ],
     "dos": [
       "Do keep the dark field (mole, or Trona on Halloween pages) and page cream as the only large color fields.",
-      "Do take every color from the palette module, which feeds CSS, SVG fills, the theme-color meta, the favicon and the link previews. The logo's petal oranges are the one exception.",
+      "Do take every color from the palette: in CSS, from the Tailwind theme's `--color-*` variables; everywhere else (SVG fills, the theme-color meta, the favicon and the link previews), from the palette module, which a test keeps equal to the theme. A build test fails on any other color in the shipped CSS or a `style` attribute, scoped styles included: a color name, a hex, `rgb()` or `hsl()` literal outside the theme. The logo's petal oranges are the one exception.",
       "Do keep accents small: a stroke, a circle, a kicker, an underline.",
-      "Do pick every text size from the type scale.",
+      "Do pick every text size from the type scale, and every space, size, radius, duration and breakpoint from Tailwind's scales and the allowed-step list in `src/tailwind-steps.ts`.",
       "Do gate every animation behind `prefers-reduced-motion: no-preference`.",
       "Do check the phone layout at 390px in device emulation."
     ],
@@ -428,7 +536,7 @@
       "Don't add an accent color for a page, a section or a party.",
       "Don't set body or caption text in terracotta or pink.",
       "Don't add a marquee, a literal house, arches, leaf shadows, sparkles or extra squiggles.",
-      "Don't add motion that bounces, loops (other than the ring) or runs longer than half a second (other than the ring and the squiggle)."
+      "Don't add motion that bounces, loops (other than the ring and the trophy) or runs longer than half a second (other than the ring, the trophy and the squiggle)."
     ]
   }
 }
