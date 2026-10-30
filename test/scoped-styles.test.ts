@@ -23,7 +23,6 @@ const handMade = [
 // Shrinks as each piece moves to utility classes, and is gone when the migration is done.
 const stillToMigrate = [
   "components/Button.astro",
-  "components/Footer.astro",
   "components/Hero.astro",
   "components/HeroWords.astro",
   "components/Members.astro",

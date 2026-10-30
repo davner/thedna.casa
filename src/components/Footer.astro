@@ -2,17 +2,6 @@
 import { copy } from "../content";
 ---
 
-<footer>
+<footer class="px-5 pt-12 pb-24 text-center font-serif tracking-normal text-cream italic">
   <span lang="es">{copy.signoff}</span> · © {new Date().getFullYear()} {copy.title}
 </footer>
-
-<style>
-  footer {
-    text-align: center;
-    padding: calc(var(--spacing) * 12) calc(var(--spacing) * 5) calc(var(--spacing) * 24);
-    color: var(--cream);
-    font-family: var(--font-serif);
-    font-style: italic;
-    letter-spacing: var(--tracking-normal);
-  }
-</style>
