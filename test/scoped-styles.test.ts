@@ -10,18 +10,18 @@ const filesWithStyle = () =>
     .filter((file) => /<style[\s>]/.test(readFileSync(new URL(file, src), "utf8")))
     .sort();
 
-// Masks, clip paths, keyframes and SVG geometry that utilities cannot express.
+// Masks, clip paths, keyframes, SVG geometry and the stone button's recolor variables, which utilities cannot express.
 const handMade = [
   "components/Stamp.astro",
   "components/halloween/Drips.astro",
   "components/Welcome.astro",
   "components/Nav.astro",
   "components/halloween/Trophy.astro",
+  "components/Button.astro",
 ];
 
 // Shrinks as each piece moves to utility classes, and is gone when the migration is done.
 const stillToMigrate = [
-  "components/Button.astro",
   "components/Hero.astro",
   "components/HeroWords.astro",
   "components/Members.astro",

@@ -8,14 +8,31 @@ const { label, seed = photoSeed(label), class: extra, type = "button", ...attrs 
 const stone = pebble(seed, 200, 80);
 ---
 
-<button type={type} class:list={["button", extra]} {...attrs}>
-  <svg class="edge" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true">
+<button
+  type={type}
+  class:list={[
+    "button relative inline-grid min-h-16 w-max min-w-44 cursor-pointer place-items-center px-9 font-serif text-xl leading-tight font-bold tracking-tight focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-dashed focus-visible:outline-(color:--stone-focus) disabled:cursor-not-allowed",
+    extra,
+  ]}
+  {...attrs}
+>
+  <svg
+    class="edge absolute left-0 w-full overflow-visible"
+    viewBox="0 0 200 80"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
     <path d={stone} />
   </svg>
-  <svg class="face" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true">
+  <svg
+    class="face absolute top-0 left-0 w-full overflow-visible"
+    viewBox="0 0 200 80"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
     <path d={stone} />
   </svg>
-  <span class="label">{label}</span>
+  <span class="label relative">{label}</span>
 </button>
 
 <style is:global>
@@ -26,42 +43,24 @@ const stone = pebble(seed, 200, 80);
     --stone-ink: var(--cream-page);
     --stone-hover: color-mix(in srgb, var(--stone) 85%, var(--gold));
     --stone-focus: var(--mole);
+    /* The face stands this far above its edge; the pressed face stops 1px short of it, which no utility step can say. */
     --lift: calc(var(--spacing) * 1.5);
-    position: relative;
-    display: inline-grid;
-    place-items: center;
-    width: max-content;
-    min-width: calc(var(--spacing) * 44);
-    min-height: calc(var(--spacing) * 16);
-    padding: 0 calc(var(--spacing) * 9) var(--lift);
-    border: 0;
-    background: none;
+    padding-bottom: var(--lift);
     color: var(--stone-ink);
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: var(--text-xl);
-    letter-spacing: var(--tracking-tight);
-    cursor: pointer;
     -webkit-tap-highlight-color: transparent;
   }
   .button svg {
-    position: absolute;
-    left: 0;
-    width: 100%;
     height: calc(100% - var(--lift));
-    overflow: visible;
   }
   .button .edge {
     top: var(--lift);
     fill: var(--stone-edge);
   }
   .button .face {
-    top: 0;
     fill: var(--stone);
   }
   /* Pressed into the stone: a dark lip above and a light one below read as letters cut into the face. */
   .button .label {
-    position: relative;
     text-shadow:
       0 -1px 0 color-mix(in srgb, var(--stone-edge) 70%, transparent),
       0 1px 0 color-mix(in srgb, white 25%, transparent);
@@ -77,12 +76,7 @@ const stone = pebble(seed, 200, 80);
   .button:disabled :is(.face, .label) {
     transform: translateY(calc(var(--lift) - 1px));
   }
-  .button:focus-visible {
-    outline: 2px dashed var(--stone-focus);
-    outline-offset: 8px;
-  }
   .button:disabled {
-    cursor: not-allowed;
     --stone: color-mix(in srgb, var(--mole) 22%, var(--cream-page));
     --stone-edge: color-mix(in srgb, var(--mole) 32%, var(--cream-page));
     --stone-ink: color-mix(in srgb, var(--mole) 55%, var(--cream-page));
