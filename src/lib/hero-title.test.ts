@@ -30,9 +30,16 @@ describe("heroTitleSize", () => {
     expect(heroTitleSize(["THE DnA", "CASA"], "beside")).toBe("text-5xl md:text-7xl lg:text-8xl xl:text-9xl");
   });
 
-  // Beside the stamp the column is 396px at md, 527px at lg, 659px at xl and 912px at 2xl; HALLOWEEN is 6.22em wide.
+  // Beside the stamp the column is 396px at md, 527px at lg, 659px at xl and 912px at 2xl; HALLOWEEN is 6.00em wide.
   it("picks the largest step at each breakpoint whose longest line fits the column", () => {
     expect(heroTitleSize(["HALLOWEEN"], "beside")).toBe("text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl");
+  });
+
+  // At tighter tracking HOMECOMING is 6.80em wide: 652px at text-8xl, inside the 659px column beside the invite at xl.
+  it("sets HAUNTED HOMECOMING at 96px beside its invite from xl", () => {
+    expect(heroTitleSize(["HAUNTED", "HOMECOMING"], "beside")).toBe(
+      "text-4xl md:text-5xl lg:text-7xl xl:text-8xl 2xl:text-9xl",
+    );
   });
 
   it("gives a title the whole hero's width when nothing sits beside it", () => {

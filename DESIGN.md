@@ -18,58 +18,67 @@ typography:
     fontFamily: "Averia Serif Libre, serif"
     fontSize: "text-4xl text-5xl text-6xl text-7xl text-8xl text-9xl"
     fontWeight: 700
-    lineHeight: 0.9
-    letterSpacing: "-0.03em"
+    lineHeight: "leading-none"
+    letterSpacing: "md:tracking-tighter"
   headline:
     fontFamily: "Averia Serif Libre, serif"
     fontSize: "text-4xl lg:text-5xl xl:text-6xl"
     fontWeight: 700
-    lineHeight: 1
-    letterSpacing: "-0.04em"
+    lineHeight: "leading-none"
+    letterSpacing: "tracking-tighter"
   title:
     fontFamily: "Averia Serif Libre, serif"
     fontSize: "text-3xl"
     fontWeight: 700
-    letterSpacing: "-0.02em"
+    lineHeight: "leading-tight"
+    letterSpacing: "tracking-tight"
   subtitle:
     fontFamily: "Averia Serif Libre, serif"
     fontSize: "text-xl lg:text-2xl xl:text-3xl"
     fontWeight: 400
-    letterSpacing: "0"
+    lineHeight: "leading-tight"
+    letterSpacing: "tracking-normal"
   body:
     fontFamily: "Schibsted Grotesk, sans-serif"
     fontSize: "text-base xl:text-lg"
     fontWeight: 400
-    lineHeight: 1.6
-    letterSpacing: "-0.03em"
+    lineHeight: "leading-relaxed"
+    letterSpacing: "tracking-tight"
   label:
     fontFamily: "Averia Serif Libre, serif"
     fontSize: "text-xl"
     fontWeight: 700
-    letterSpacing: "-0.02em"
+    lineHeight: "leading-tight"
+    letterSpacing: "tracking-tight"
   display-phone:
     fontFamily: "Averia Serif Libre, serif"
     fontSize: "text-4xl text-5xl"
     fontWeight: 700
-    lineHeight: 0.88
+    lineHeight: "leading-none"
+    letterSpacing: "tracking-tight"
   title-phone:
     fontFamily: "Averia Serif Libre, serif"
     fontSize: "text-2xl"
     fontWeight: 700
+    lineHeight: "leading-tight"
+    letterSpacing: "tracking-tight"
   caption:
     fontFamily: "Schibsted Grotesk, sans-serif"
     fontSize: "text-base"
     fontWeight: 400
+    lineHeight: "leading-tight"
+    letterSpacing: "tracking-tight"
   ring:
     fontFamily: "Averia Serif Libre, serif"
     fontSize: "text-base"
     fontWeight: 700
-    letterSpacing: "0.08em"
+    letterSpacing: "tracking-widest"
   signoff:
     fontFamily: "Averia Serif Libre, serif"
     fontSize: "text-base"
     fontWeight: 400
-    letterSpacing: "0"
+    lineHeight: "leading-tight"
+    letterSpacing: "tracking-normal"
   # The Halloween pages keep their pre-Tailwind sizes until their own snap; these go with it.
   halloween-title:
     fontFamily: "Averia Serif Libre, serif"
@@ -96,21 +105,21 @@ typography:
     fontSize: "1rem"
     fontWeight: 400
 rounded:
-  circle: "50%"
+  circle: "rounded-full"
 spacing:
-  gutter: "clamp(20px, 6vw, 96px)"
-  column: "1200px"
-  column-gap: "clamp(32px, 6vw, 96px)"
-  gutter-phone: "24px"
-  gutter-phone-hero: "20px"
+  gutter: "px-6 md:px-12 lg:px-16 xl:px-20"
+  column: "max-w-6xl"
+  column-gap: "gap-6 md:gap-12 lg:gap-16 xl:gap-20"
+  gutter-phone: "px-6"
+  gutter-phone-hero: "px-5"
 components:
   member-circle:
     backgroundColor: "{colors.salamander}"
     rounded: "{rounded.circle}"
-    width: "200px"
+    width: "max-w-52"
   member-circle-phone:
     rounded: "{rounded.circle}"
-    width: "84px"
+    width: "w-20"
   kicker:
     textColor: "{colors.terra}"
     typography: "{typography.label}"
@@ -127,7 +136,7 @@ components:
   footer:
     backgroundColor: "{colors.mole}"
     textColor: "{colors.cream}"
-    padding: "48px 20px 90px"
+    padding: "pt-12 px-5 pb-24"
 ---
 
 # Design System: The DnA Casa

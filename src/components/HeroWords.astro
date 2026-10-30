@@ -81,6 +81,9 @@ const { lines, subtitle, layout, date } = Astro.props;
   }
 
   @media (width >= 48rem) {
+    h1 {
+      letter-spacing: var(--tracking-tighter);
+    }
     .sub {
       margin-top: calc(var(--spacing) * 5);
     }

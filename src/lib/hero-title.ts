@@ -15,14 +15,18 @@ const breakpoints = [
   { prefix: "2xl", width: 1536, display: "9xl", gutter: 80 },
 ] as const;
 
-// The narrowest phone the site is tested at, with the hero's tracking and 20px gutters.
+// The narrowest phone the site is tested at, with the hero's 20px gutters.
 const phone = 360;
-const tracking = -0.025;
 export const phoneTitleRoom = phone - 2 * 20;
 
-const ems = (line: string) => serif.layout(line).advanceWidth / serif.unitsPerEm + tracking * [...line].length;
+// The hero's tracking: tight on phones, tighter from md, where the sizes are larger.
+const phoneTracking = -0.025;
+const wideTracking = -0.05;
 
-export const phoneTitleWidth = (line: string) => ems(line) * steps[phoneDisplay];
+const ems = (line: string, tracking: number) =>
+  serif.layout(line).advanceWidth / serif.unitsPerEm + tracking * [...line].length;
+
+export const phoneTitleWidth = (line: string) => ems(line, phoneTracking) * steps[phoneDisplay];
 
 // Lines are fixed at build time so every screen breaks the name in the same places.
 export const heroTitleLines = (name: string): string[] => {
@@ -48,8 +52,8 @@ const below = (step: Step) => order[Math.max(0, order.indexOf(step) - 1)];
 
 // A word too wide to break steps the phone title down one size just for that party.
 export const heroTitleSize = (lines: string[], layout: "beside" | "full") => {
-  const widest = Math.max(0, ...lines.map(ems));
-  const phoneStep = widest * steps[phoneDisplay] <= phoneTitleRoom ? phoneDisplay : below(phoneDisplay);
+  const phoneStep = Math.max(0, ...lines.map(phoneTitleWidth)) <= phoneTitleRoom ? phoneDisplay : below(phoneDisplay);
+  const widest = Math.max(0, ...lines.map((line) => ems(line, wideTracking)));
   const classes = [`text-${phoneStep}`];
   let current: Step = phoneStep;
   for (const breakpoint of breakpoints) {
